@@ -1,9 +1,18 @@
 <script lang="ts">
-  import type { PageData } from './$types';
   import NewGameForm from './NewGameForm.svelte';
+  import { settings as gameSettings } from '$lib/game';
+  import type { ClockSettings } from '$lib/timing/clock-settings';
+  import { goto } from '$app/navigation';
 
-  // export let data: PageData;
+  function onSubmit(event: CustomEvent<ClockSettings>) {
+    gameSettings.set(event.detail);
+    goto('/');
+  }
+
+  function onCancel() {
+    goto('/');
+  }
 </script>
 
 <h1>New Game</h1>
-<NewGameForm />
+<NewGameForm canCancel={!!$gameSettings} on:submit={onSubmit} on:cancel={onCancel} />

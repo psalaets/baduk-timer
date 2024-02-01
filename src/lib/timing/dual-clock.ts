@@ -3,6 +3,8 @@ import { createByoyomi } from './byoyomi';
 import type { ClockSettings } from './clock-settings';
 import type { Color } from '$lib/color';
 
+export type GameClock = ReturnType<typeof create>;
+
 /**
  * A pair of clocks that alternate ticking on each turn.
  */
@@ -38,11 +40,17 @@ export function create(settings: ClockSettings) {
     blacksTurn.update((b) => !b);
   }
 
+  const data = derived([black, white, whoseTurn, paused], ([b, w, who, p]) => {
+    return {
+      black: b,
+      white: w,
+      whoseTurn: who,
+      paused: p
+    };
+  });
+
   return {
-    white,
-    black,
-    whoseTurn,
-    paused,
+    subscribe: data.subscribe,
     stonePlayed(by: Color) {
       if (get(paused)) {
         return;

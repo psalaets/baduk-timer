@@ -1,12 +1,24 @@
 import { derived, writable } from 'svelte/store';
 import { createDefaultTicker } from './ticker';
 import { createCountdown } from './countdown';
+import type { Clock } from './clock';
 
 export type CanadianClockSettings = {
   type: 'canadian';
   mainTimeSeconds: number;
   stonesPerPeriod: number;
   timePerPeriodSeconds: number;
+};
+
+type Phase = 'main' | 'overtime';
+
+export type CanadianClock = Clock<CanadianData>;
+
+export type CanadianData = {
+  countdown: number;
+  phase: Phase;
+  stonesRemaining: number;
+  timeout: boolean;
 };
 
 type PhaseLogic = {
@@ -18,11 +30,11 @@ type PhaseLogic = {
 export const createCanadian = (
   settings: CanadianClockSettings,
   createTicker = createDefaultTicker
-) => {
+): Clock<CanadianData> => {
   const { mainTimeSeconds, stonesPerPeriod, timePerPeriodSeconds } = settings;
 
   const countdown = createCountdown(mainTimeSeconds, createTicker);
-  const phase = writable(mainTimeSeconds > 0 ? 'main' : 'overtime');
+  const phase = writable<Phase>(mainTimeSeconds > 0 ? 'main' : 'overtime');
   const stonesRemaining = writable(stonesPerPeriod);
   const timeout = writable(false);
 

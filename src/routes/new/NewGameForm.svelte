@@ -1,19 +1,30 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte';
   import { mainTimeOptions, timePerPeriodOptions } from './form-options';
-  // import { applySettings } from '../game-settings';
+  import type { ClockSettings } from '$lib/timing/clock-settings';
+
+  export let canCancel = false;
+
+  const submitDispatcher = createEventDispatcher<{ submit: ClockSettings }>();
+  const cancelDispatcher = createEventDispatcher();
 
   function onSubmit(event: SubmitEvent) {
     const formData = new FormData(event.target as HTMLFormElement);
 
     // TODO validate settings
 
-    const settings = {
+    const settings: ClockSettings = {
+      type: 'byoyomi',
       mainTimeSeconds: Number(formData.get('mainTime')),
       timePerPeriodSeconds: Number(formData.get('timePerPeriod')),
       periods: Number(formData.get('periods'))
     };
 
-    // applySettings(settings);
+    submitDispatcher('submit', settings);
+  }
+
+  function onCancel() {
+    cancelDispatcher('cancel');
   }
 </script>
 
@@ -40,7 +51,9 @@
   </div>
 
   <div class="buttons">
-    <button type="button">Cancel</button>
+    {#if canCancel}
+    <button type="button" on:click="{onCancel}">Cancel</button>
+    {/if}
     <button type="submit">Apply</button>
   </div>
 </form>
