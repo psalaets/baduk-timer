@@ -17,7 +17,7 @@
   }
 </script>
 
-<form class="new-game" aria-label="Game settings" on:submit|preventDefault="{onSubmit}">
+<form aria-label="Game settings" on:submit|preventDefault="{onSubmit}">
   <div class="field">
     <label for="main-time">Main Time</label>
     <select id="main-time" name="mainTime">
@@ -46,11 +46,6 @@
 </form>
 
 <style>
-  .new-game {
-    display: flex;
-    flex-direction: column;
-  }
-
   form {
     display: flex;
     flex-direction: column;
