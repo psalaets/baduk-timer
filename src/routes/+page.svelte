@@ -12,8 +12,6 @@
     unsub = game.subscribe((g) => {
       if (g.clock == null) {
         goto('/new');
-      } else {
-        g.clock.begin();
       }
     });
   });
@@ -33,9 +31,14 @@
 <a href="/new">new game</a>
 
 {#if $game.clock && $settings}
-  <DualClock
-    gameClock={$game.clock}
-    settings={$settings}
-    on:stone={(event) => onStone(event.detail)}
-  />
+  {#if $game.started}
+    <DualClock
+      gameClock={$game.clock}
+      settings={$settings}
+      on:stone={(event) => onStone(event.detail)}
+    />
+  {:else}
+    preview
+    <button on:click={() => game.begin()}>Start clock</button>
+  {/if}
 {/if}

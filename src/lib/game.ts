@@ -5,6 +5,8 @@ import type { Color } from '$lib/color';
 
 const gameSettings = writable<ClockSettings | null>(null);
 
+const started = writable(false);
+
 export const settings = {
   subscribe: gameSettings.subscribe,
   set(settings: ClockSettings) {
@@ -15,7 +17,9 @@ export const settings = {
   }
 };
 
-const started = writable(false);
+settings.subscribe((s) => {
+  started.set(false);
+});
 
 const gameClock = derived([gameSettings], ([settings]) => {
   if (settings) {
@@ -23,6 +27,12 @@ const gameClock = derived([gameSettings], ([settings]) => {
     return clock;
   } else {
     return null;
+  }
+});
+
+started.subscribe((s) => {
+  if (s) {
+    get(gameClock)?.begin();
   }
 });
 
