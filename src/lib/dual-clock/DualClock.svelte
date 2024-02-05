@@ -8,7 +8,6 @@
   export let settings: ClockSettings;
 
   const dispatchStone = createEventDispatcher();
-  const dispatchPause = createEventDispatcher();
 </script>
 
 <div class="dual-clock">
@@ -19,7 +18,9 @@
     on:stone={() => dispatchStone('stone', 'black')}
   />
 
-  <button class="pause" on:click={() => dispatchPause('pause')}>Pause</button>
+  <div>
+    <slot />
+  </div>
 
   <ClockFace
     color="white"
@@ -33,9 +34,5 @@
   .dual-clock {
     display: flex;
     gap: 1rem;
-  }
-
-  .pause {
-    align-self: flex-start;
   }
 </style>

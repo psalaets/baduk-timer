@@ -1,5 +1,5 @@
 <script lang="ts">
-  import NewGameForm from './NewGameForm.svelte';
+  import NewGameForm from '$lib/new-game/NewGameForm.svelte';
   import { settings as gameSettings } from '$lib/game';
   import type { ClockSettings } from '$lib/timing/clock-settings';
   import { goto } from '$app/navigation';

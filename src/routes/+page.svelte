@@ -4,6 +4,7 @@
   import { goto } from '$app/navigation';
   import { settings, game } from '$lib/game';
   import DualClock from '$lib/dual-clock/DualClock.svelte';
+  import Preview from '$lib/preview/Preview.svelte';
   import type { Color } from '$lib/color';
 
   let unsub: Unsubscriber | null = null;
@@ -36,9 +37,10 @@
       gameClock={$game.clock}
       settings={$settings}
       on:stone={(event) => onStone(event.detail)}
-    />
+    >
+      <button class="pause" on:click={() => {}}>Pause</button>
+    </DualClock>
   {:else}
-    preview
-    <button on:click={() => game.begin()}>Start clock</button>
+    <Preview settings={$settings} on:begin={() => game.begin()} />
   {/if}
 {/if}

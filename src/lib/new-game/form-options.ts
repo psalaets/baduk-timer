@@ -50,6 +50,11 @@ export const mainTimeOptions = [
   ['14400', '4 hours']
 ];
 
+export function mainTimeLabel(seconds: number) {
+  const option = mainTimeOptions.find(([key]) => key === String(seconds));
+  return option ? option[1] : null;
+}
+
 // ripped from OGS
 export const timePerPeriodOptions = [
   // [key, display]
@@ -93,6 +98,11 @@ export const timePerPeriodOptions = [
   ['3300', '55 minutes'],
   ['3600', '1 hour']
 ];
+
+export function timePerPeriodLabel(seconds: number) {
+  const option = timePerPeriodOptions.find(([key]) => key === String(seconds));
+  return option ? option[1] : null;
+}
 
 export function isValidMainTime(key: string) {
   return mainTimeOptions.some((opt) => opt[0] === key);
