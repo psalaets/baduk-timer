@@ -17,10 +17,6 @@ export const settings = {
   }
 };
 
-settings.subscribe((s) => {
-  started.set(false);
-});
-
 const gameClock = derived([gameSettings], ([settings]) => {
   if (settings) {
     const clock = createClock(settings);
@@ -30,23 +26,37 @@ const gameClock = derived([gameSettings], ([settings]) => {
   }
 });
 
-started.subscribe((s) => {
-  if (s) {
-    get(gameClock)?.begin();
+const paused = writable(true);
+paused.subscribe((isPaused) => {
+  if (isPaused) {
+    get(gameClock)?.pause();
+  } else {
+    get(gameClock)?.resume();
+    started.set(true);
   }
 });
 
-const gameState = derived([gameClock, started], ([clock, started]) => {
+settings.subscribe((s) => {
+  started.set(false);
+  paused.set(true);
+});
+
+const gameState = derived([gameClock, started, paused], ([clock, started, paused]) => {
   return {
     clock,
-    started
+    started,
+    paused
   };
 });
 
 export const game = {
   subscribe: gameState.subscribe,
-  begin: () => started.set(true),
+  begin: () => paused.set(false),
+  pause: () => paused.set(true),
+  resume: () => paused.set(false),
   stonePlayed: (color: Color) => {
-    get(gameClock)?.stonePlayed(color);
+    if (!get(paused)) {
+      get(gameClock)?.stonePlayed(color);
+    }
   }
 };

@@ -27,35 +27,21 @@ export function create(settings: ClockSettings) {
     }
   }
 
-  const paused = writable(true);
-  paused.subscribe((isPaused) => {
-    if (isPaused) {
-      pauseGame();
-    } else {
-      resumeGame();
-    }
-  });
-
   function switchTurn() {
     blacksTurn.update((b) => !b);
   }
 
-  const data = derived([black, white, whoseTurn, paused], ([b, w, who, p]) => {
+  const data = derived([black, white, whoseTurn], ([b, w, who]) => {
     return {
       black: b,
       white: w,
-      whoseTurn: who,
-      paused: p
+      whoseTurn: who
     };
   });
 
   return {
     subscribe: data.subscribe,
     stonePlayed(by: Color) {
-      if (get(paused)) {
-        return;
-      }
-
       if (by === 'black') {
         black.playedStone();
         white.opponentPlayedStone();
@@ -66,9 +52,8 @@ export function create(settings: ClockSettings) {
 
       switchTurn();
     },
-    begin: () => paused.set(false),
-    resume: () => paused.set(false),
-    pause: () => paused.set(true)
+    resume: () => resumeGame(),
+    pause: () => pauseGame()
   };
 }
 

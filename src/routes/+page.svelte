@@ -27,20 +27,38 @@
   function onStone(color: Color) {
     game.stonePlayed(color);
   }
+
+  function onPause() {
+    game.pause();
+  }
+
+  function onResume() {
+    game.resume();
+  }
+
+  function onBegin() {
+    game.begin();
+  }
 </script>
 
 <a href="/new">new game</a>
 
 {#if $game.clock && $settings}
+  <div>started: {$game.started}</div>
+  <div>paused: {$game.paused}</div>
   {#if $game.started}
     <DualClock
       gameClock={$game.clock}
       settings={$settings}
       on:stone={(event) => onStone(event.detail)}
     >
-      <button class="pause" on:click={() => {}}>Pause</button>
+      {#if $game.paused}
+        <button on:click={() => onResume()}>Resume</button>
+      {:else}
+        <button on:click={() => onPause()}>Pause</button>
+      {/if}
     </DualClock>
   {:else}
-    <Preview settings={$settings} on:begin={() => game.begin()} />
+    <Preview settings={$settings} on:begin={() => onBegin()} />
   {/if}
 {/if}
