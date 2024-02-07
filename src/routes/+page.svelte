@@ -1,28 +1,17 @@
 <script lang="ts">
-  import type { Unsubscriber } from 'svelte/store';
-  import { onMount, onDestroy } from 'svelte';
+  import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import { settings, game } from '$lib/game';
   import DualClock from '$lib/dual-clock/DualClock.svelte';
   import Preview from '$lib/preview/Preview.svelte';
   import type { Color } from '$lib/color';
 
-  let unsub: Unsubscriber | null = null;
-
-  onMount(() => {
-    unsub = game.subscribe((g) => {
-      if (g.clock == null) {
-        goto('/new');
-      }
-    });
-  });
-
-  onDestroy(() => {
-    if (unsub) {
-      unsub();
-      unsub = null;
+  $: clock = $game.clock;
+  $: {
+    if (browser && clock == null) {
+      goto('/new');
     }
-  });
+  }
 
   function onStone(color: Color) {
     game.stonePlayed(color);
@@ -43,15 +32,11 @@
 
 <a href="/new">new game</a>
 
-{#if $game.clock && $settings}
+{#if clock && $settings}
   <div>started: {$game.started}</div>
   <div>paused: {$game.paused}</div>
   {#if $game.started}
-    <DualClock
-      gameClock={$game.clock}
-      settings={$settings}
-      on:stone={(event) => onStone(event.detail)}
-    >
+    <DualClock gameClock={clock} settings={$settings} on:stone={(event) => onStone(event.detail)}>
       {#if $game.paused}
         <button on:click={() => onResume()}>Resume</button>
       {:else}
