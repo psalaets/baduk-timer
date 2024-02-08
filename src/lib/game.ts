@@ -9,7 +9,8 @@ const started = writable(false);
 
 export const settings = {
   subscribe: gameSettings.subscribe,
-  set(settings: ClockSettings) {
+  newGame(settings: ClockSettings) {
+    gameSettings.set(null);
     gameSettings.set(settings);
   },
   clear() {

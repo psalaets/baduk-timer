@@ -5,8 +5,7 @@
   import { goto } from '$app/navigation';
 
   function onSubmit(event: CustomEvent<ClockSettings>) {
-    gameSettings.clear();
-    gameSettings.set(event.detail);
+    gameSettings.newGame(event.detail);
     goto('/');
   }
 
