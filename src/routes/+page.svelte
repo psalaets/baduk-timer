@@ -5,6 +5,7 @@
   import DualClock from '$lib/dual-clock/DualClock.svelte';
   import Preview from '$lib/preview/Preview.svelte';
   import type { Color } from '$lib/color';
+  import PauseDialog from '$lib/pause/PauseDialog.svelte';
 
   $: clock = $game.clock;
   $: {
@@ -39,6 +40,7 @@
     <DualClock gameClock={clock} settings={$settings} on:stone={(event) => onStone(event.detail)}>
       {#if $game.paused}
         <button on:click={() => onResume()}>Resume</button>
+        <PauseDialog on:close={() => onResume()} />
       {:else}
         <button on:click={() => onPause()}>Pause</button>
       {/if}
