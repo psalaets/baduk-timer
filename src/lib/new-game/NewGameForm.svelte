@@ -28,12 +28,12 @@
   }
 </script>
 
-<form aria-label="Game settings" on:submit|preventDefault="{onSubmit}">
+<form aria-label="Game settings" on:submit|preventDefault={onSubmit}>
   <div class="field">
     <label for="main-time">Main Time</label>
     <select id="main-time" name="mainTime">
       {#each mainTimeOptions as [key, value] (key)}
-      <option value="{key}">{value}</option>
+        <option value={key}>{value}</option>
       {/each}
     </select>
   </div>
@@ -41,7 +41,7 @@
     <label for="time-per-period">Time per period</label>
     <select id="time-per-period" name="timePerPeriod">
       {#each timePerPeriodOptions as [key, value] (key)}
-      <option value="{key}">{value}</option>
+        <option value={key}>{value}</option>
       {/each}
     </select>
   </div>
@@ -52,7 +52,7 @@
 
   <div class="buttons">
     {#if canCancel}
-    <button type="button" on:click="{onCancel}">Cancel</button>
+      <button type="button" on:click={onCancel}>Cancel</button>
     {/if}
     <button type="submit">Apply</button>
   </div>
