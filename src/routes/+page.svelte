@@ -47,11 +47,9 @@
       switchSides={$game.switchSides}
       on:stone={(event) => onStone(event.detail)}
     >
+      <button on:click={() => onPause()}>Pause</button>
       {#if $game.paused}
-        <button on:click={() => onResume()}>Resume</button>
         <PauseDialog on:close={() => onResume()} on:switch={onSwitch} />
-      {:else}
-        <button on:click={() => onPause()}>Pause</button>
       {/if}
     </DualClock>
   {:else}
