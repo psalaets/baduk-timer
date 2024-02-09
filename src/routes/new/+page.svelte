@@ -4,6 +4,8 @@
   import type { ClockSettings } from '$lib/timing/clock-settings';
   import { goto } from '$app/navigation';
 
+  const hasPreExistingSettings = !!$gameSettings;
+
   function onSubmit(event: CustomEvent<ClockSettings>) {
     gameSettings.newGame(event.detail);
     goto('/');
@@ -15,4 +17,4 @@
 </script>
 
 <h1>New Game</h1>
-<NewGameForm canCancel={!!$gameSettings} on:submit={onSubmit} on:cancel={onCancel} />
+<NewGameForm canCancel={hasPreExistingSettings} on:submit={onSubmit} on:cancel={onCancel} />
