@@ -16,6 +16,7 @@
 </script>
 
 <div class={`clock-face" ${color}`}>
+  ({color})
   {#if clock.phase === 'main'}
     <PrimaryInfo>
       <TimeLeft secondsRemaining={clock.countdown} />

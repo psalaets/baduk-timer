@@ -6,11 +6,12 @@
 
   export let gameClock: GameClock;
   export let settings: ClockSettings;
+  export let swapSides = false;
 
   const dispatchStone = createEventDispatcher();
 </script>
 
-<div class="dual-clock">
+<div class="dual-clock {swapSides ? 'swap-sides' : ''}">
   <ClockFace
     color="black"
     clock={$gameClock.black}
@@ -33,6 +34,12 @@
 <style>
   .dual-clock {
     display: flex;
+    flex-direction: row;
+
     gap: 1rem;
+  }
+
+  .swap-sides {
+    flex-direction: row-reverse;
   }
 </style>

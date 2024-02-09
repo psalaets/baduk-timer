@@ -6,6 +6,7 @@ import type { Color } from '$lib/color';
 const gameSettings = writable<ClockSettings | null>(null);
 
 const started = writable(false);
+const sidesSwapped = writable(false);
 
 export const settings = {
   subscribe: gameSettings.subscribe,
@@ -66,19 +67,24 @@ settings.subscribe((s) => {
   paused.set(true);
 });
 
-const gameState = derived([gameClock, started, paused], ([clock, started, paused]) => {
-  return {
-    clock,
-    started,
-    paused
-  };
-});
+const gameState = derived(
+  [gameClock, started, paused, sidesSwapped],
+  ([clock, started, paused, sidesSwapped]) => {
+    return {
+      clock,
+      started,
+      paused,
+      sidesSwapped
+    };
+  }
+);
 
 export const game = {
   subscribe: gameState.subscribe,
   begin: () => paused.set(false),
   pause: () => paused.set(true),
   resume: () => paused.set(false),
+  swapSides: () => sidesSwapped.update((s) => !s),
   stonePlayed: (color: Color) => {
     if (!get(paused)) {
       get(gameClock)?.stonePlayed(color);
