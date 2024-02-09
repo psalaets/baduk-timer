@@ -87,6 +87,12 @@ export const createCanadian = (
     }
   });
 
+  countdown.subscribe((seconds) => {
+    if (seconds === 0) {
+      logic.onCountdownExhausted && logic.onCountdownExhausted();
+    }
+  });
+
   return {
     subscribe: data.subscribe,
     play: countdown.play,
