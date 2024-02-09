@@ -30,8 +30,8 @@
     game.begin();
   }
 
-  function onSwap() {
-    game.swapSides();
+  function onSwitch() {
+    game.switchSides();
   }
 </script>
 
@@ -44,12 +44,12 @@
     <DualClock
       gameClock={clock}
       settings={$settings}
-      swapSides={$game.sidesSwapped}
+      switchSides={$game.switchSides}
       on:stone={(event) => onStone(event.detail)}
     >
       {#if $game.paused}
         <button on:click={() => onResume()}>Resume</button>
-        <PauseDialog on:close={() => onResume()} on:swap={onSwap} />
+        <PauseDialog on:close={() => onResume()} on:switch={onSwitch} />
       {:else}
         <button on:click={() => onPause()}>Pause</button>
       {/if}

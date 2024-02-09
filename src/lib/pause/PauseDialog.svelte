@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import Dialog from '$lib/Dialog.svelte';
 
-  const swapDispatcher = createEventDispatcher();
+  const switchDispatcher = createEventDispatcher();
 </script>
 
 <Dialog on:close>
@@ -12,7 +12,7 @@
       <li>
         <a href="/new">new game</a>
       </li>
-      <li><button on:click={() => swapDispatcher('swap')}>orientation</button></li>
+      <li><button on:click={() => switchDispatcher('switch')}>Switch sides</button></li>
     </ul>
   </div>
   <div slot="footer" let:close>
