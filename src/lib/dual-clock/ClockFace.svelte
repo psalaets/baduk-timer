@@ -15,8 +15,7 @@
   const dispatch = createEventDispatcher();
 </script>
 
-<div class={`clock-face" ${color}`}>
-  ({color})
+<div class="clock-face {color}">
   {#if clock.phase === 'main'}
     <PrimaryInfo>
       <TimeLeft secondsRemaining={clock.countdown} />

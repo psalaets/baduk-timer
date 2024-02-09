@@ -1,0 +1,23 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* vars */
+  --clock-face-dark: #555555;
+  --clock-face-light: #f5f5f5;
+  --clock-font-family: 'Courier New', Courier, monospace;
+}
+
+/* debug helper /
+*,
+*::before,
+*::after {
+  outline: 1px solid red;
+}
+/**/
