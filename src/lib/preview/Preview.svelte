@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import { mainTimeLabel, timePerPeriodLabel } from '$lib/new-game/form-options';
+  import { mainTimeLabel, timePerPeriodLabel } from '$lib/new-game/byoyomi-options';
   import type { ClockSettings } from '$lib/timing/clock-settings';
 
   export let settings: ClockSettings;

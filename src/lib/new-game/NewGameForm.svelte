@@ -1,15 +1,24 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import { mainTimeOptions, timePerPeriodOptions } from './form-options';
+  import ByoyomiFields from '$lib/new-game/ByoyomiFields.svelte';
+  import CanadianFields from '$lib/new-game/CanadianFields.svelte';
+  import Field from '$lib/new-game/Field.svelte';
   import type { ClockSettings } from '$lib/timing/clock-settings';
 
   export let canCancel = false;
+
+  export const timeSystemOptions = [
+    { id: 'byoyomi', display: 'Byo-Yomi' },
+    { id: 'canadian', display: 'Canadian' },
+    { id: 'fischer', display: 'Fischer' }
+  ];
 
   const submitDispatcher = createEventDispatcher<{ submit: ClockSettings }>();
   const cancelDispatcher = createEventDispatcher();
 
   function onSubmit(event: SubmitEvent) {
-    const formData = new FormData(event.target as HTMLFormElement);
+    const form = event.target as HTMLFormElement;
+    const formData = new FormData(form);
 
     // TODO validate settings
 
@@ -26,29 +35,27 @@
   function onCancel() {
     cancelDispatcher('cancel');
   }
+
+  let timeSystem: string;
 </script>
 
 <form aria-label="Game settings" on:submit|preventDefault={onSubmit}>
-  <div class="field">
-    <label for="main-time">Main Time</label>
-    <select id="main-time" name="mainTime">
-      {#each mainTimeOptions as [key, value] (key)}
-        <option value={key}>{value}</option>
+  System: {timeSystem}
+  <Field>
+    <label for="time-system">Time System</label>
+    <select id="time-system" name="timeSystem" bind:value={timeSystem}>
+      {#each timeSystemOptions as opt (opt.id)}
+        <option value={opt.id}>{opt.display}</option>
       {/each}
     </select>
-  </div>
-  <div class="field">
-    <label for="time-per-period">Time per period</label>
-    <select id="time-per-period" name="timePerPeriod">
-      {#each timePerPeriodOptions as [key, value] (key)}
-        <option value={key}>{value}</option>
-      {/each}
-    </select>
-  </div>
-  <div class="field">
-    <label for="periods">Periods</label>
-    <input id="periods" name="periods" type="tel" />
-  </div>
+  </Field>
+  {#if timeSystem === 'byoyomi'}
+    <ByoyomiFields />
+  {:else if timeSystem === 'canadian'}
+    <CanadianFields />
+  {:else if timeSystem === 'fischer'}
+    TODO fischer fields
+  {/if}
 
   <div class="buttons">
     {#if canCancel}
@@ -62,17 +69,10 @@
   form {
     display: flex;
     flex-direction: column;
+    gap: 1rem;
+
     margin-inline: auto;
     width: 400px;
-  }
-
-  form > div {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  form > .field + .field {
-    margin-top: 1rem;
   }
 
   .buttons {
