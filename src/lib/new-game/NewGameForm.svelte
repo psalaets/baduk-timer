@@ -1,8 +1,18 @@
 <script lang="ts">
-  import { object, variant, number, literal, minValue, picklist, transform } from 'valibot';
+  import {
+    safeParse,
+    object,
+    variant,
+    literal,
+    picklist,
+    transform,
+    custom,
+    string,
+    type Input,
+    type Output
+  } from 'valibot';
   import { createEventDispatcher } from 'svelte';
-  import { superForm, defaults, intProxy } from 'sveltekit-superforms/client';
-  import { valibot, valibotClient } from 'sveltekit-superforms/adapters';
+  import type { EventHandler } from 'svelte/elements';
 
   import { mainTimeOptions, timePerPeriodOptions } from './byoyomi-options';
   import Field from '$lib/new-game/Field.svelte';
@@ -16,104 +26,125 @@
     { id: 'fischer', display: 'Fischer' }
   ];
 
+  const nonNegativeInteger = transform(
+    string([custom((v) => !!v && v.trim().length > 0 && !isNaN(Number(v)), 'Must be a number')]),
+    (v) => Math.max(0, Math.trunc(Number(v)))
+  );
+
   const byoyomiSchema = object({
     type: literal('byoyomi'),
-    mainTimeSeconds: picklist(mainTimeOptions.map((o) => Number(o.id))),
-    timePerPeriodSeconds: picklist(timePerPeriodOptions.map((o) => Number(o.id))),
-    periods: number('Must be a number', [minValue(0, 'Cannot be less than 0')])
+    mainTimeSeconds: transform(picklist(mainTimeOptions.map((o) => o.id)), (v) => Number(v)),
+    timePerPeriodSeconds: transform(picklist(timePerPeriodOptions.map((o) => o.id)), (v) =>
+      Number(v)
+    ),
+    periods: nonNegativeInteger
   });
 
-  const canadiaSchema = object({
+  type FormSchema = Input<typeof byoyomiSchema>;
+  type ByoyomiSchema = Output<typeof byoyomiSchema>;
+
+  const canadianSchema = object({
     type: literal('canadian'),
-    mainTimeSeconds: picklist(mainTimeOptions.map((o) => Number(o.id))),
-    timePerPeriodSeconds: picklist(timePerPeriodOptions.map((o) => Number(o.id))),
-    stonesPerPeriod: number('Must be a number', [minValue(1, 'Cannot be less than 1')])
+    mainTimeSeconds: picklist(mainTimeOptions.map((o) => o.id)),
+    timePerPeriodSeconds: picklist(timePerPeriodOptions.map((o) => o.id)),
+    stonesPerPeriod: nonNegativeInteger
   });
 
-  const mainSchema = variant('type', [byoyomiSchema, canadiaSchema]);
+  const mainSchema = variant('type', [byoyomiSchema, canadianSchema]);
 
   const submitDispatcher = createEventDispatcher<{ submit: ClockSettings }>();
   const cancelDispatcher = createEventDispatcher();
 
   const initialData = {
     periods: 5,
-    mainTimeSeconds: mainTimeOptions.filter((o) => o.default).map((o) => Number(o.id))[0],
-    timePerPeriodSeconds: timePerPeriodOptions.filter((o) => o.default).map((o) => Number(o.id))[0]
+    mainTimeSeconds: mainTimeOptions.filter((o) => o.default).map((o) => o.id)[0],
+    timePerPeriodSeconds: timePerPeriodOptions.filter((o) => o.default).map((o) => o.id)[0]
   };
 
-  const { form, errors, enhance } = superForm(defaults(initialData, valibot(mainSchema)), {
-    SPA: true,
-    validators: valibotClient(mainSchema),
-    onUpdated(event) {
-      if (event.form.valid) {
-        console.log('submitting...');
+  let errors: any = {};
 
-        submitDispatcher('submit', event.form.data);
-      }
+  const onSubmit: EventHandler<SubmitEvent, HTMLFormElement> = (event) => {
+    const form = event.target as HTMLFormElement;
+
+    const getStringValue = (form: HTMLFormElement, defaultValue: string) => {
+      const formData = new FormData(form);
+      return (name: string) => {
+        const value = formData.get(name);
+        if (value instanceof File) {
+          throw new Error(`Unexpected file value for ${name}`);
+        } else {
+          return value ?? defaultValue;
+        }
+      };
+    };
+
+    const get = getStringValue(form, '');
+    const raw: FormSchema = {
+      type: 'byoyomi',
+      mainTimeSeconds: get('mainTime'),
+      timePerPeriodSeconds: get('timePerPeriod'),
+      periods: get('periods')
+    };
+
+    const result = safeParse(byoyomiSchema, raw);
+
+    if (result.success) {
+      errors = {};
+      submitDispatcher('submit', result.output);
+    } else {
+      result.issues.forEach((issue) => {
+        if (issue.path && issue.path[0].type === 'object') {
+          const key = issue.path[0].key;
+          errors = { ...errors, [key]: issue.message };
+        }
+      });
     }
-  });
+  };
 
-  function onCancel() {
-    cancelDispatcher('cancel');
-  }
+  const onCancel = () => cancelDispatcher('cancel');
 
-  // Bind inputs to proxies (and not $form.foo) to get string => int parsing in
-  // places that svelte doesn't already do it
-  const mainTimeProxy = intProxy(form, 'mainTimeSeconds');
-  const timePerPeriodProxy = intProxy(form, 'timePerPeriodSeconds');
+  let timingSystem: string;
 </script>
 
-<form aria-label="Time settings" use:enhance method="POST" novalidate>
-  <pre>{JSON.stringify($errors, null, 2)}</pre>
-  <pre>{JSON.stringify($form, null, 2)}</pre>
+<form aria-label="Time settings" method="POST" on:submit|preventDefault={onSubmit} novalidate>
+  <pre>{JSON.stringify(errors)}</pre>
   <Field>
     <label for="time-system">Time System</label>
-    <select id="time-system" name="timeSystem" bind:value={$form.type}>
+    <select id="time-system" name="timeSystem" bind:value={timingSystem}>
       {#each timeSystemOptions as opt (opt.id)}
         <option value={opt.id}>{opt.display}</option>
       {/each}
     </select>
-    {#if $errors.type}
-      <span>{$errors.type}</span>
-    {/if}
   </Field>
 
-  {#if $form.type === 'byoyomi'}
+  {#if timingSystem === 'byoyomi'}
     <Field>
       <label for="main-time">Main Time</label>
-      <select id="main-time" name="mainTime" bind:value={$mainTimeProxy}>
+      <select id="main-time" name="mainTime">
         {#each mainTimeOptions as opt (opt.id)}
-          <option value={opt.id}>{opt.display}</option>
+          <option value={opt.id} selected={opt.default}>{opt.display}</option>
         {/each}
       </select>
     </Field>
 
     <Field>
       <label for="time-per-period">Time per period</label>
-      <select id="time-per-period" name="timePerPeriod" bind:value={$timePerPeriodProxy}>
+      <select id="time-per-period" name="timePerPeriod">
         {#each timePerPeriodOptions as opt (opt.id)}
-          <option value={opt.id}>{opt.display}</option>
+          <option value={opt.id} selected={opt.default}>{opt.display}</option>
         {/each}
       </select>
     </Field>
 
     <Field>
       <label for="periods">Periods</label>
-      <input
-        id="periods"
-        name="periods"
-        type="number"
-        autocomplete="off"
-        bind:value={$form.periods}
-      />
-      {#if $errors.periods}
-        <span>{$errors.periods}</span>
-      {/if}
+      <input id="periods" name="periods" type="number" autocomplete="off" />
+      {#if errors.periods}<span>{errors.periods}</span>{/if}
     </Field>
-  {:else if $form.type === 'canadian'}
+  {:else if timingSystem === 'canadian'}
     <Field>
       <label for="main-time">Main Time</label>
-      <select id="main-time" name="mainTime" bind:value={$mainTimeProxy}>
+      <select id="main-time" name="mainTime">
         {#each mainTimeOptions as opt (opt.id)}
           <option value={opt.id}>{opt.display}</option>
         {/each}
@@ -122,7 +153,7 @@
 
     <Field>
       <label for="time-per-period">Time per period</label>
-      <select id="time-per-period" name="timePerPeriod" bind:value={$timePerPeriodProxy}>
+      <select id="time-per-period" name="timePerPeriod">
         {#each timePerPeriodOptions as opt (opt.id)}
           <option value={opt.id}>{opt.display}</option>
         {/each}
@@ -131,16 +162,7 @@
 
     <Field>
       <label for="stones-per-period">Stones per period</label>
-      <input
-        id="stones-per-period"
-        name="stonesPerPeriod"
-        type="number"
-        autocomplete="off"
-        bind:value={$form.stonesPerPeriod}
-      />
-      {#if $errors.stonesPerPeriod}
-        <span>{$errors.stonesPerPeriod}</span>
-      {/if}
+      <input id="stones-per-period" name="stonesPerPeriod" type="number" autocomplete="off" />
     </Field>
   {/if}
 

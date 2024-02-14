@@ -1,6 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import ClockFace from './ClockFace.svelte';
+  import GenericClockFace from './GenericClockFace.svelte';
   import type { GameClock } from '$lib/timing/dual-clock';
   import type { ClockSettings } from '$lib/timing/clock-settings';
 
@@ -12,7 +12,7 @@
 </script>
 
 <div class="dual-clock {switchSides ? 'switch-sides' : ''}">
-  <ClockFace
+  <GenericClockFace
     color="black"
     clock={$gameClock.black}
     {settings}
@@ -23,7 +23,7 @@
     <slot />
   </div>
 
-  <ClockFace
+  <GenericClockFace
     color="white"
     clock={$gameClock.white}
     {settings}

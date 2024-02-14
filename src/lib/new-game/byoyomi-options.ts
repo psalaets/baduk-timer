@@ -1,5 +1,11 @@
+type Option = {
+  id: string;
+  display: string;
+  default?: boolean;
+};
+
 // ripped from OGS
-export const mainTimeOptions = [
+export const mainTimeOptions: Array<Option> = [
   { id: '0', display: 'None' },
   { id: '30', display: '30 seconds' },
   { id: '35', display: '35 seconds' },
@@ -50,7 +56,7 @@ export const mainTimeOptions = [
 ];
 
 // ripped from OGS
-export const timePerPeriodOptions = [
+export const timePerPeriodOptions: Array<Option> = [
   { id: '10', display: '10 seconds' },
   { id: '12', display: '12 seconds' },
   { id: '15', display: '15 seconds' },
@@ -100,12 +106,4 @@ export function mainTimeLabel(seconds: number) {
 export function timePerPeriodLabel(seconds: number) {
   const option = timePerPeriodOptions.find((opt) => opt.id === String(seconds));
   return option ? option.display : null;
-}
-
-export function isValidMainTime(key: string) {
-  return mainTimeOptions.some((opt) => opt.id === key);
-}
-
-export function isValidTimePerPeriod(key: string) {
-  return timePerPeriodOptions.some((opt) => opt.id === key);
 }
