@@ -29,10 +29,6 @@
   function onBegin() {
     game.begin();
   }
-
-  function onSwitch() {
-    game.switchSides();
-  }
 </script>
 
 <a href="/new">new game</a>
@@ -41,15 +37,10 @@
   <div>started: {$game.started}</div>
   <div>paused: {$game.paused}</div>
   {#if $game.started}
-    <DualClock
-      gameClock={clock}
-      settings={$settings}
-      switchSides={$game.switchSides}
-      on:stone={(event) => onStone(event.detail)}
-    >
+    <DualClock gameClock={clock} settings={$settings} on:stone={(event) => onStone(event.detail)}>
       <button on:click={() => onPause()}>Pause</button>
       {#if $game.paused}
-        <PauseDialog on:close={() => onResume()} on:switch={onSwitch} />
+        <PauseDialog on:close={() => onResume()} />
       {/if}
     </DualClock>
   {:else}
