@@ -1,60 +1,17 @@
 import type { RawValues } from '$lib/new-game/raw-values';
 import type { CanadianClockSettings } from '$lib/timing/canadian';
-import { timePerPeriodOptions } from './byoyomi-options';
+import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-options';
 import { getter } from './get-form-value';
 
-// TODO this is identical to byoyomi main time options
-const mainTimeOptions = [
-  { value: '0', display: 'None' },
-  { value: '30', display: '30 seconds' },
-  { value: '35', display: '35 seconds' },
-  { value: '40', display: '40 seconds' },
-  { value: '45', display: '45 seconds' },
-  { value: '50', display: '50 seconds' },
-  { value: '55', display: '55 seconds' },
-  { value: '60', display: '1 minute' },
-  { value: '70', display: '1 minute 10 seconds' },
-  { value: '80', display: '1 minute 20 seconds' },
-  { value: '90', display: '1 minute 30 seconds' },
-  { value: '105', display: '1 minute 45 seconds' },
-  { value: '120', display: '2 minutes' },
-  { value: '150', display: '2 minutes 30 seconds' },
-  { value: '180', display: '3 minutes' },
-  { value: '210', display: '3 minutes 30 seconds' },
-  { value: '240', display: '4 minutes' },
-  { value: '270', display: '4 minutes 30 seconds' },
-  { value: '300', display: '5 minutes' },
-  { value: '360', display: '6 minutes' },
-  { value: '420', display: '7 minutes' },
-  { value: '480', display: '8 minutes' },
-  { value: '540', display: '9 minutes' },
-  { value: '600', display: '10 minutes' },
-  { value: '720', display: '12 minutes' },
-  { value: '900', display: '15 minutes' },
-  { value: '1200', display: '20 minutes' },
-  { value: '1500', display: '25 minutes' },
-  { value: '1800', display: '30 minutes' },
-  { value: '2100', display: '35 minutes' },
-  { value: '2400', display: '40 minutes' },
-  { value: '2700', display: '45 minutes' },
-  { value: '3000', display: '50 minutes' },
-  { value: '3300', display: '55 minutes' },
-  { value: '3600', display: '1 hour' },
-  { value: '4200', display: '1 hour 10 minutes' },
-  { value: '4800', display: '1 hour 20 minutes' },
-  { value: '5400', display: '1 hour 30 minutes' },
-  { value: '6000', display: '1 hour 40 minutes' },
-  { value: '6600', display: '1 hour 50 minutes' },
-  { value: '7200', display: '2 hours' },
-  { value: '8100', display: '2 hours 15 minutes' },
-  { value: '9000', display: '2 hours 30 minutes' },
-  { value: '9900', display: '2 hours 45 minutes' },
-  { value: '10800', display: '3 hours' },
-  { value: '12600', display: '3 hours 30 minutes' },
-  { value: '14400', display: '4 hours' }
-];
+const DEFAULT_MAIN_TIME_SECONDS = 60 * 10;
+const DEFAULT_TIME_PER_PERIOD_SECONDS = 60 * 3;
+const DEFAULT_STONES_PER_PERIOD = 10;
+const MIN_STONES_PER_PERIOD = 1;
 
-export const timePerPeriodSeconds = [
+// Canadian main time options are identical to byoyomi main time options
+const mainTimeOptions = byoyomiMainTimeOptions;
+
+export const timePerPeriodOptions = [
   { value: '20', display: '20 seconds' },
   { value: '25', display: '25 seconds' },
   { value: '30', display: '30 seconds' },
@@ -104,7 +61,7 @@ export function parse(formData: FormData): CanadianClockSettings {
   };
 
   return {
-    type: 'canadian' as 'canadian',
+    type: 'canadian',
     mainTimeSeconds: parseMainTimeSeconds(rawValues.mainTimeSeconds),
     timePerPeriodSeconds: parseTimePerPeriodSeconds(rawValues.timePerPeriodSeconds),
     stonesPerPeriod: parseStonesPerPeriod(rawValues.stonesPerPeriod)
@@ -119,11 +76,10 @@ function parseMainTimeSeconds(rawValue: string): number {
 }
 
 export function defaultMainTimeOption() {
-  const defaultMainTimeSeconds = '600'; // 10 minutes
-  const option = mainTimeOptions.find((opt) => opt.value === defaultMainTimeSeconds);
+  const option = mainTimeOptions.find((opt) => opt.value === String(DEFAULT_MAIN_TIME_SECONDS));
 
   if (!option) {
-    throw new Error(`Default main time (${defaultMainTimeSeconds} seconds) not found`);
+    throw new Error(`Default main time (${DEFAULT_MAIN_TIME_SECONDS} seconds) not found`);
   }
 
   return option;
@@ -137,11 +93,14 @@ function parseTimePerPeriodSeconds(rawValue: string): number {
 }
 
 export function defaultTimePerPeriodOption() {
-  const defaultTimePerPeriodSeconds = '180'; // 3 minutes
-  const option = timePerPeriodOptions.find((opt) => opt.value === defaultTimePerPeriodSeconds);
+  const option = timePerPeriodOptions.find(
+    (opt) => opt.value === String(DEFAULT_TIME_PER_PERIOD_SECONDS)
+  );
 
   if (!option) {
-    throw new Error(`Default time per period (${defaultTimePerPeriodOption} seconds) not found`);
+    throw new Error(
+      `Default time per period (${DEFAULT_TIME_PER_PERIOD_SECONDS} seconds) not found`
+    );
   }
 
   return option;
@@ -149,12 +108,5 @@ export function defaultTimePerPeriodOption() {
 
 function parseStonesPerPeriod(rawValue: string): number {
   const isNumeric = rawValue.trim() !== '' && !isNaN(Number(rawValue));
-
-  if (isNumeric) {
-    const minStones = 1;
-    return Math.max(minStones, Number(rawValue));
-  } else {
-    const defaultStones = 10;
-    return defaultStones;
-  }
+  return isNumeric ? Math.max(MIN_STONES_PER_PERIOD, Number(rawValue)) : DEFAULT_STONES_PER_PERIOD;
 }

@@ -2,6 +2,10 @@ import type { FischerClockSettings } from '$lib/timing/fischer';
 import type { RawValues } from '$lib/new-game/raw-values';
 import { getter } from './get-form-value';
 
+const DEFAULT_INITIAL_TIME_SECONDS = 60 * 2;
+const DEFAULT_INCREMENT_SECONDS = 30;
+const DEFAULT_MAX_TIME_SECONDS = 60 * 5;
+
 export const initialTimeOptions = [
   { value: '30', display: '30 seconds' },
   { value: '35', display: '35 seconds' },
@@ -147,7 +151,7 @@ export function parse(formData: FormData): FischerClockSettings {
   };
 
   const result = {
-    type: 'fischer' as 'fischer',
+    type: 'fischer',
     initialSeconds: parseInitialTimeSeconds(rawValues.initialSeconds),
     incrementSeconds: parseIncrementSeconds(rawValues.incrementSeconds),
     maxSeconds: parseMaxSeconds(rawValues.maxSeconds)
@@ -167,11 +171,12 @@ function parseInitialTimeSeconds(rawValue: string): number {
 }
 
 export function defaultInitialTimeOption() {
-  const defaultInitialTimeSeconds = '120'; // 2 minutes
-  const option = initialTimeOptions.find((opt) => opt.value === defaultInitialTimeSeconds);
+  const option = initialTimeOptions.find(
+    (opt) => opt.value === String(DEFAULT_INITIAL_TIME_SECONDS)
+  );
 
   if (!option) {
-    throw new Error(`Default initial time (${defaultInitialTimeSeconds} seconds) not found`);
+    throw new Error(`Default initial time (${DEFAULT_INITIAL_TIME_SECONDS} seconds) not found`);
   }
 
   return option;
@@ -185,11 +190,10 @@ function parseIncrementSeconds(rawValue: string): number {
 }
 
 export function defaultIncrementOption() {
-  const defaultIncrementTimeSeconds = '30';
-  const option = incrementOptions.find((opt) => opt.value === defaultIncrementTimeSeconds);
+  const option = incrementOptions.find((opt) => opt.value === String(DEFAULT_INCREMENT_SECONDS));
 
   if (!option) {
-    throw new Error(`Default increment (${defaultIncrementTimeSeconds} seconds) not found`);
+    throw new Error(`Default increment (${DEFAULT_INCREMENT_SECONDS} seconds) not found`);
   }
 
   return option;
@@ -203,11 +207,10 @@ function parseMaxSeconds(rawValue: string): number {
 }
 
 export function defaultMaxTimeOption() {
-  const defaultMaxTimeSeconds = '300'; // 5 minutes
-  const option = maxTimeOptions.find((opt) => opt.value === defaultMaxTimeSeconds);
+  const option = maxTimeOptions.find((opt) => opt.value === String(DEFAULT_MAX_TIME_SECONDS));
 
   if (!option) {
-    throw new Error(`Default max time (${defaultMaxTimeSeconds} seconds) not found`);
+    throw new Error(`Default max time (${DEFAULT_MAX_TIME_SECONDS} seconds) not found`);
   }
 
   return option;

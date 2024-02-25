@@ -2,14 +2,13 @@ import type { ByoyomiClockSettings } from '$lib/timing/byoyomi';
 import { getter } from './get-form-value';
 import type { RawValues } from './raw-values';
 
-type Option = {
-  value: string;
-  display: string;
-  default?: boolean;
-};
+const DEFAULT_MAIN_TIME_SECONDS = 60 * 10;
+const DEFAULT_TIME_PER_PERIOD_SECONDS = 30;
+const MIN_PERIODS = 0;
+const DEFAULT_PERIODS = 5;
 
 // ripped from OGS
-export const mainTimeOptions: Array<Option> = [
+export const mainTimeOptions = [
   { value: '0', display: 'None' },
   { value: '30', display: '30 seconds' },
   { value: '35', display: '35 seconds' },
@@ -33,7 +32,7 @@ export const mainTimeOptions: Array<Option> = [
   { value: '420', display: '7 minutes' },
   { value: '480', display: '8 minutes' },
   { value: '540', display: '9 minutes' },
-  { value: '600', display: '10 minutes', default: true },
+  { value: '600', display: '10 minutes' },
   { value: '720', display: '12 minutes' },
   { value: '900', display: '15 minutes' },
   { value: '1200', display: '20 minutes' },
@@ -60,13 +59,13 @@ export const mainTimeOptions: Array<Option> = [
 ];
 
 // ripped from OGS
-export const timePerPeriodOptions: Array<Option> = [
+export const timePerPeriodOptions = [
   { value: '10', display: '10 seconds' },
   { value: '12', display: '12 seconds' },
   { value: '15', display: '15 seconds' },
   { value: '20', display: '20 seconds' },
   { value: '25', display: '25 seconds' },
-  { value: '30', display: '30 seconds', default: true },
+  { value: '30', display: '30 seconds' },
   { value: '35', display: '35 seconds' },
   { value: '40', display: '40 seconds' },
   { value: '45', display: '45 seconds' },
@@ -113,7 +112,7 @@ export function parse(formData: FormData): ByoyomiClockSettings {
   };
 
   return {
-    type: 'byoyomi' as 'byoyomi',
+    type: 'byoyomi',
     periods: parsePeriods(rawValues.periods),
     mainTimeSeconds: parseMainTimeSeconds(rawValues.mainTimeSeconds),
     timePerPeriodSeconds: parseTimePerPeriodSeconds(rawValues.timePerPeriodSeconds)
@@ -122,14 +121,7 @@ export function parse(formData: FormData): ByoyomiClockSettings {
 
 export function parsePeriods(rawValue: string): number {
   const isNumeric = rawValue.trim() !== '' && !isNaN(Number(rawValue));
-
-  if (isNumeric) {
-    const minPeriods = 0;
-    return Math.max(minPeriods, Number(rawValue));
-  } else {
-    const defaultPeriods = 5;
-    return defaultPeriods;
-  }
+  return isNumeric ? Math.max(MIN_PERIODS, Number(rawValue)) : DEFAULT_PERIODS;
 }
 
 export function parseMainTimeSeconds(rawValue: string): number {
@@ -147,18 +139,26 @@ export function parseTimePerPeriodSeconds(rawValue: string): number {
 }
 
 export function defaultMainTimeOption() {
-  const option = mainTimeOptions.find((opt) => opt.default);
+  const option = mainTimeOptions.find((opt) => opt.value === String(DEFAULT_MAIN_TIME_SECONDS));
+
   if (!option) {
-    throw new Error('No default main time option is configured');
+    throw new Error(`Default main time option (${DEFAULT_MAIN_TIME_SECONDS}) not found`);
   }
+
   return option;
 }
 
 export function defaultTimePerPeriodOption() {
-  const option = timePerPeriodOptions.find((opt) => opt.default);
+  const option = timePerPeriodOptions.find(
+    (opt) => opt.value === String(DEFAULT_TIME_PER_PERIOD_SECONDS)
+  );
+
   if (!option) {
-    throw new Error('No default time per period option is configured');
+    throw new Error(
+      `Default time per period option (${DEFAULT_TIME_PER_PERIOD_SECONDS}) not found`
+    );
   }
+
   return option;
 }
 
