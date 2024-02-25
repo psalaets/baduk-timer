@@ -48,7 +48,7 @@ export const timePerPeriodOptions = [
   { value: '3000', display: '50 minutes' },
   { value: '3300', display: '55 minutes' },
   { value: '3600', display: '1 hour' }
-];
+] as const;
 
 export function parse(formData: FormData): CanadianClockSettings {
   const get = getter(formData);

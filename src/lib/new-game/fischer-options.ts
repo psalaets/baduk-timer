@@ -53,7 +53,7 @@ export const initialTimeOptions = [
   { value: '10800', display: '3 hours' },
   { value: '12600', display: '3 hours 30 minutes' },
   { value: '14400', display: '4 hours' }
-];
+] as const;
 
 export const incrementOptions = [
   { value: '10', display: '10 seconds' },
@@ -89,7 +89,7 @@ export const incrementOptions = [
   { value: '1200', display: '20 minutes' },
   { value: '1500', display: '25 minutes' },
   { value: '1800', display: '30 minutes' }
-];
+] as const;
 
 export const maxTimeOptions = [
   { value: '30', display: '30 seconds' },
@@ -138,7 +138,7 @@ export const maxTimeOptions = [
   { value: '10800', display: '3 hours' },
   { value: '12600', display: '3 hours 30 minutes' },
   { value: '14400', display: '4 hours' }
-];
+] as const;
 
 export function parse(formData: FormData): FischerClockSettings {
   const get = getter(formData);
