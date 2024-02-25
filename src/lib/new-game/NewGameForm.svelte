@@ -8,8 +8,15 @@
     parse as parseByoyomi
   } from '$lib/new-game/byoyomi-options';
   import { parse as parseCanadian } from '$lib/new-game/canadian-options';
+  import { parse as parseFischer } from '$lib/new-game/fischer-options';
+  import {
+    initialTimeOptions,
+    incrementOptions,
+    maxTimeOptions
+  } from '$lib/new-game/fischer-options';
   import Field from '$lib/new-game/Field.svelte';
   import type { ClockSettings } from '$lib/timing/clock-settings';
+  import { getter } from './get-form-value';
 
   export let canCancel = false;
 
@@ -19,42 +26,16 @@
     { value: 'fischer', display: 'Fischer' }
   ];
 
-  /**
-   * @return value of a form field, or empty string if there is no value
-   */
-  const get = (fieldName: string, formData: FormData) => {
-    const value = formData.get(fieldName);
-    if (value instanceof File) {
-      throw new Error(`Unexpected file value for ${fieldName}`);
-    } else {
-      return value ?? '';
-    }
-  };
-
-  const parse = (formData: FormData) => {
-    const timeSystem = get('timeSystem', formData);
+  const parse = (form: HTMLFormElement) => {
+    const formData = new FormData(form);
+    const timeSystem = getter(formData)('timeSystem');
 
     if (timeSystem === 'byoyomi') {
-      return parseByoyomi({
-        type: timeSystem,
-        mainTimeSeconds: get('mainTime', formData),
-        timePerPeriodSeconds: get('timePerPeriod', formData),
-        periods: get('periods', formData)
-      });
+      return parseByoyomi(formData);
     } else if (timeSystem === 'canadian') {
-      return parseCanadian({
-        type: timeSystem,
-        mainTimeSeconds: get('mainTime', formData),
-        timePerPeriodSeconds: get('timePerPeriod', formData),
-        stonesPerPeriod: get('stonesPerPeriod', formData)
-      });
+      return parseCanadian(formData);
     } else if (timeSystem === 'fischer') {
-      return {
-        type: timeSystem as 'fischer',
-        initialSeconds: 4,
-        incrementSeconds: 5,
-        maxSeconds: 6
-      };
+      return parseFischer(formData);
     } else {
       throw new Error(`Unexpected time system: ${timeSystem}`);
     }
@@ -65,7 +46,7 @@
 
   const onSubmit: EventHandler<SubmitEvent, HTMLFormElement> = (event) => {
     const form = event.target as HTMLFormElement;
-    const values = parse(new FormData(form));
+    const values = parse(form);
 
     submitDispatcher('submit', values);
   };
@@ -131,6 +112,35 @@
       <label for="stones-per-period">Stones per period</label>
       <input id="stones-per-period" name="stonesPerPeriod" type="number" autocomplete="off" />
     </Field>
+  {:else if timingSystem === 'fischer'}
+    <Field>
+      <label for="initial-time">Initial Time</label>
+      <select id="initial-time" name="initialTime">
+        {#each initialTimeOptions as opt (opt.value)}
+          <option value={opt.value}>{opt.display}</option>
+        {/each}
+      </select>
+    </Field>
+
+    <Field>
+      <label for="increment">Increment</label>
+      <select id="increment" name="increment">
+        {#each incrementOptions as opt (opt.value)}
+          <option value={opt.value}>{opt.display}</option>
+        {/each}
+      </select>
+    </Field>
+
+    <Field>
+      <label for="max-time">Maximum Time</label>
+      <select id="max-time" name="maxTime">
+        {#each maxTimeOptions as opt (opt.value)}
+          <option value={opt.value}>{opt.display}</option>
+        {/each}
+      </select>
+    </Field>
+  {:else}
+    Unhandled timing system: {timingSystem}
   {/if}
 
   <div class="buttons">

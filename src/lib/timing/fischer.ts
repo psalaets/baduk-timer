@@ -21,6 +21,7 @@ export function settingsEqual(a: FischerClockSettings, b: FischerClockSettings) 
 export type FischerClock = Clock<FischerData>;
 
 export type FischerData = {
+  type: 'fischer';
   countdown: number;
   timeout: boolean;
 };

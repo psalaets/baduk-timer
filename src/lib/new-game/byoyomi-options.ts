@@ -1,4 +1,5 @@
 import type { ByoyomiClockSettings } from '$lib/timing/byoyomi';
+import { getter } from './get-form-value';
 import type { RawValues } from './raw-values';
 
 type Option = {
@@ -101,7 +102,16 @@ export const timePerPeriodOptions: Array<Option> = [
   { value: '3600', display: '1 hour' }
 ];
 
-export function parse(rawValues: RawValues<ByoyomiClockSettings>): ByoyomiClockSettings {
+export function parse(formData: FormData): ByoyomiClockSettings {
+  const get = getter(formData);
+
+  const rawValues: RawValues<ByoyomiClockSettings> = {
+    type: 'byoyomi',
+    mainTimeSeconds: get('mainTimeSeconds'),
+    timePerPeriodSeconds: get('timePerPeriodSeconds'),
+    periods: get('periods')
+  };
+
   return {
     type: 'byoyomi' as 'byoyomi',
     periods: parsePeriods(rawValues.periods),

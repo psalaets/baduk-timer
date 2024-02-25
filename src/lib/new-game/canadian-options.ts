@@ -1,6 +1,7 @@
 import type { RawValues } from '$lib/new-game/raw-values';
 import type { CanadianClockSettings } from '$lib/timing/canadian';
 import { timePerPeriodOptions } from './byoyomi-options';
+import { getter } from './get-form-value';
 
 // TODO this is identical to byoyomi main time options
 const mainTimeOptions = [
@@ -92,7 +93,16 @@ export const timePerPeriodSeconds = [
   { value: '3600', display: '1 hour' }
 ];
 
-export function parse(rawValues: RawValues<CanadianClockSettings>): CanadianClockSettings {
+export function parse(formData: FormData): CanadianClockSettings {
+  const get = getter(formData);
+
+  const rawValues: RawValues<CanadianClockSettings> = {
+    type: 'canadian',
+    mainTimeSeconds: get('mainTimeSeconds'),
+    timePerPeriodSeconds: get('timePerPeriodSeconds'),
+    stonesPerPeriod: get('stonesPerPeriod')
+  };
+
   return {
     type: 'canadian' as 'canadian',
     mainTimeSeconds: parseMainTimeSeconds(rawValues.mainTimeSeconds),
