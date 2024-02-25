@@ -1,13 +1,11 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte';
   import type { Color } from '$lib/color';
 
   export let color: Color;
-
-  const dispatch = createEventDispatcher();
 </script>
 
-<div class="clock-face {color === 'black' ? 'black' : 'white'}">
+<!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
+<div class="clock-face {color === 'black' ? 'black' : 'white'}" on:click role="button" tabindex="0">
   <slot />
 </div>
 
@@ -15,7 +13,7 @@
   .clock-face {
     display: flex;
     flex-direction: column;
-    gap: 0.5rem;
+    gap: 1rem;
 
     flex: 1 1 100%;
 

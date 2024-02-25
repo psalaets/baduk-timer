@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte';
   import ClockFace from '$lib/dual-clock/ClockFace.svelte';
   import ByoyomiClockFace from '$lib/dual-clock/ByoyomiClockFace.svelte';
   import CanadianClockFace from '$lib/dual-clock/CanadianClockFace.svelte';
@@ -11,16 +12,25 @@
   export let settings: ClockSettings;
 
   export let color: Color;
+
+  const dispatch = createEventDispatcher();
+  function dispatchStone() {
+    dispatch('stone');
+  }
 </script>
 
-<ClockFace {color}>
+<ClockFace {color} on:click={() => dispatchStone()}>
   {#if state.type === 'byoyomi' && settings.type === 'byoyomi'}
-    <ByoyomiClockFace {state} {settings} {color} on:stone />
+    <ByoyomiClockFace {state} {settings} />
   {:else if state.type === 'canadian' && settings.type === 'canadian'}
-    <CanadianClockFace {state} {settings} {color} on:stone />
+    <CanadianClockFace {state} {settings} />
   {:else if state.type === 'fischer' && settings.type === 'fischer'}
-    <FischerClockFace {state} {settings} {color} on:stone />
+    <FischerClockFace {state} {settings} />
   {:else}
     Unhandled clock type: {state.type}
   {/if}
+
+  <div class="buttons">
+    <button type="button" on:click|stopPropagation={() => dispatchStone()}>Played stone</button>
+  </div>
 </ClockFace>
