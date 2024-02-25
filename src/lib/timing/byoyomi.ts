@@ -20,9 +20,9 @@ export function settingsEqual(a: ByoyomiClockSettings, b: ByoyomiClockSettings) 
 
 type Phase = 'main' | 'overtime';
 
-export type ByoyomiClock = Clock<ByoyomiData>;
+export type ByoyomiClock = Clock<ByoyomiState>;
 
-export type ByoyomiData = {
+export type ByoyomiState = {
   type: 'byoyomi';
   countdown: number;
   phase: Phase;
@@ -39,7 +39,7 @@ type PhaseLogic = {
 export const createByoyomi = (
   settings: ByoyomiClockSettings,
   createTicker = createDefaultTicker
-): Clock<ByoyomiData> => {
+): Clock<ByoyomiState> => {
   const { mainTimeSeconds, periods: initialPeriods, timePerPeriodSeconds } = settings;
 
   const countdown = createCountdown(mainTimeSeconds, createTicker);

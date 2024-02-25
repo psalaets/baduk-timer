@@ -5,9 +5,9 @@
   import SecondaryInfo from '$lib/dual-clock/SecondaryInfo.svelte';
   import ClockFace from '$lib/dual-clock/ClockFace.svelte';
   import type { Color } from '$lib/color';
-  import type { FischerData, FischerClockSettings } from '$lib/timing/fischer';
+  import type { FischerState, FischerClockSettings } from '$lib/timing/fischer';
 
-  export let clock: FischerData;
+  export let state: FischerState;
   export let settings: FischerClockSettings;
 
   export let color: Color;
@@ -17,7 +17,7 @@
 
 <ClockFace {color}>
   <PrimaryInfo>
-    <TimeLeft secondsRemaining={clock.countdown} />
+    <TimeLeft secondsRemaining={state.countdown} />
   </PrimaryInfo>
   <SecondaryInfo>
     (+<TimeLeft secondsRemaining={settings.incrementSeconds} />)

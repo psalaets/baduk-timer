@@ -20,9 +20,9 @@ export function settingsEqual(a: CanadianClockSettings, b: CanadianClockSettings
 
 type Phase = 'main' | 'overtime';
 
-export type CanadianClock = Clock<CanadianData>;
+export type CanadianClock = Clock<CanadianState>;
 
-export type CanadianData = {
+export type CanadianState = {
   type: 'canadian';
   countdown: number;
   phase: Phase;
@@ -39,7 +39,7 @@ type PhaseLogic = {
 export const createCanadian = (
   settings: CanadianClockSettings,
   createTicker = createDefaultTicker
-): Clock<CanadianData> => {
+): Clock<CanadianState> => {
   const { mainTimeSeconds, stonesPerPeriod, timePerPeriodSeconds } = settings;
 
   const countdown = createCountdown(mainTimeSeconds, createTicker);

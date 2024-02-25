@@ -14,7 +14,7 @@
 <div class="dual-clock {switchSides ? 'switch-sides' : ''}">
   <GenericClockFace
     color="black"
-    clock={$gameClock.black}
+    state={$gameClock.black}
     {settings}
     on:stone={() => dispatchStone('stone', 'black')}
   />
@@ -25,7 +25,7 @@
 
   <GenericClockFace
     color="white"
-    clock={$gameClock.white}
+    state={$gameClock.white}
     {settings}
     on:stone={() => dispatchStone('stone', 'white')}
   />

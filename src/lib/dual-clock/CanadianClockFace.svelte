@@ -6,9 +6,9 @@
   import ClockFace from '$lib/dual-clock/ClockFace.svelte';
   import { pluralize } from '$lib/util/pluralize';
   import type { Color } from '$lib/color';
-  import type { CanadianData, CanadianClockSettings } from '$lib/timing/canadian';
+  import type { CanadianState, CanadianClockSettings } from '$lib/timing/canadian';
 
-  export let clock: CanadianData;
+  export let state: CanadianState;
   export let settings: CanadianClockSettings;
 
   export let color: Color;
@@ -17,19 +17,19 @@
 </script>
 
 <ClockFace {color}>
-  {#if clock.phase === 'main'}
+  {#if state.phase === 'main'}
     <PrimaryInfo>
-      <TimeLeft secondsRemaining={clock.countdown} />
+      <TimeLeft secondsRemaining={state.countdown} />
     </PrimaryInfo>
     <SecondaryInfo>
       +<TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> / {settings.stonesPerPeriod}
     </SecondaryInfo>
   {:else}
     <PrimaryInfo>
-      <TimeLeft secondsRemaining={clock.countdown} />
+      <TimeLeft secondsRemaining={state.countdown} />
     </PrimaryInfo>
     <SecondaryInfo
-      >({clock.stonesRemaining} {pluralize(clock.stonesRemaining, 'stone')})</SecondaryInfo
+      >({state.stonesRemaining} {pluralize(state.stonesRemaining, 'stone')})</SecondaryInfo
     >
   {/if}
 

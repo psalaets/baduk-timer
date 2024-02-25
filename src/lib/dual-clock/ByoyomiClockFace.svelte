@@ -6,9 +6,9 @@
   import ClockFace from '$lib/dual-clock/ClockFace.svelte';
   import { pluralize } from '$lib/util/pluralize';
   import type { Color } from '$lib/color';
-  import type { ByoyomiData, ByoyomiClockSettings } from '$lib/timing/byoyomi';
+  import type { ByoyomiState, ByoyomiClockSettings } from '$lib/timing/byoyomi';
 
-  export let clock: ByoyomiData;
+  export let state: ByoyomiState;
   export let settings: ByoyomiClockSettings;
 
   export let color: Color;
@@ -17,19 +17,19 @@
 </script>
 
 <ClockFace {color}>
-  {#if clock.phase === 'main'}
+  {#if state.phase === 'main'}
     <PrimaryInfo>
-      <TimeLeft secondsRemaining={clock.countdown} />
+      <TimeLeft secondsRemaining={state.countdown} />
     </PrimaryInfo>
     <SecondaryInfo>
       +<TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> ({settings.periods})
     </SecondaryInfo>
   {:else}
     <PrimaryInfo>
-      <TimeLeft secondsRemaining={clock.countdown} />
+      <TimeLeft secondsRemaining={state.countdown} />
     </PrimaryInfo>
     <SecondaryInfo
-      >({clock.periodsRemaining} {pluralize(clock.periodsRemaining, 'period')})</SecondaryInfo
+      >({state.periodsRemaining} {pluralize(state.periodsRemaining, 'period')})</SecondaryInfo
     >
   {/if}
 

@@ -18,9 +18,9 @@ export function settingsEqual(a: FischerClockSettings, b: FischerClockSettings) 
   return true;
 }
 
-export type FischerClock = Clock<FischerData>;
+export type FischerClock = Clock<FischerState>;
 
-export type FischerData = {
+export type FischerState = {
   type: 'fischer';
   countdown: number;
   timeout: boolean;
@@ -29,7 +29,7 @@ export type FischerData = {
 export const createFischer = (
   settings: FischerClockSettings,
   createTicker = createDefaultTicker
-): Clock<FischerData> => {
+): Clock<FischerState> => {
   const { initialSeconds, incrementSeconds, maxSeconds } = settings;
 
   const countdown = createCountdown(initialSeconds, createTicker);
