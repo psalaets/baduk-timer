@@ -1,6 +1,8 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import ClockFace from '$lib/dual-clock/ClockFace.svelte';
+  import ByoyomiClockFace from '$lib/dual-clock/ByoyomiClockFace.svelte';
+  import CanadianClockFace from '$lib/dual-clock/CanadianClockFace.svelte';
   import type { Color } from '$lib/color';
   import type { ClockData } from '$lib/timing/clock-data';
   import type { ClockSettings } from '$lib/timing/clock-settings';
@@ -14,9 +16,9 @@
 </script>
 
 <ClockFace {color}>
-  {#if settings.type === 'byoyomi'}
-    byoyomi
-  {:else if settings.type === 'canadian'}
-    canadian
+  {#if clock.type === 'byoyomi' && settings.type === 'byoyomi'}
+    <ByoyomiClockFace {clock} {settings} {color} on:stone />
+  {:else if clock.type === 'canadian' && settings.type === 'canadian'}
+    <CanadianClockFace {clock} {settings} {color} on:stone />
   {/if}
 </ClockFace>

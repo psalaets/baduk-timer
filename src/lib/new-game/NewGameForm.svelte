@@ -1,104 +1,73 @@
 <script lang="ts">
-  import {
-    safeParse,
-    object,
-    variant,
-    literal,
-    picklist,
-    transform,
-    custom,
-    string,
-    type Input,
-    type Output
-  } from 'valibot';
   import { createEventDispatcher } from 'svelte';
   import type { EventHandler } from 'svelte/elements';
 
-  import { mainTimeOptions, timePerPeriodOptions } from './byoyomi-options';
+  import {
+    mainTimeOptions,
+    timePerPeriodOptions,
+    parse as parseByoyomi
+  } from '$lib/new-game/byoyomi-options';
+  import { parse as parseCanadian } from '$lib/new-game/canadian-options';
   import Field from '$lib/new-game/Field.svelte';
   import type { ClockSettings } from '$lib/timing/clock-settings';
 
   export let canCancel = false;
 
   export const timeSystemOptions = [
-    { id: 'byoyomi', display: 'Byo-Yomi' },
-    { id: 'canadian', display: 'Canadian' },
-    { id: 'fischer', display: 'Fischer' }
+    { value: 'byoyomi', display: 'Byo-Yomi' },
+    { value: 'canadian', display: 'Canadian' },
+    { value: 'fischer', display: 'Fischer' }
   ];
 
-  const nonNegativeInteger = transform(
-    string([custom((v) => !!v && v.trim().length > 0 && !isNaN(Number(v)), 'Must be a number')]),
-    (v) => Math.max(0, Math.trunc(Number(v)))
-  );
+  /**
+   * @return value of a form field, or empty string if there is no value
+   */
+  const get = (fieldName: string, formData: FormData) => {
+    const value = formData.get(fieldName);
+    if (value instanceof File) {
+      throw new Error(`Unexpected file value for ${fieldName}`);
+    } else {
+      return value ?? '';
+    }
+  };
 
-  const byoyomiSchema = object({
-    type: literal('byoyomi'),
-    mainTimeSeconds: transform(picklist(mainTimeOptions.map((o) => o.id)), (v) => Number(v)),
-    timePerPeriodSeconds: transform(picklist(timePerPeriodOptions.map((o) => o.id)), (v) =>
-      Number(v)
-    ),
-    periods: nonNegativeInteger
-  });
+  const parse = (formData: FormData) => {
+    const timeSystem = get('timeSystem', formData);
 
-  type FormSchema = Input<typeof byoyomiSchema>;
-  type ByoyomiSchema = Output<typeof byoyomiSchema>;
-
-  const canadianSchema = object({
-    type: literal('canadian'),
-    mainTimeSeconds: picklist(mainTimeOptions.map((o) => o.id)),
-    timePerPeriodSeconds: picklist(timePerPeriodOptions.map((o) => o.id)),
-    stonesPerPeriod: nonNegativeInteger
-  });
-
-  const mainSchema = variant('type', [byoyomiSchema, canadianSchema]);
+    if (timeSystem === 'byoyomi') {
+      return parseByoyomi({
+        type: timeSystem,
+        mainTimeSeconds: get('mainTime', formData),
+        timePerPeriodSeconds: get('timePerPeriod', formData),
+        periods: get('periods', formData)
+      });
+    } else if (timeSystem === 'canadian') {
+      return parseCanadian({
+        type: timeSystem,
+        mainTimeSeconds: get('mainTime', formData),
+        timePerPeriodSeconds: get('timePerPeriod', formData),
+        stonesPerPeriod: get('stonesPerPeriod', formData)
+      });
+    } else if (timeSystem === 'fischer') {
+      return {
+        type: timeSystem as 'fischer',
+        initialSeconds: 4,
+        incrementSeconds: 5,
+        maxSeconds: 6
+      };
+    } else {
+      throw new Error(`Unexpected time system: ${timeSystem}`);
+    }
+  };
 
   const submitDispatcher = createEventDispatcher<{ submit: ClockSettings }>();
   const cancelDispatcher = createEventDispatcher();
 
-  const initialData = {
-    periods: 5,
-    mainTimeSeconds: mainTimeOptions.filter((o) => o.default).map((o) => o.id)[0],
-    timePerPeriodSeconds: timePerPeriodOptions.filter((o) => o.default).map((o) => o.id)[0]
-  };
-
-  let errors: any = {};
-
   const onSubmit: EventHandler<SubmitEvent, HTMLFormElement> = (event) => {
     const form = event.target as HTMLFormElement;
+    const values = parse(new FormData(form));
 
-    const getStringValue = (form: HTMLFormElement, defaultValue: string) => {
-      const formData = new FormData(form);
-      return (name: string) => {
-        const value = formData.get(name);
-        if (value instanceof File) {
-          throw new Error(`Unexpected file value for ${name}`);
-        } else {
-          return value ?? defaultValue;
-        }
-      };
-    };
-
-    const get = getStringValue(form, '');
-    const raw: FormSchema = {
-      type: 'byoyomi',
-      mainTimeSeconds: get('mainTime'),
-      timePerPeriodSeconds: get('timePerPeriod'),
-      periods: get('periods')
-    };
-
-    const result = safeParse(byoyomiSchema, raw);
-
-    if (result.success) {
-      errors = {};
-      submitDispatcher('submit', result.output);
-    } else {
-      result.issues.forEach((issue) => {
-        if (issue.path && issue.path[0].type === 'object') {
-          const key = issue.path[0].key;
-          errors = { ...errors, [key]: issue.message };
-        }
-      });
-    }
+    submitDispatcher('submit', values);
   };
 
   const onCancel = () => cancelDispatcher('cancel');
@@ -107,12 +76,11 @@
 </script>
 
 <form aria-label="Time settings" method="POST" on:submit|preventDefault={onSubmit} novalidate>
-  <pre>{JSON.stringify(errors)}</pre>
   <Field>
     <label for="time-system">Time System</label>
     <select id="time-system" name="timeSystem" bind:value={timingSystem}>
-      {#each timeSystemOptions as opt (opt.id)}
-        <option value={opt.id}>{opt.display}</option>
+      {#each timeSystemOptions as opt (opt.value)}
+        <option value={opt.value}>{opt.display}</option>
       {/each}
     </select>
   </Field>
@@ -121,8 +89,8 @@
     <Field>
       <label for="main-time">Main Time</label>
       <select id="main-time" name="mainTime">
-        {#each mainTimeOptions as opt (opt.id)}
-          <option value={opt.id} selected={opt.default}>{opt.display}</option>
+        {#each mainTimeOptions as opt (opt.value)}
+          <option value={opt.value} selected={opt.default}>{opt.display}</option>
         {/each}
       </select>
     </Field>
@@ -130,8 +98,8 @@
     <Field>
       <label for="time-per-period">Time per period</label>
       <select id="time-per-period" name="timePerPeriod">
-        {#each timePerPeriodOptions as opt (opt.id)}
-          <option value={opt.id} selected={opt.default}>{opt.display}</option>
+        {#each timePerPeriodOptions as opt (opt.value)}
+          <option value={opt.value} selected={opt.default}>{opt.display}</option>
         {/each}
       </select>
     </Field>
@@ -139,14 +107,13 @@
     <Field>
       <label for="periods">Periods</label>
       <input id="periods" name="periods" type="number" autocomplete="off" />
-      {#if errors.periods}<span>{errors.periods}</span>{/if}
     </Field>
   {:else if timingSystem === 'canadian'}
     <Field>
       <label for="main-time">Main Time</label>
       <select id="main-time" name="mainTime">
-        {#each mainTimeOptions as opt (opt.id)}
-          <option value={opt.id}>{opt.display}</option>
+        {#each mainTimeOptions as opt (opt.value)}
+          <option value={opt.value}>{opt.display}</option>
         {/each}
       </select>
     </Field>
@@ -154,8 +121,8 @@
     <Field>
       <label for="time-per-period">Time per period</label>
       <select id="time-per-period" name="timePerPeriod">
-        {#each timePerPeriodOptions as opt (opt.id)}
-          <option value={opt.id}>{opt.display}</option>
+        {#each timePerPeriodOptions as opt (opt.value)}
+          <option value={opt.value}>{opt.display}</option>
         {/each}
       </select>
     </Field>

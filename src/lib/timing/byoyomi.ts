@@ -10,11 +10,20 @@ export type ByoyomiClockSettings = {
   timePerPeriodSeconds: number;
 };
 
+export function settingsEqual(a: ByoyomiClockSettings, b: ByoyomiClockSettings) {
+  if (a.mainTimeSeconds !== b.mainTimeSeconds) return false;
+  if (a.periods !== b.periods) return false;
+  if (a.timePerPeriodSeconds !== b.timePerPeriodSeconds) return false;
+
+  return true;
+}
+
 type Phase = 'main' | 'overtime';
 
 export type ByoyomiClock = Clock<ByoyomiData>;
 
 export type ByoyomiData = {
+  type: 'byoyomi';
   countdown: number;
   phase: Phase;
   periodsRemaining: number;
@@ -40,6 +49,7 @@ export const createByoyomi = (
 
   const data = derived([countdown, phase, periodsRemaining, timeout], ([c, ph, pr, t]) => {
     return {
+      type: 'byoyomi' as 'byoyomi',
       countdown: c,
       phase: ph,
       periodsRemaining: pr,

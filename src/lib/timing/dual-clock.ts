@@ -2,6 +2,8 @@ import { writable, get, derived, type Readable, type Writable } from 'svelte/sto
 import { createByoyomi } from './byoyomi';
 import type { ClockSettings } from './clock-settings';
 import type { Color } from '$lib/color';
+import { createCanadian } from './canadian';
+import { createFischer } from './fischer';
 
 export type GameClock = ReturnType<typeof create>;
 
@@ -58,12 +60,26 @@ export function create(settings: ClockSettings) {
 }
 
 function clocks(settings: ClockSettings) {
-  if (settings.type === 'byoyomi') {
-    return {
-      black: createByoyomi(settings),
-      white: createByoyomi(settings)
-    };
-  } else {
-    throw new Error(`Unsupported clock type: ${settings.type}`);
+  const { type } = settings;
+
+  switch (type) {
+    case 'byoyomi':
+      return {
+        black: createByoyomi(settings),
+        white: createByoyomi(settings)
+      };
+    case 'canadian':
+      return {
+        black: createCanadian(settings),
+        white: createCanadian(settings)
+      };
+    case 'fischer':
+      return {
+        black: createFischer(settings),
+        white: createFischer(settings)
+      };
+    default:
+      const exhaustiveCheck: never = type;
+      throw new Error(`Unsupported clock type: ${exhaustiveCheck}`);
   }
 }

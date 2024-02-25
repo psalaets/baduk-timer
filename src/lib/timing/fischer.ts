@@ -10,6 +10,14 @@ export type FischerClockSettings = {
   maxSeconds: number;
 };
 
+export function settingsEqual(a: FischerClockSettings, b: FischerClockSettings) {
+  if (a.initialSeconds !== b.initialSeconds) return false;
+  if (a.incrementSeconds !== b.incrementSeconds) return false;
+  if (a.maxSeconds !== b.maxSeconds) return false;
+
+  return true;
+}
+
 export type FischerClock = Clock<FischerData>;
 
 export type FischerData = {
@@ -28,6 +36,7 @@ export const createFischer = (
 
   const data = derived([countdown, timeout], ([c, t]) => {
     return {
+      type: 'fischer' as 'fischer',
       countdown: c,
       timeout: t
     };

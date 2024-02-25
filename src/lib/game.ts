@@ -1,5 +1,5 @@
 import { derived, writable, get } from 'svelte/store';
-import type { ClockSettings } from './timing/clock-settings';
+import { type ClockSettings, settingsEqual } from './timing/clock-settings';
 import { create as createClock, type GameClock } from './timing/dual-clock';
 import type { Color } from '$lib/color';
 
@@ -19,27 +19,24 @@ export const settings = {
   }
 };
 
-/**
- * Need to cache previous value and only update if new value is not equal
- * to previous value. The equals check should be a function.
- */
-const settingsEqual = (current: ClockSettings, prev: ClockSettings | null) => {
-  if (prev == null) return false;
-
-  if (current.type !== prev.type) return false;
-  if (current.mainTimeSeconds !== prev.mainTimeSeconds) return false;
-  if (current.periods !== prev.periods) return false;
-  if (current.timePerPeriodSeconds !== prev.timePerPeriodSeconds) return false;
-
-  return true;
-};
-
 let previousSettings: ClockSettings | null = null;
 const gameClock = derived<typeof gameSettings, GameClock | null>(
   gameSettings,
   (settings, set) => {
     if (settings) {
-      if (!settingsEqual(settings, previousSettings)) {
+      /**
+       * Only update if new value is not deep equal to previous value.
+       *
+       * This callback can fire when a component mounts that subscribes to game
+       * clock store, which in turn subscribes to settings store, and svelte
+       * stores fire one time when subscribed to.
+       *
+       * Without this deep equals check, the extra settings callback firing
+       * causes an existing game clock to get overwritten with a new game clock.
+       *
+       * Clicking cancel button from new game form is an example of this.
+       */
+      if (previousSettings == null || !settingsEqual(settings, previousSettings)) {
         const clock = createClock(settings);
         set(clock);
       }

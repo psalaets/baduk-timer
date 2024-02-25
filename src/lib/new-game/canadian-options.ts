@@ -1,14 +1,9 @@
-import type { ByoyomiClockSettings } from '$lib/timing/byoyomi';
-import type { RawValues } from './raw-values';
+import type { RawValues } from '$lib/new-game/raw-values';
+import type { CanadianClockSettings } from '$lib/timing/canadian';
+import { timePerPeriodOptions } from './byoyomi-options';
 
-type Option = {
-  value: string;
-  display: string;
-  default?: boolean;
-};
-
-// ripped from OGS
-export const mainTimeOptions: Array<Option> = [
+// TODO this is identical to byoyomi main time options
+const mainTimeOptions = [
   { value: '0', display: 'None' },
   { value: '30', display: '30 seconds' },
   { value: '35', display: '35 seconds' },
@@ -32,7 +27,7 @@ export const mainTimeOptions: Array<Option> = [
   { value: '420', display: '7 minutes' },
   { value: '480', display: '8 minutes' },
   { value: '540', display: '9 minutes' },
-  { value: '600', display: '10 minutes', default: true },
+  { value: '600', display: '10 minutes' },
   { value: '720', display: '12 minutes' },
   { value: '900', display: '15 minutes' },
   { value: '1200', display: '20 minutes' },
@@ -58,14 +53,10 @@ export const mainTimeOptions: Array<Option> = [
   { value: '14400', display: '4 hours' }
 ];
 
-// ripped from OGS
-export const timePerPeriodOptions: Array<Option> = [
-  { value: '10', display: '10 seconds' },
-  { value: '12', display: '12 seconds' },
-  { value: '15', display: '15 seconds' },
+export const timePerPeriodSeconds = [
   { value: '20', display: '20 seconds' },
   { value: '25', display: '25 seconds' },
-  { value: '30', display: '30 seconds', default: true },
+  { value: '30', display: '30 seconds' },
   { value: '35', display: '35 seconds' },
   { value: '40', display: '40 seconds' },
   { value: '45', display: '45 seconds' },
@@ -101,63 +92,59 @@ export const timePerPeriodOptions: Array<Option> = [
   { value: '3600', display: '1 hour' }
 ];
 
-export function parse(rawValues: RawValues<ByoyomiClockSettings>): ByoyomiClockSettings {
+export function parse(rawValues: RawValues<CanadianClockSettings>): CanadianClockSettings {
   return {
-    type: 'byoyomi' as 'byoyomi',
-    periods: parsePeriods(rawValues.periods),
+    type: 'canadian' as 'canadian',
     mainTimeSeconds: parseMainTimeSeconds(rawValues.mainTimeSeconds),
-    timePerPeriodSeconds: parseTimePerPeriodSeconds(rawValues.timePerPeriodSeconds)
+    timePerPeriodSeconds: parseTimePerPeriodSeconds(rawValues.timePerPeriodSeconds),
+    stonesPerPeriod: parseStonesPerPeriod(rawValues.stonesPerPeriod)
   };
 }
 
-export function parsePeriods(rawValue: string): number {
-  const isNumeric = rawValue.trim() !== '' && !isNaN(Number(rawValue));
-
-  if (isNumeric) {
-    const minPeriods = 0;
-    return Math.max(minPeriods, Number(rawValue));
-  } else {
-    const defaultPeriods = 5;
-    return defaultPeriods;
-  }
-}
-
-export function parseMainTimeSeconds(rawValue: string): number {
+function parseMainTimeSeconds(rawValue: string): number {
   const specifiedOption = mainTimeOptions.find((o) => o.value === rawValue);
   const option = specifiedOption ?? defaultMainTimeOption();
 
   return Number(option.value);
 }
 
-export function parseTimePerPeriodSeconds(rawValue: string): number {
+export function defaultMainTimeOption() {
+  const defaultMainTimeSeconds = '600'; // 10 minutes
+  const option = mainTimeOptions.find((opt) => opt.value === defaultMainTimeSeconds);
+
+  if (!option) {
+    throw new Error(`Default main time (${defaultMainTimeSeconds} seconds) not found`);
+  }
+
+  return option;
+}
+
+function parseTimePerPeriodSeconds(rawValue: string): number {
   const specifiedOption = timePerPeriodOptions.find((o) => o.value === rawValue);
   const option = specifiedOption ?? defaultTimePerPeriodOption();
 
   return Number(option.value);
 }
 
-export function defaultMainTimeOption() {
-  const option = mainTimeOptions.find((opt) => opt.default);
-  if (!option) {
-    throw new Error('No default main time option is configured');
-  }
-  return option;
-}
-
 export function defaultTimePerPeriodOption() {
-  const option = timePerPeriodOptions.find((opt) => opt.default);
+  const defaultTimePerPeriodSeconds = '180'; // 3 minutes
+  const option = timePerPeriodOptions.find((opt) => opt.value === defaultTimePerPeriodSeconds);
+
   if (!option) {
-    throw new Error('No default time per period option is configured');
+    throw new Error(`Default time per period (${defaultTimePerPeriodOption} seconds) not found`);
   }
+
   return option;
 }
 
-export function mainTimeLabel(seconds: number) {
-  const option = mainTimeOptions.find((opt) => opt.value === String(seconds));
-  return option ? option.display : null;
-}
+function parseStonesPerPeriod(rawValue: string): number {
+  const isNumeric = rawValue.trim() !== '' && !isNaN(Number(rawValue));
 
-export function timePerPeriodLabel(seconds: number) {
-  const option = timePerPeriodOptions.find((opt) => opt.value === String(seconds));
-  return option ? option.display : null;
+  if (isNumeric) {
+    const minStones = 1;
+    return Math.max(minStones, Number(rawValue));
+  } else {
+    const defaultStones = 10;
+    return defaultStones;
+  }
 }

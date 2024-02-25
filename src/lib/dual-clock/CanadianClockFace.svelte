@@ -22,7 +22,7 @@
       <TimeLeft secondsRemaining={clock.countdown} />
     </PrimaryInfo>
     <SecondaryInfo>
-      +<TimeLeft secondsRemaining={settings.timePerPeriodSeconds} />
+      +<TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> / {settings.stonesPerPeriod}
     </SecondaryInfo>
   {:else}
     <PrimaryInfo>

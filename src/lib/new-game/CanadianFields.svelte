@@ -6,16 +6,16 @@
 <Field>
   <label for="main-time">Main Time</label>
   <select id="main-time" name="mainTime">
-    {#each mainTimeOptions as opt (opt.id)}
-      <option value={opt.id}>{opt.display}</option>
+    {#each mainTimeOptions as opt (opt.value)}
+      <option value={opt.value}>{opt.display}</option>
     {/each}
   </select>
 </Field>
 <Field>
   <label for="time-per-period">Time per period</label>
   <select id="time-per-period" name="timePerPeriod">
-    {#each timePerPeriodOptions as opt (opt.id)}
-      <option value={opt.id}>{opt.display}</option>
+    {#each timePerPeriodOptions as opt (opt.value)}
+      <option value={opt.value}>{opt.display}</option>
     {/each}
   </select>
 </Field>
