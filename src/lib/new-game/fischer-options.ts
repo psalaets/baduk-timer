@@ -145,9 +145,9 @@ export function parse(formData: FormData): FischerClockSettings {
 
   const rawValues: RawValues<FischerClockSettings> = {
     type: 'fischer',
-    initialSeconds: get('initialSeconds'),
+    initialSeconds: get('initialTimeSeconds'),
     incrementSeconds: get('incrementSeconds'),
-    maxSeconds: get('maxSeconds')
+    maxSeconds: get('maxTimeSeconds')
   };
 
   const result = {

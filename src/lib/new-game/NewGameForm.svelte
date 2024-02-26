@@ -2,18 +2,15 @@
   import { createEventDispatcher } from 'svelte';
   import type { EventHandler } from 'svelte/elements';
 
-  import {
-    mainTimeOptions,
-    timePerPeriodOptions,
-    parse as parseByoyomi
-  } from '$lib/new-game/byoyomi-options';
+  import { parse as parseByoyomi } from '$lib/new-game/byoyomi-options';
+  import ByoyomiFields from '$lib/new-game/ByoyomiFields.svelte';
+
   import { parse as parseCanadian } from '$lib/new-game/canadian-options';
+  import CanadianFields from '$lib/new-game/CanadianFields.svelte';
+
   import { parse as parseFischer } from '$lib/new-game/fischer-options';
-  import {
-    initialTimeOptions,
-    incrementOptions,
-    maxTimeOptions
-  } from '$lib/new-game/fischer-options';
+  import FischerFields from '$lib/new-game/FischerFields.svelte';
+
   import Field from '$lib/new-game/Field.svelte';
   import type { ClockSettings } from '$lib/timing/clock-settings';
   import { getter } from './get-form-value';
@@ -67,78 +64,11 @@
   </Field>
 
   {#if timingSystem === 'byoyomi'}
-    <Field>
-      <label for="main-time">Main Time</label>
-      <select id="main-time" name="mainTime">
-        {#each mainTimeOptions as opt (opt.value)}
-          <option value={opt.value}>{opt.display}</option>
-        {/each}
-      </select>
-    </Field>
-
-    <Field>
-      <label for="time-per-period">Time per period</label>
-      <select id="time-per-period" name="timePerPeriod">
-        {#each timePerPeriodOptions as opt (opt.value)}
-          <option value={opt.value}>{opt.display}</option>
-        {/each}
-      </select>
-    </Field>
-
-    <Field>
-      <label for="periods">Periods</label>
-      <input id="periods" name="periods" type="number" autocomplete="off" />
-    </Field>
+    <ByoyomiFields />
   {:else if timingSystem === 'canadian'}
-    <Field>
-      <label for="main-time">Main Time</label>
-      <select id="main-time" name="mainTime">
-        {#each mainTimeOptions as opt (opt.value)}
-          <option value={opt.value}>{opt.display}</option>
-        {/each}
-      </select>
-    </Field>
-
-    <Field>
-      <label for="time-per-period">Time per period</label>
-      <select id="time-per-period" name="timePerPeriod">
-        {#each timePerPeriodOptions as opt (opt.value)}
-          <option value={opt.value}>{opt.display}</option>
-        {/each}
-      </select>
-    </Field>
-
-    <Field>
-      <label for="stones-per-period">Stones per period</label>
-      <input id="stones-per-period" name="stonesPerPeriod" type="number" autocomplete="off" />
-    </Field>
+    <CanadianFields />
   {:else if timingSystem === 'fischer'}
-    <Field>
-      <label for="initial-time">Initial Time</label>
-      <select id="initial-time" name="initialTime">
-        {#each initialTimeOptions as opt (opt.value)}
-          <option value={opt.value}>{opt.display}</option>
-        {/each}
-      </select>
-    </Field>
-
-    <Field>
-      <label for="increment">Increment</label>
-      <select id="increment" name="increment">
-        {#each incrementOptions as opt (opt.value)}
-          <option value={opt.value}>{opt.display}</option>
-        {/each}
-      </select>
-    </Field>
-
-    <Field>
-      <label for="max-time">Maximum Time</label>
-      <select id="max-time" name="maxTime">
-        {#each maxTimeOptions as opt (opt.value)}
-          <option value={opt.value}>{opt.display}</option>
-        {/each}
-      </select>
-    </Field>
+    <FischerFields />
   {:else}
     Unhandled timing system: {timingSystem}
   {/if}
