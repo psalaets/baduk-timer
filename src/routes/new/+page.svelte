@@ -1,20 +1,17 @@
 <script lang="ts">
-  import { getContext } from 'svelte';
   import NewGameForm from '$lib/new-game/NewGameForm.svelte';
-  import { type GameContext, setGameContext, createGame } from '$lib/game';
+  import { getGameContext, overwriteGameContext, createGame } from '$lib/game';
   import type { ClockSettings } from '$lib/timing/clock-settings';
   import { goto } from '$app/navigation';
 
-  const ctx = getContext<GameContext>('game');
+  const ctx = getGameContext();
   const game = ctx.game;
 
   const hasPreExistingGame = !!game;
 
   function onSubmit(event: CustomEvent<ClockSettings>) {
-    if (game) {
-      game.dispose();
-    }
-    ctx.game = createGame(event.detail);
+    const newGame = createGame(event.detail);
+    overwriteGameContext(newGame, ctx);
 
     goto('/');
   }

@@ -1,11 +1,8 @@
 <script lang="ts">
   import '../global.css';
-  import { setContext } from 'svelte';
-  import { setGameContext, type GameContext } from '$lib/game';
+  import { setGameContext, initialGameContext } from '$lib/game';
 
-  setContext<GameContext>('game', {
-    game: null
-  });
+  setGameContext(initialGameContext);
 </script>
 
 <div>

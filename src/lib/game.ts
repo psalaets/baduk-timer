@@ -8,18 +8,25 @@ export type GameContext = {
   game: Game | null;
 };
 
-export function getGameContext(): Game | null {
-  const context = getContext<GameContext>('game');
-  return context ? context.game : null;
+export const initialGameContext: GameContext = {
+  game: null
+};
+
+export function getGameContext(): GameContext {
+  return getContext<GameContext>('game');
 }
 
-export function setGameContext(game: Game | null): void {
-  // const current = getGameContext();
-  // if (current) {
-  //   current.dispose();
-  // }
+export function overwriteGameContext(game: Game, context: GameContext) {
+  const oldGame = context.game;
+  if (oldGame) {
+    oldGame.dispose();
+  }
 
-  setContext<GameContext>('game', { game });
+  context.game = game;
+}
+
+export function setGameContext(ctx: GameContext): void {
+  setContext<GameContext>('game', ctx);
 }
 
 export type Game = {
