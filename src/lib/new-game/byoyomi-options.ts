@@ -1,6 +1,7 @@
 import type { ByoyomiClockSettings } from '$lib/timing/byoyomi';
+import { first } from '$lib/util/first';
+import { get, set } from '$lib/util/localstorage';
 import { getter } from './get-form-value';
-import type { RawValues } from './raw-values';
 
 export const DEFAULT_MAIN_TIME_SECONDS = 60 * 10;
 export const DEFAULT_TIME_PER_PERIOD_SECONDS = 30;
@@ -104,7 +105,7 @@ export const timePerPeriodOptions = [
 export function parse(formData: FormData): ByoyomiClockSettings {
   const get = getter(formData);
 
-  const rawValues: RawValues<ByoyomiClockSettings> = {
+  const rawValues = {
     type: 'byoyomi',
     mainTimeSeconds: get('mainTimeSeconds'),
     timePerPeriodSeconds: get('timePerPeriodSeconds'),
@@ -162,12 +163,21 @@ export function defaultTimePerPeriodOption() {
   return option;
 }
 
-export function mainTimeLabel(seconds: number) {
-  const option = mainTimeOptions.find((opt) => opt.value === String(seconds));
-  return option ? option.display : null;
+export function saveValues(lastValues: ByoyomiClockSettings) {
+  set('byoyomi.mainTime', lastValues.mainTimeSeconds);
+  set('byoyomi.timePerPeriod', lastValues.timePerPeriodSeconds);
+  set('byoyomi.periods', lastValues.periods);
 }
 
-export function timePerPeriodLabel(seconds: number) {
-  const option = timePerPeriodOptions.find((opt) => opt.value === String(seconds));
-  return option ? option.display : null;
+export function getInitialValues(): ByoyomiClockSettings {
+  return {
+    type: 'byoyomi',
+    mainTimeSeconds: parseMainTimeSeconds(
+      first(get('byoyomi.mainTime', ''), String(DEFAULT_MAIN_TIME_SECONDS))
+    ),
+    timePerPeriodSeconds: parseTimePerPeriodSeconds(
+      first(get('byoyomi.timePerPeriod', ''), String(DEFAULT_TIME_PER_PERIOD_SECONDS))
+    ),
+    periods: parsePeriods(first(get('byoyomi.periods', ''), String(DEFAULT_PERIODS)))
+  };
 }

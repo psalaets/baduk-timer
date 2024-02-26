@@ -2,10 +2,16 @@
   import { createEventDispatcher } from 'svelte';
   import type { EventHandler } from 'svelte/elements';
 
-  import { parse as parseByoyomi } from '$lib/new-game/byoyomi-options';
+  import {
+    parse as parseByoyomi,
+    saveValues as saveByoyomiValues
+  } from '$lib/new-game/byoyomi-options';
   import ByoyomiFields from '$lib/new-game/ByoyomiFields.svelte';
 
-  import { parse as parseCanadian } from '$lib/new-game/canadian-options';
+  import {
+    parse as parseCanadian,
+    saveValues as saveCanadianValues
+  } from '$lib/new-game/canadian-options';
   import CanadianFields from '$lib/new-game/CanadianFields.svelte';
 
   import { parse as parseFischer } from '$lib/new-game/fischer-options';
@@ -46,6 +52,12 @@
     const values = parse(form);
 
     // store values in localstorage
+
+    if (values.type === 'byoyomi') {
+      saveByoyomiValues(values);
+    } else if (values.type === 'canadian') {
+      saveCanadianValues(values);
+    }
 
     submitDispatcher('submit', values);
   };

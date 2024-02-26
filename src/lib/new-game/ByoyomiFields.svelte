@@ -1,16 +1,11 @@
 <script lang="ts">
-  import {
-    mainTimeOptions,
-    timePerPeriodOptions,
-    DEFAULT_MAIN_TIME_SECONDS,
-    DEFAULT_TIME_PER_PERIOD_SECONDS,
-    DEFAULT_PERIODS
-  } from './byoyomi-options';
+  import { mainTimeOptions, timePerPeriodOptions, getInitialValues } from './byoyomi-options';
   import Field from '$lib/new-game/Field.svelte';
 
-  let initialMainTime = String(DEFAULT_MAIN_TIME_SECONDS);
-  let initialTimePerPeriod = String(DEFAULT_TIME_PER_PERIOD_SECONDS);
-  let initialPeriods = DEFAULT_PERIODS;
+  const initialValues = getInitialValues();
+  let initialMainTime = String(initialValues.mainTimeSeconds);
+  let initialTimePerPeriod = String(initialValues.timePerPeriodSeconds);
+  let initialPeriods = String(initialValues.periods);
 </script>
 
 <Field>

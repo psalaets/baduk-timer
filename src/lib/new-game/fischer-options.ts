@@ -1,5 +1,4 @@
 import type { FischerClockSettings } from '$lib/timing/fischer';
-import type { RawValues } from '$lib/new-game/raw-values';
 import { getter } from './get-form-value';
 
 export const DEFAULT_INITIAL_TIME_SECONDS = 60 * 2;
@@ -143,14 +142,14 @@ export const maxTimeOptions = [
 export function parse(formData: FormData): FischerClockSettings {
   const get = getter(formData);
 
-  const rawValues: RawValues<FischerClockSettings> = {
+  const rawValues = {
     type: 'fischer',
     initialSeconds: get('initialTimeSeconds'),
     incrementSeconds: get('incrementSeconds'),
     maxSeconds: get('maxTimeSeconds')
   };
 
-  const result = {
+  const result: FischerClockSettings = {
     type: 'fischer',
     initialSeconds: parseInitialTimeSeconds(rawValues.initialSeconds),
     incrementSeconds: parseIncrementSeconds(rawValues.incrementSeconds),
