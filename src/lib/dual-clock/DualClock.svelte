@@ -1,7 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import GenericClockFace from './GenericClockFace.svelte';
-  import type { GameClock } from '$lib/timing/dual-clock';
+  import type { GameClock } from '$lib/timing/game-clock';
   import type { ClockSettings } from '$lib/timing/clock-settings';
 
   export let gameClock: GameClock;
@@ -12,7 +12,6 @@
 
 <div class="dual-clock">
   <GenericClockFace
-    color="black"
     state={$gameClock.black}
     {settings}
     on:stone={() => dispatchStone('stone', 'black')}
@@ -23,7 +22,6 @@
   </div>
 
   <GenericClockFace
-    color="white"
     state={$gameClock.white}
     {settings}
     on:stone={() => dispatchStone('stone', 'white')}

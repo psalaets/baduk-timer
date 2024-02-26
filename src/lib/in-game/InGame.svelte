@@ -1,0 +1,45 @@
+<script lang="ts">
+  import type { Game } from '$lib/game';
+  import DualClock from '$lib/dual-clock/DualClock.svelte';
+  import Preview from '$lib/preview/Preview.svelte';
+  import type { Color } from '$lib/color';
+  import PauseDialog from '$lib/pause/PauseDialog.svelte';
+
+  export let game: Game;
+
+  const paused = game.paused;
+  const started = game.started;
+
+  function onStone(color: Color) {
+    game.stonePlayed(color);
+  }
+
+  function onPause() {
+    game.pause();
+  }
+
+  function onResume() {
+    game.resume();
+  }
+
+  function onBegin() {
+    game.begin();
+  }
+</script>
+
+<div>started: {$started}</div>
+<div>paused: {$paused}</div>
+{#if $started}
+  <DualClock
+    gameClock={game.clock}
+    settings={game.settings}
+    on:stone={(event) => onStone(event.detail)}
+  >
+    <button on:click={() => onPause()}>Pause</button>
+    {#if $paused}
+      <PauseDialog on:close={() => onResume()} />
+    {/if}
+  </DualClock>
+{:else}
+  <Preview settings={game.settings} on:begin={() => onBegin()} />
+{/if}

@@ -10,14 +10,6 @@ export type CanadianClockSettings = {
   timePerPeriodSeconds: number;
 };
 
-export function settingsEqual(a: CanadianClockSettings, b: CanadianClockSettings) {
-  if (a.mainTimeSeconds !== b.mainTimeSeconds) return false;
-  if (a.timePerPeriodSeconds !== b.timePerPeriodSeconds) return false;
-  if (a.stonesPerPeriod !== b.stonesPerPeriod) return false;
-
-  return true;
-}
-
 type Phase = 'main' | 'overtime';
 
 export type CanadianClock = Clock<CanadianState>;

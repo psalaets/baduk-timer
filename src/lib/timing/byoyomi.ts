@@ -10,14 +10,6 @@ export type ByoyomiClockSettings = {
   timePerPeriodSeconds: number;
 };
 
-export function settingsEqual(a: ByoyomiClockSettings, b: ByoyomiClockSettings) {
-  if (a.mainTimeSeconds !== b.mainTimeSeconds) return false;
-  if (a.periods !== b.periods) return false;
-  if (a.timePerPeriodSeconds !== b.timePerPeriodSeconds) return false;
-
-  return true;
-}
-
 type Phase = 'main' | 'overtime';
 
 export type ByoyomiClock = Clock<ByoyomiState>;

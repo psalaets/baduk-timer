@@ -71,7 +71,7 @@
       <label for="main-time">Main Time</label>
       <select id="main-time" name="mainTime">
         {#each mainTimeOptions as opt (opt.value)}
-          <option value={opt.value} selected={opt.default}>{opt.display}</option>
+          <option value={opt.value}>{opt.display}</option>
         {/each}
       </select>
     </Field>
@@ -80,7 +80,7 @@
       <label for="time-per-period">Time per period</label>
       <select id="time-per-period" name="timePerPeriod">
         {#each timePerPeriodOptions as opt (opt.value)}
-          <option value={opt.value} selected={opt.default}>{opt.display}</option>
+          <option value={opt.value}>{opt.display}</option>
         {/each}
       </select>
     </Field>

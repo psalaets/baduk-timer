@@ -4,14 +4,11 @@
   import ByoyomiClockFace from '$lib/dual-clock/ByoyomiClockFace.svelte';
   import CanadianClockFace from '$lib/dual-clock/CanadianClockFace.svelte';
   import FischerClockFace from '$lib/dual-clock/FischerClockFace.svelte';
-  import type { Color } from '$lib/color';
   import type { ClockState } from '$lib/timing/clock-state';
   import type { ClockSettings } from '$lib/timing/clock-settings';
 
   export let state: ClockState;
   export let settings: ClockSettings;
-
-  export let color: Color;
 
   const dispatch = createEventDispatcher();
   function dispatchStone() {
@@ -19,7 +16,7 @@
   }
 </script>
 
-<ClockFace {color} on:click={() => dispatchStone()}>
+<ClockFace on:click={() => dispatchStone()}>
   {#if state.type === 'byoyomi' && settings.type === 'byoyomi'}
     <ByoyomiClockFace {state} {settings} />
   {:else if state.type === 'canadian' && settings.type === 'canadian'}
