@@ -29,10 +29,6 @@ export function create(settings: ClockSettings) {
     }
   }
 
-  function switchTurn() {
-    blacksTurn.update((b) => !b);
-  }
-
   const data = derived([black, white, whoseTurn], ([b, w, who]) => {
     return {
       black: b,
@@ -52,7 +48,7 @@ export function create(settings: ClockSettings) {
         black.opponentPlayedStone();
       }
 
-      switchTurn();
+      blacksTurn.set(by !== 'black');
     },
     resume: () => resumeGame(),
     pause: () => pauseGame()

@@ -1,4 +1,4 @@
-import { writable, type Readable } from 'svelte/store';
+import { writable, derived, get, type Readable } from 'svelte/store';
 import type { ClockSettings } from './timing/clock-settings';
 import { create as createClock, type GameClock } from './timing/game-clock';
 import type { Color } from '$lib/color';
@@ -28,15 +28,17 @@ export function createGame(settings: ClockSettings): Game {
     }
   });
 
+  function begin() {
+    started.set(true);
+    paused.set(false);
+  }
+
   return {
     settings: settings,
     clock: clock,
     started: started,
     paused: paused,
-    begin() {
-      started.set(true);
-      paused.set(false);
-    },
+    begin,
     pause() {
       paused.set(true);
     },
@@ -44,7 +46,24 @@ export function createGame(settings: ClockSettings): Game {
       paused.set(false);
     },
     stonePlayed(by) {
-      clock.stonePlayed(by);
+      const isStarted = get(started);
+      const isPaused = get(paused);
+
+      const isFirstStone = isPaused && !isStarted;
+      const notPaused = !isPaused;
+      const expectedBy = get(clock).whoseTurn;
+
+      if (isFirstStone) {
+        // Anyone can play the first stone. It's decided by the players.
+        // In even games it's black and in handicap games it's white.
+        clock.stonePlayed(by);
+
+        // Start everything
+        begin();
+      } else if (notPaused && by === expectedBy) {
+        // Otherwise, only allow the expected person to play a move when game is not paused
+        clock.stonePlayed(by);
+      }
     },
     dispose() {
       unsubPaused();
