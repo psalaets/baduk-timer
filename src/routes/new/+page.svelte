@@ -1,6 +1,7 @@
 <script lang="ts">
   import NewGameForm from '$lib/new-game/NewGameForm.svelte';
-  import { getGameContext, overwriteGameContext, createGame } from '$lib/game';
+  import { getGameContext, overwriteGame } from '$lib/game-context';
+  import { createGame } from '$lib/game';
   import type { ClockSettings } from '$lib/timing/clock-settings';
   import { goto } from '$app/navigation';
 
@@ -11,7 +12,7 @@
 
   function onSubmit(event: CustomEvent<ClockSettings>) {
     const newGame = createGame(event.detail);
-    overwriteGameContext(newGame, ctx);
+    overwriteGame(newGame, ctx);
 
     goto('/');
   }
