@@ -7,8 +7,7 @@
 
   export let game: Game;
 
-  const paused = game.paused;
-  const started = game.started;
+  const { started, paused, clockState } = game;
 
   function onStone(color: Color) {
     game.stonePlayed(color);
@@ -31,7 +30,7 @@
 <div>paused: {$paused}</div>
 {#if $started}
   <GameClock
-    gameClock={game.clock}
+    gameClock={$clockState}
     settings={game.settings}
     on:stone={(event) => onStone(event.detail)}
   >

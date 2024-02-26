@@ -1,11 +1,11 @@
-import { writable, derived, get, type Readable } from 'svelte/store';
+import { writable, get, type Readable } from 'svelte/store';
 import type { ClockSettings } from './timing/clock-settings';
-import { create as createClock, type GameClock } from './timing/game-clock';
+import { create as createClock, type GameClockState } from './timing/game-clock';
 import type { Color } from '$lib/color';
 
 export type Game = {
   settings: ClockSettings;
-  clock: GameClock;
+  clockState: Readable<GameClockState>;
   started: Readable<boolean>;
   paused: Readable<boolean>;
   begin: () => void;
@@ -35,7 +35,7 @@ export function createGame(settings: ClockSettings): Game {
 
   return {
     settings: settings,
-    clock: clock,
+    clockState: clock,
     started: started,
     paused: paused,
     begin,

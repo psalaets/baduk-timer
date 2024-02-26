@@ -4,8 +4,15 @@ import type { ClockSettings } from './clock-settings';
 import type { Color } from '$lib/color';
 import { createCanadian } from './canadian';
 import { createFischer } from './fischer';
+import type { ClockState } from './clock-state';
 
 export type GameClock = ReturnType<typeof create>;
+
+export type GameClockState = {
+  black: ClockState;
+  white: ClockState;
+  whoseTurn: Color;
+};
 
 /**
  * A pair of clocks that alternate ticking on each turn.
