@@ -3,13 +3,13 @@ import type { CanadianClockSettings } from '$lib/timing/canadian';
 import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-options';
 import { getter } from './get-form-value';
 
-const DEFAULT_MAIN_TIME_SECONDS = 60 * 10;
-const DEFAULT_TIME_PER_PERIOD_SECONDS = 60 * 3;
-const DEFAULT_STONES_PER_PERIOD = 10;
+export const DEFAULT_MAIN_TIME_SECONDS = 60 * 10;
+export const DEFAULT_TIME_PER_PERIOD_SECONDS = 60 * 3;
+export const DEFAULT_STONES_PER_PERIOD = 10;
 const MIN_STONES_PER_PERIOD = 1;
 
 // Canadian main time options are identical to byoyomi main time options
-const mainTimeOptions = byoyomiMainTimeOptions;
+export const mainTimeOptions = byoyomiMainTimeOptions;
 
 export const timePerPeriodOptions = [
   { value: '20', display: '20 seconds' },

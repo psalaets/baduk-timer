@@ -2,10 +2,10 @@ import type { ByoyomiClockSettings } from '$lib/timing/byoyomi';
 import { getter } from './get-form-value';
 import type { RawValues } from './raw-values';
 
-const DEFAULT_MAIN_TIME_SECONDS = 60 * 10;
-const DEFAULT_TIME_PER_PERIOD_SECONDS = 30;
+export const DEFAULT_MAIN_TIME_SECONDS = 60 * 10;
+export const DEFAULT_TIME_PER_PERIOD_SECONDS = 30;
+export const DEFAULT_PERIODS = 5;
 const MIN_PERIODS = 0;
-const DEFAULT_PERIODS = 5;
 
 // ripped from OGS
 export const mainTimeOptions = [

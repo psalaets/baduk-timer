@@ -45,6 +45,8 @@
     const form = event.target as HTMLFormElement;
     const values = parse(form);
 
+    // store values in localstorage
+
     submitDispatcher('submit', values);
   };
 

@@ -2,9 +2,9 @@ import type { FischerClockSettings } from '$lib/timing/fischer';
 import type { RawValues } from '$lib/new-game/raw-values';
 import { getter } from './get-form-value';
 
-const DEFAULT_INITIAL_TIME_SECONDS = 60 * 2;
-const DEFAULT_INCREMENT_SECONDS = 30;
-const DEFAULT_MAX_TIME_SECONDS = 60 * 5;
+export const DEFAULT_INITIAL_TIME_SECONDS = 60 * 2;
+export const DEFAULT_INCREMENT_SECONDS = 30;
+export const DEFAULT_MAX_TIME_SECONDS = 60 * 5;
 
 export const initialTimeOptions = [
   { value: '30', display: '30 seconds' },
