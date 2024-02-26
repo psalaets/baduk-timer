@@ -1,9 +1,9 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import ClockFace from '$lib/dual-clock/ClockFace.svelte';
-  import ByoyomiClockFace from '$lib/dual-clock/ByoyomiClockFace.svelte';
-  import CanadianClockFace from '$lib/dual-clock/CanadianClockFace.svelte';
-  import FischerClockFace from '$lib/dual-clock/FischerClockFace.svelte';
+  import ClockFace from '$lib/game-clock/ClockFace.svelte';
+  import ByoyomiClockFace from '$lib/game-clock/ByoyomiClockFace.svelte';
+  import CanadianClockFace from '$lib/game-clock/CanadianClockFace.svelte';
+  import FischerClockFace from '$lib/game-clock/FischerClockFace.svelte';
   import type { ClockState } from '$lib/timing/clock-state';
   import type { ClockSettings } from '$lib/timing/clock-settings';
 

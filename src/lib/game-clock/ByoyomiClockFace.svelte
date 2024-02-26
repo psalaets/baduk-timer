@@ -1,7 +1,7 @@
 <script lang="ts">
-  import TimeLeft from '$lib/dual-clock/TimeLeft.svelte';
-  import PrimaryInfo from '$lib/dual-clock/PrimaryInfo.svelte';
-  import SecondaryInfo from '$lib/dual-clock/SecondaryInfo.svelte';
+  import TimeLeft from '$lib/game-clock/TimeLeft.svelte';
+  import PrimaryInfo from '$lib/game-clock/PrimaryInfo.svelte';
+  import SecondaryInfo from '$lib/game-clock/SecondaryInfo.svelte';
   import { pluralize } from '$lib/util/pluralize';
   import type { ByoyomiState, ByoyomiClockSettings } from '$lib/timing/byoyomi';
 

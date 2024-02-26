@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Game } from '$lib/game';
-  import DualClock from '$lib/dual-clock/DualClock.svelte';
+  import GameClock from '$lib/game-clock/GameClock.svelte';
   import Preview from '$lib/preview/Preview.svelte';
   import type { Color } from '$lib/color';
   import PauseDialog from '$lib/pause/PauseDialog.svelte';
@@ -30,7 +30,7 @@
 <div>started: {$started}</div>
 <div>paused: {$paused}</div>
 {#if $started}
-  <DualClock
+  <GameClock
     gameClock={game.clock}
     settings={game.settings}
     on:stone={(event) => onStone(event.detail)}
@@ -39,7 +39,7 @@
     {#if $paused}
       <PauseDialog on:close={() => onResume()} />
     {/if}
-  </DualClock>
+  </GameClock>
 {:else}
   <Preview settings={game.settings} on:begin={() => onBegin()} />
 {/if}
