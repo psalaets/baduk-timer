@@ -1,6 +1,6 @@
 import type { CanadianClockSettings } from '$lib/timing/canadian';
 import { first } from '$lib/util/first';
-import { get, set } from '$lib/util/localstorage';
+import * as db from '$lib/util/localstorage';
 import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-options';
 import { getter } from './get-form-value';
 
@@ -112,23 +112,23 @@ function parseStonesPerPeriod(rawValue: string): number {
   return isNumeric ? Math.max(MIN_STONES_PER_PERIOD, Number(rawValue)) : DEFAULT_STONES_PER_PERIOD;
 }
 
-export function saveValues(lastValues: CanadianClockSettings) {
-  set('canadian.mainTime', lastValues.mainTimeSeconds);
-  set('canadian.timePerPeriod', lastValues.timePerPeriodSeconds);
-  set('canadian.stonesPerPeriod', lastValues.stonesPerPeriod);
+export function saveSettings(settings: CanadianClockSettings) {
+  db.set('newGame.canadian.mainTime', settings.mainTimeSeconds);
+  db.set('newGame.canadian.timePerPeriod', settings.timePerPeriodSeconds);
+  db.set('newGame.canadian.stonesPerPeriod', settings.stonesPerPeriod);
 }
 
 export function getInitialValues(): CanadianClockSettings {
   return {
     type: 'canadian',
     mainTimeSeconds: parseMainTimeSeconds(
-      first(get('canadian.mainTime', ''), String(DEFAULT_MAIN_TIME_SECONDS))
+      first(db.get('newGame.canadian.mainTime', ''), String(DEFAULT_MAIN_TIME_SECONDS))
     ),
     timePerPeriodSeconds: parseTimePerPeriodSeconds(
-      first(get('canadian.timePerPeriod', ''), String(DEFAULT_TIME_PER_PERIOD_SECONDS))
+      first(db.get('newGame.canadian.timePerPeriod', ''), String(DEFAULT_TIME_PER_PERIOD_SECONDS))
     ),
     stonesPerPeriod: parseStonesPerPeriod(
-      first(get('canadian.stonesPerPeriod', ''), String(DEFAULT_STONES_PER_PERIOD))
+      first(db.get('newGame.canadian.stonesPerPeriod', ''), String(DEFAULT_STONES_PER_PERIOD))
     )
   };
 }

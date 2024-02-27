@@ -3,18 +3,26 @@
   import type { EventHandler } from 'svelte/elements';
 
   import {
+    timeSystemOptions,
+    saveSettings as saveCommonSettings,
+    getInitialValues
+  } from '$lib/new-game/common-options';
+  import {
     parse as parseByoyomi,
-    saveValues as saveByoyomiValues
+    saveSettings as saveByoyomiSettings
   } from '$lib/new-game/byoyomi-options';
   import ByoyomiFields from '$lib/new-game/ByoyomiFields.svelte';
 
   import {
     parse as parseCanadian,
-    saveValues as saveCanadianValues
+    saveSettings as saveCanadianSettings
   } from '$lib/new-game/canadian-options';
   import CanadianFields from '$lib/new-game/CanadianFields.svelte';
 
-  import { parse as parseFischer } from '$lib/new-game/fischer-options';
+  import {
+    parse as parseFischer,
+    saveSettings as saveFischerSettings
+  } from '$lib/new-game/fischer-options';
   import FischerFields from '$lib/new-game/FischerFields.svelte';
 
   import Field from '$lib/new-game/Field.svelte';
@@ -22,12 +30,6 @@
   import { getter } from './get-form-value';
 
   export let canCancel = false;
-
-  export const timeSystemOptions = [
-    { value: 'byoyomi', display: 'Byo-Yomi' },
-    { value: 'canadian', display: 'Canadian' },
-    { value: 'fischer', display: 'Fischer' }
-  ];
 
   const parse = (form: HTMLFormElement) => {
     const formData = new FormData(form);
@@ -44,6 +46,18 @@
     }
   };
 
+  const saveSettings = (settings: ClockSettings) => {
+    saveCommonSettings({ timeSystem: settings.type });
+
+    if (settings.type === 'byoyomi') {
+      saveByoyomiSettings(settings);
+    } else if (settings.type === 'canadian') {
+      saveCanadianSettings(settings);
+    } else if (settings.type === 'fischer') {
+      saveFischerSettings(settings);
+    }
+  };
+
   const submitDispatcher = createEventDispatcher<{ submit: ClockSettings }>();
   const cancelDispatcher = createEventDispatcher();
 
@@ -51,40 +65,33 @@
     const form = event.target as HTMLFormElement;
     const values = parse(form);
 
-    // store values in localstorage
-
-    if (values.type === 'byoyomi') {
-      saveByoyomiValues(values);
-    } else if (values.type === 'canadian') {
-      saveCanadianValues(values);
-    }
-
+    saveSettings(values);
     submitDispatcher('submit', values);
   };
 
   const onCancel = () => cancelDispatcher('cancel');
 
-  let timingSystem: string;
+  let { timeSystem } = getInitialValues();
 </script>
 
 <form aria-label="Time settings" method="POST" on:submit|preventDefault={onSubmit} novalidate>
   <Field>
     <label for="time-system">Time System</label>
-    <select id="time-system" name="timeSystem" bind:value={timingSystem}>
+    <select id="time-system" name="timeSystem" bind:value={timeSystem}>
       {#each timeSystemOptions as opt (opt.value)}
         <option value={opt.value}>{opt.display}</option>
       {/each}
     </select>
   </Field>
 
-  {#if timingSystem === 'byoyomi'}
+  {#if timeSystem === 'byoyomi'}
     <ByoyomiFields />
-  {:else if timingSystem === 'canadian'}
+  {:else if timeSystem === 'canadian'}
     <CanadianFields />
-  {:else if timingSystem === 'fischer'}
+  {:else if timeSystem === 'fischer'}
     <FischerFields />
   {:else}
-    Unhandled timing system: {timingSystem}
+    Unhandled timing system: {timeSystem}
   {/if}
 
   <div class="buttons">

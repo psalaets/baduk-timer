@@ -3,6 +3,7 @@
   import Field from '$lib/new-game/Field.svelte';
 
   const initialValues = getInitialValues();
+
   let initialMainTime = String(initialValues.mainTimeSeconds);
   let initialTimePerPeriod = String(initialValues.timePerPeriodSeconds);
   let initialPeriods = String(initialValues.periods);

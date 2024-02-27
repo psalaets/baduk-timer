@@ -1,6 +1,6 @@
 import type { ByoyomiClockSettings } from '$lib/timing/byoyomi';
 import { first } from '$lib/util/first';
-import { get, set } from '$lib/util/localstorage';
+import * as db from '$lib/util/localstorage';
 import { getter } from './get-form-value';
 
 export const DEFAULT_MAIN_TIME_SECONDS = 60 * 10;
@@ -163,21 +163,21 @@ export function defaultTimePerPeriodOption() {
   return option;
 }
 
-export function saveValues(lastValues: ByoyomiClockSettings) {
-  set('byoyomi.mainTime', lastValues.mainTimeSeconds);
-  set('byoyomi.timePerPeriod', lastValues.timePerPeriodSeconds);
-  set('byoyomi.periods', lastValues.periods);
+export function saveSettings(settings: ByoyomiClockSettings) {
+  db.set('newGame.byoyomi.mainTime', settings.mainTimeSeconds);
+  db.set('newGame.byoyomi.timePerPeriod', settings.timePerPeriodSeconds);
+  db.set('newGame.byoyomi.periods', settings.periods);
 }
 
 export function getInitialValues(): ByoyomiClockSettings {
   return {
     type: 'byoyomi',
     mainTimeSeconds: parseMainTimeSeconds(
-      first(get('byoyomi.mainTime', ''), String(DEFAULT_MAIN_TIME_SECONDS))
+      first(db.get('newGame.byoyomi.mainTime', ''), String(DEFAULT_MAIN_TIME_SECONDS))
     ),
     timePerPeriodSeconds: parseTimePerPeriodSeconds(
-      first(get('byoyomi.timePerPeriod', ''), String(DEFAULT_TIME_PER_PERIOD_SECONDS))
+      first(db.get('newGame.byoyomi.timePerPeriod', ''), String(DEFAULT_TIME_PER_PERIOD_SECONDS))
     ),
-    periods: parsePeriods(first(get('byoyomi.periods', ''), String(DEFAULT_PERIODS)))
+    periods: parsePeriods(first(db.get('newGame.byoyomi.periods', ''), String(DEFAULT_PERIODS)))
   };
 }

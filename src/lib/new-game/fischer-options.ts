@@ -1,4 +1,6 @@
 import type { FischerClockSettings } from '$lib/timing/fischer';
+import { first } from '$lib/util/first';
+import * as db from '$lib/util/localstorage';
 import { getter } from './get-form-value';
 
 export const DEFAULT_INITIAL_TIME_SECONDS = 60 * 2;
@@ -213,4 +215,25 @@ export function defaultMaxTimeOption() {
   }
 
   return option;
+}
+
+export function saveSettings(settings: FischerClockSettings) {
+  db.set('newGame.fischer.initialTime', settings.initialSeconds);
+  db.set('newGame.fischer.increment', settings.incrementSeconds);
+  db.set('newGame.fischer.maxTime', settings.maxSeconds);
+}
+
+export function getInitialValues(): FischerClockSettings {
+  return {
+    type: 'fischer',
+    initialSeconds: parseInitialTimeSeconds(
+      first(db.get('newGame.fischer.initialTime', ''), String(DEFAULT_INITIAL_TIME_SECONDS))
+    ),
+    incrementSeconds: parseIncrementSeconds(
+      first(db.get('newGame.fischer.increment', ''), String(DEFAULT_INCREMENT_SECONDS))
+    ),
+    maxSeconds: parseMaxSeconds(
+      first(db.get('newGame.fischer.maxTime', ''), String(DEFAULT_MAX_TIME_SECONDS))
+    )
+  };
 }
