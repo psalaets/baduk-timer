@@ -28,7 +28,7 @@ export const createFischer = (
   const countdown = createCountdown(initialSeconds, createTicker);
   const timeout = writable(false);
 
-  const data = derived([countdown, timeout], ([c, t]) => {
+  const state = derived([countdown, timeout], ([c, t]) => {
     return {
       type: FISCHER,
       countdown: c,
@@ -43,7 +43,7 @@ export const createFischer = (
   });
 
   return {
-    subscribe: data.subscribe,
+    subscribe: state.subscribe,
     play: countdown.play,
     pause: countdown.pause,
     playedStone() {

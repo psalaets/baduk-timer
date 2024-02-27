@@ -40,7 +40,7 @@ export const createCanadian = (
   const stonesRemaining = writable(stonesPerPeriod);
   const timeout = writable(false);
 
-  const data = derived([countdown, phase, stonesRemaining, timeout], ([c, ph, sr, t]) => {
+  const state = derived([countdown, phase, stonesRemaining, timeout], ([c, ph, sr, t]) => {
     return {
       type: CANADIAN,
       countdown: c,
@@ -97,7 +97,7 @@ export const createCanadian = (
   });
 
   return {
-    subscribe: data.subscribe,
+    subscribe: state.subscribe,
     play: countdown.play,
     pause: countdown.pause,
     playedStone() {

@@ -40,7 +40,7 @@ export const createByoyomi = (
   const periodsRemaining = writable(initialPeriods);
   const timeout = writable(false);
 
-  const data = derived([countdown, phase, periodsRemaining, timeout], ([c, ph, pr, t]) => {
+  const state = derived([countdown, phase, periodsRemaining, timeout], ([c, ph, pr, t]) => {
     return {
       type: BYOYOMI,
       countdown: c,
@@ -105,7 +105,7 @@ export const createByoyomi = (
   });
 
   return {
-    subscribe: data.subscribe,
+    subscribe: state.subscribe,
     play: countdown.play,
     pause: countdown.pause,
     playedStone() {
