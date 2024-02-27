@@ -1,3 +1,4 @@
+import { FISCHER } from '$lib/timing/clock-type';
 import type { FischerClockSettings } from '$lib/timing/fischer';
 import { first } from '$lib/util/first';
 import * as db from '$lib/util/localstorage';
@@ -145,14 +146,14 @@ export function parse(formData: FormData): FischerClockSettings {
   const get = getter(formData);
 
   const rawValues = {
-    type: 'fischer',
+    type: FISCHER,
     initialSeconds: get('initialTimeSeconds'),
     incrementSeconds: get('incrementSeconds'),
     maxSeconds: get('maxTimeSeconds')
   };
 
   const result: FischerClockSettings = {
-    type: 'fischer',
+    type: FISCHER,
     initialSeconds: parseInitialTimeSeconds(rawValues.initialSeconds),
     incrementSeconds: parseIncrementSeconds(rawValues.incrementSeconds),
     maxSeconds: parseMaxSeconds(rawValues.maxSeconds)
@@ -225,7 +226,7 @@ export function saveSettings(settings: FischerClockSettings) {
 
 export function getInitialValues(): FischerClockSettings {
   return {
-    type: 'fischer',
+    type: FISCHER,
     initialSeconds: parseInitialTimeSeconds(
       first(db.get('newGame.fischer.initialTime', ''), String(DEFAULT_INITIAL_TIME_SECONDS))
     ),

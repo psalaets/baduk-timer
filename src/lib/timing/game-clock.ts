@@ -5,6 +5,7 @@ import type { Color } from '$lib/color';
 import { createCanadian } from './canadian';
 import { createFischer } from './fischer';
 import type { ClockState } from './clock-state';
+import { BYOYOMI, CANADIAN, FISCHER } from './clock-type';
 
 export type GameClock = ReturnType<typeof create>;
 
@@ -66,17 +67,17 @@ function clocks(settings: ClockSettings) {
   const { type } = settings;
 
   switch (type) {
-    case 'byoyomi':
+    case BYOYOMI:
       return {
         black: createByoyomi(settings),
         white: createByoyomi(settings)
       };
-    case 'canadian':
+    case CANADIAN:
       return {
         black: createCanadian(settings),
         white: createCanadian(settings)
       };
-    case 'fischer':
+    case FISCHER:
       return {
         black: createFischer(settings),
         white: createFischer(settings)

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { EventHandler } from 'svelte/elements';
+  import { BYOYOMI, CANADIAN, FISCHER } from '$lib/timing/clock-type';
 
   import {
     timeSystemOptions,
@@ -35,11 +36,11 @@
     const formData = new FormData(form);
     const timeSystem = getter(formData)('timeSystem');
 
-    if (timeSystem === 'byoyomi') {
+    if (timeSystem === BYOYOMI) {
       return parseByoyomi(formData);
-    } else if (timeSystem === 'canadian') {
+    } else if (timeSystem === CANADIAN) {
       return parseCanadian(formData);
-    } else if (timeSystem === 'fischer') {
+    } else if (timeSystem === FISCHER) {
       return parseFischer(formData);
     } else {
       throw new Error(`Unexpected time system: ${timeSystem}`);
@@ -49,11 +50,11 @@
   const saveSettings = (settings: ClockSettings) => {
     saveCommonSettings({ timeSystem: settings.type });
 
-    if (settings.type === 'byoyomi') {
+    if (settings.type === BYOYOMI) {
       saveByoyomiSettings(settings);
-    } else if (settings.type === 'canadian') {
+    } else if (settings.type === CANADIAN) {
       saveCanadianSettings(settings);
-    } else if (settings.type === 'fischer') {
+    } else if (settings.type === FISCHER) {
       saveFischerSettings(settings);
     }
   };
@@ -84,11 +85,11 @@
     </select>
   </Field>
 
-  {#if timeSystem === 'byoyomi'}
+  {#if timeSystem === BYOYOMI}
     <ByoyomiFields />
-  {:else if timeSystem === 'canadian'}
+  {:else if timeSystem === CANADIAN}
     <CanadianFields />
-  {:else if timeSystem === 'fischer'}
+  {:else if timeSystem === FISCHER}
     <FischerFields />
   {:else}
     Unhandled timing system: {timeSystem}

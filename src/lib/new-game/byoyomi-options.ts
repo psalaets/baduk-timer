@@ -1,4 +1,5 @@
 import type { ByoyomiClockSettings } from '$lib/timing/byoyomi';
+import { BYOYOMI } from '$lib/timing/clock-type';
 import { first } from '$lib/util/first';
 import * as db from '$lib/util/localstorage';
 import { getter } from './get-form-value';
@@ -106,14 +107,14 @@ export function parse(formData: FormData): ByoyomiClockSettings {
   const get = getter(formData);
 
   const rawValues = {
-    type: 'byoyomi',
+    type: BYOYOMI,
     mainTimeSeconds: get('mainTimeSeconds'),
     timePerPeriodSeconds: get('timePerPeriodSeconds'),
     periods: get('periods')
   };
 
   return {
-    type: 'byoyomi',
+    type: BYOYOMI,
     periods: parsePeriods(rawValues.periods),
     mainTimeSeconds: parseMainTimeSeconds(rawValues.mainTimeSeconds),
     timePerPeriodSeconds: parseTimePerPeriodSeconds(rawValues.timePerPeriodSeconds)
@@ -171,7 +172,7 @@ export function saveSettings(settings: ByoyomiClockSettings) {
 
 export function getInitialValues(): ByoyomiClockSettings {
   return {
-    type: 'byoyomi',
+    type: BYOYOMI,
     mainTimeSeconds: parseMainTimeSeconds(
       first(db.get('newGame.byoyomi.mainTime', ''), String(DEFAULT_MAIN_TIME_SECONDS))
     ),

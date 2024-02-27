@@ -1,4 +1,5 @@
 import type { CanadianClockSettings } from '$lib/timing/canadian';
+import { CANADIAN } from '$lib/timing/clock-type';
 import { first } from '$lib/util/first';
 import * as db from '$lib/util/localstorage';
 import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-options';
@@ -55,14 +56,14 @@ export function parse(formData: FormData): CanadianClockSettings {
   const get = getter(formData);
 
   const rawValues = {
-    type: 'canadian',
+    type: CANADIAN,
     mainTimeSeconds: get('mainTimeSeconds'),
     timePerPeriodSeconds: get('timePerPeriodSeconds'),
     stonesPerPeriod: get('stonesPerPeriod')
   };
 
   return {
-    type: 'canadian',
+    type: CANADIAN,
     mainTimeSeconds: parseMainTimeSeconds(rawValues.mainTimeSeconds),
     timePerPeriodSeconds: parseTimePerPeriodSeconds(rawValues.timePerPeriodSeconds),
     stonesPerPeriod: parseStonesPerPeriod(rawValues.stonesPerPeriod)
@@ -120,7 +121,7 @@ export function saveSettings(settings: CanadianClockSettings) {
 
 export function getInitialValues(): CanadianClockSettings {
   return {
-    type: 'canadian',
+    type: CANADIAN,
     mainTimeSeconds: parseMainTimeSeconds(
       first(db.get('newGame.canadian.mainTime', ''), String(DEFAULT_MAIN_TIME_SECONDS))
     ),

@@ -2,9 +2,10 @@ import { derived, writable } from 'svelte/store';
 import { createDefaultTicker } from './ticker';
 import { createCountdown } from './countdown';
 import type { Clock } from './clock';
+import { CANADIAN, type Canadian } from './clock-type';
 
 export type CanadianClockSettings = {
-  type: 'canadian';
+  type: Canadian;
   mainTimeSeconds: number;
   stonesPerPeriod: number;
   timePerPeriodSeconds: number;
@@ -15,7 +16,7 @@ type Phase = 'main' | 'overtime';
 export type CanadianClock = Clock<CanadianState>;
 
 export type CanadianState = {
-  type: 'canadian';
+  type: Canadian;
   countdown: number;
   phase: Phase;
   stonesRemaining: number;
@@ -41,7 +42,7 @@ export const createCanadian = (
 
   const data = derived([countdown, phase, stonesRemaining, timeout], ([c, ph, sr, t]) => {
     return {
-      type: 'canadian' as 'canadian',
+      type: CANADIAN,
       countdown: c,
       phase: ph,
       stonesRemaining: sr,

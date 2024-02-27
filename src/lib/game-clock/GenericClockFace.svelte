@@ -5,6 +5,7 @@
   import CanadianClockFace from '$lib/game-clock/CanadianClockFace.svelte';
   import FischerClockFace from '$lib/game-clock/FischerClockFace.svelte';
   import type { ClockState } from '$lib/timing/clock-state';
+  import { BYOYOMI, CANADIAN, FISCHER } from '$lib/timing/clock-type';
   import type { ClockSettings } from '$lib/timing/clock-settings';
 
   export let state: ClockState;
@@ -17,11 +18,11 @@
 </script>
 
 <ClockFace on:click={() => dispatchStone()}>
-  {#if state.type === 'byoyomi' && settings.type === 'byoyomi'}
+  {#if state.type === BYOYOMI && settings.type === BYOYOMI}
     <ByoyomiClockFace {state} {settings} />
-  {:else if state.type === 'canadian' && settings.type === 'canadian'}
+  {:else if state.type === CANADIAN && settings.type === CANADIAN}
     <CanadianClockFace {state} {settings} />
-  {:else if state.type === 'fischer' && settings.type === 'fischer'}
+  {:else if state.type === FISCHER && settings.type === FISCHER}
     <FischerClockFace {state} {settings} />
   {:else}
     Unhandled clock type: {state.type}

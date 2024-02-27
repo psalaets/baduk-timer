@@ -2,9 +2,10 @@ import { derived, writable } from 'svelte/store';
 import { createCountdown } from './countdown';
 import { createDefaultTicker } from './ticker';
 import type { Clock } from './clock';
+import { BYOYOMI, type Byoyomi } from './clock-type';
 
 export type ByoyomiClockSettings = {
-  type: 'byoyomi';
+  type: Byoyomi;
   mainTimeSeconds: number;
   periods: number;
   timePerPeriodSeconds: number;
@@ -15,7 +16,7 @@ type Phase = 'main' | 'overtime';
 export type ByoyomiClock = Clock<ByoyomiState>;
 
 export type ByoyomiState = {
-  type: 'byoyomi';
+  type: Byoyomi;
   countdown: number;
   phase: Phase;
   periodsRemaining: number;
@@ -41,7 +42,7 @@ export const createByoyomi = (
 
   const data = derived([countdown, phase, periodsRemaining, timeout], ([c, ph, pr, t]) => {
     return {
-      type: 'byoyomi' as 'byoyomi',
+      type: BYOYOMI,
       countdown: c,
       phase: ph,
       periodsRemaining: pr,

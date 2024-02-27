@@ -2,9 +2,10 @@ import { derived, writable } from 'svelte/store';
 import { createDefaultTicker } from './ticker';
 import { createCountdown } from './countdown';
 import type { Clock } from './clock';
+import { FISCHER, type Fischer } from './clock-type';
 
 export type FischerClockSettings = {
-  type: 'fischer';
+  type: Fischer;
   initialSeconds: number;
   incrementSeconds: number;
   maxSeconds: number;
@@ -13,7 +14,7 @@ export type FischerClockSettings = {
 export type FischerClock = Clock<FischerState>;
 
 export type FischerState = {
-  type: 'fischer';
+  type: Fischer;
   countdown: number;
   timeout: boolean;
 };
@@ -29,7 +30,7 @@ export const createFischer = (
 
   const data = derived([countdown, timeout], ([c, t]) => {
     return {
-      type: 'fischer' as 'fischer',
+      type: FISCHER,
       countdown: c,
       timeout: t
     };
