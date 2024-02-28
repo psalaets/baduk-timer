@@ -2,6 +2,7 @@
   import TimeLeft from '$lib/game-clock/TimeLeft.svelte';
   import PrimaryInfo from '$lib/game-clock/PrimaryInfo.svelte';
   import SecondaryInfo from '$lib/game-clock/SecondaryInfo.svelte';
+  import Timeout from '$lib/game-clock/Timeout.svelte';
   import type { FischerState, FischerClockSettings } from '$lib/timing/fischer';
 
   export let state: FischerState;
@@ -12,5 +13,7 @@
   <TimeLeft secondsRemaining={state.countdown} />
 </PrimaryInfo>
 <SecondaryInfo>
-  (+<TimeLeft secondsRemaining={settings.incrementSeconds} />)
+  <Timeout timeout={state.timeout}>
+    (+<TimeLeft secondsRemaining={settings.incrementSeconds} />)
+  </Timeout>
 </SecondaryInfo>

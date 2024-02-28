@@ -2,6 +2,7 @@
   import TimeLeft from '$lib/game-clock/TimeLeft.svelte';
   import PrimaryInfo from '$lib/game-clock/PrimaryInfo.svelte';
   import SecondaryInfo from '$lib/game-clock/SecondaryInfo.svelte';
+  import Timeout from '$lib/game-clock/Timeout.svelte';
   import { pluralize } from '$lib/util/pluralize';
   import type { ByoyomiState, ByoyomiClockSettings } from '$lib/timing/byoyomi';
 
@@ -20,7 +21,10 @@
   <PrimaryInfo>
     <TimeLeft secondsRemaining={state.countdown} />
   </PrimaryInfo>
-  <SecondaryInfo
-    >({state.periodsRemaining} {pluralize(state.periodsRemaining, 'period')})</SecondaryInfo
-  >
+  <SecondaryInfo>
+    <Timeout timeout={state.timeout}>
+      ({state.periodsRemaining}
+      {pluralize(state.periodsRemaining, 'period')})
+    </Timeout>
+  </SecondaryInfo>
 {/if}
