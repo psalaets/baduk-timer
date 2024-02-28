@@ -1,11 +1,13 @@
 <script lang="ts">
   import type { Game } from '$lib/game';
   import GameClock from '$lib/game-clock/GameClock.svelte';
-  import PauseDialog from '$lib/pause/PauseDialog.svelte';
+  import MenuDialog from '$lib/menu/MenuDialog.svelte';
 
   export let game: Game;
 
   const { started, paused, clockState } = game;
+
+  let menuOpen = false;
 </script>
 
 <div>started: {$started}</div>
@@ -16,8 +18,15 @@
   settings={game.settings}
   on:stone={(event) => game.stonePlayed(event.detail)}
 >
-  <button on:click={() => game.pause()}>Pause</button>
+  {#if $started}
+    <button on:click={() => game.pause()}>Pause</button>
+  {:else}
+    <button on:click={() => (menuOpen = true)}>Menu</button>
+  {/if}
+
   {#if $started && $paused}
-    <PauseDialog on:close={() => game.resume()} />
+    <MenuDialog on:close={() => game.resume()} paused={$paused} />
+  {:else if menuOpen}
+    <MenuDialog on:close={() => (menuOpen = false)} />
   {/if}
 </GameClock>
