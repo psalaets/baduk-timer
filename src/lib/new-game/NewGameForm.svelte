@@ -7,18 +7,18 @@
   import Field from '$lib/new-game/Field.svelte';
   import { getter } from './get-form-value';
 
-  import { typeOptions, getInitialValues } from '$lib/new-game/common-options';
+  import { typeOptions, getInitialValues } from '$lib/new-game/common-fields';
   import { saveSettings as saveCommonSettings } from '$lib/clock-settings/common-settings';
 
-  import { parse as parseByoyomi } from '$lib/new-game/byoyomi-options';
+  import { parse as parseByoyomi } from '$lib/new-game/byoyomi-fields';
   import { saveSettings as saveByoyomiSettings } from '$lib/clock-settings/byoyomi-settings';
   import ByoyomiFields from '$lib/new-game/ByoyomiFields.svelte';
 
-  import { parse as parseCanadian } from '$lib/new-game/canadian-options';
+  import { parse as parseCanadian } from '$lib/new-game/canadian-fields';
   import { saveSettings as saveCanadianSettings } from '$lib/clock-settings/canadian-settings';
   import CanadianFields from '$lib/new-game/CanadianFields.svelte';
 
-  import { parse as parseFischer } from '$lib/new-game/fischer-options';
+  import { parse as parseFischer } from '$lib/new-game/fischer-fields';
   import { saveSettings as saveFischerSettings } from '$lib/clock-settings/fischer-settings';
   import FischerFields from '$lib/new-game/FischerFields.svelte';
 

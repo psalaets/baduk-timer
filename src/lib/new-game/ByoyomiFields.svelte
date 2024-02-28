@@ -3,7 +3,7 @@
     mainTimeOptions,
     timePerPeriodOptions,
     getInitialValues
-  } from '$lib/new-game/byoyomi-options';
+  } from '$lib/new-game/byoyomi-fields';
   import Field from '$lib/new-game/Field.svelte';
 
   const initialValues = getInitialValues();

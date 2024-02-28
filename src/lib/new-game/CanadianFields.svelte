@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { mainTimeOptions, timePerPeriodOptions, getInitialValues } from './canadian-options';
+  import { mainTimeOptions, timePerPeriodOptions, getInitialValues } from './canadian-fields';
   import Field from '$lib/new-game/Field.svelte';
 
   const initialValues = getInitialValues();

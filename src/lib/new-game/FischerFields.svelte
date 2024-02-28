@@ -4,7 +4,7 @@
     incrementOptions,
     maxTimeOptions,
     getInitialValues
-  } from './fischer-options';
+  } from './fischer-fields';
   import Field from '$lib/new-game/Field.svelte';
 
   const initialValues = getInitialValues();

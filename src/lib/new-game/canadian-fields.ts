@@ -10,7 +10,7 @@ import {
 } from '$lib/clock-settings/canadian-settings';
 import { CANADIAN } from '$lib/clock-settings/clock-type';
 import { first } from '$lib/util/first';
-import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-options';
+import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-fields';
 import { getter } from './get-form-value';
 
 export { mainTimeOptions, timePerPeriodOptions } from '$lib/clock-settings/canadian-settings';
