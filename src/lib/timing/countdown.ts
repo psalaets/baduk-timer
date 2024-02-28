@@ -30,7 +30,7 @@ export const createCountdown = (initialSeconds: number, createTicker: CreateTick
     return () => ticker.stop();
   });
 
-  const remainingSeconds = derived(remainingMs, (ms) => Math.trunc(ms / 1000));
+  const remainingSeconds = derived(remainingMs, (ms) => ms / 1000);
 
   function onTick(elapsedMs: number) {
     remainingMs.update((ms) => {
