@@ -2,14 +2,8 @@ import { derived, writable } from 'svelte/store';
 import { createDefaultTicker } from './ticker';
 import { createCountdown } from './countdown';
 import type { Clock } from './clock';
-import { CANADIAN, type Canadian } from './clock-type';
-
-export type CanadianClockSettings = {
-  type: Canadian;
-  mainTimeSeconds: number;
-  stonesPerPeriod: number;
-  timePerPeriodSeconds: number;
-};
+import { CANADIAN, type Canadian } from '$lib/clock-settings/clock-type';
+import { type CanadianClockSettings } from '$lib/clock-settings/canadian-settings';
 
 type Phase = 'main' | 'overtime';
 

@@ -1,34 +1,26 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
   import type { EventHandler } from 'svelte/elements';
-  import { BYOYOMI, CANADIAN, FISCHER } from '$lib/timing/clock-type';
-
-  import {
-    timeSystemOptions,
-    saveSettings as saveCommonSettings,
-    getInitialValues
-  } from '$lib/new-game/common-options';
-  import {
-    parse as parseByoyomi,
-    saveSettings as saveByoyomiSettings
-  } from '$lib/new-game/byoyomi-options';
-  import ByoyomiFields from '$lib/new-game/ByoyomiFields.svelte';
-
-  import {
-    parse as parseCanadian,
-    saveSettings as saveCanadianSettings
-  } from '$lib/new-game/canadian-options';
-  import CanadianFields from '$lib/new-game/CanadianFields.svelte';
-
-  import {
-    parse as parseFischer,
-    saveSettings as saveFischerSettings
-  } from '$lib/new-game/fischer-options';
-  import FischerFields from '$lib/new-game/FischerFields.svelte';
+  import { BYOYOMI, CANADIAN, FISCHER } from '$lib/clock-settings/clock-type';
+  import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 
   import Field from '$lib/new-game/Field.svelte';
-  import type { ClockSettings } from '$lib/timing/clock-settings';
   import { getter } from './get-form-value';
+
+  import { typeOptions, getInitialValues } from '$lib/new-game/common-options';
+  import { saveSettings as saveCommonSettings } from '$lib/clock-settings/common-settings';
+
+  import { parse as parseByoyomi } from '$lib/new-game/byoyomi-options';
+  import { saveSettings as saveByoyomiSettings } from '$lib/clock-settings/byoyomi-settings';
+  import ByoyomiFields from '$lib/new-game/ByoyomiFields.svelte';
+
+  import { parse as parseCanadian } from '$lib/new-game/canadian-options';
+  import { saveSettings as saveCanadianSettings } from '$lib/clock-settings/canadian-settings';
+  import CanadianFields from '$lib/new-game/CanadianFields.svelte';
+
+  import { parse as parseFischer } from '$lib/new-game/fischer-options';
+  import { saveSettings as saveFischerSettings } from '$lib/clock-settings/fischer-settings';
+  import FischerFields from '$lib/new-game/FischerFields.svelte';
 
   export let canCancel = false;
 
@@ -48,7 +40,7 @@
   };
 
   const saveSettings = (settings: ClockSettings) => {
-    saveCommonSettings({ timeSystem: settings.type });
+    saveCommonSettings(settings);
 
     if (settings.type === BYOYOMI) {
       saveByoyomiSettings(settings);
@@ -72,27 +64,27 @@
 
   const onCancel = () => cancelDispatcher('cancel');
 
-  let { timeSystem } = getInitialValues();
+  let { type } = getInitialValues();
 </script>
 
 <form aria-label="Time settings" method="POST" on:submit|preventDefault={onSubmit} novalidate>
   <Field>
     <label for="time-system">Time System</label>
-    <select id="time-system" name="timeSystem" bind:value={timeSystem}>
-      {#each timeSystemOptions as opt (opt.value)}
+    <select id="time-system" name="timeSystem" bind:value={type}>
+      {#each typeOptions as opt (opt.value)}
         <option value={opt.value}>{opt.display}</option>
       {/each}
     </select>
   </Field>
 
-  {#if timeSystem === BYOYOMI}
+  {#if type === BYOYOMI}
     <ByoyomiFields />
-  {:else if timeSystem === CANADIAN}
+  {:else if type === CANADIAN}
     <CanadianFields />
-  {:else if timeSystem === FISCHER}
+  {:else if type === FISCHER}
     <FischerFields />
   {:else}
-    Unhandled timing system: {timeSystem}
+    Unhandled timing system: {type}
   {/if}
 
   <div class="buttons">

@@ -2,14 +2,8 @@ import { derived, writable } from 'svelte/store';
 import { createDefaultTicker } from './ticker';
 import { createCountdown } from './countdown';
 import type { Clock } from './clock';
-import { FISCHER, type Fischer } from './clock-type';
-
-export type FischerClockSettings = {
-  type: Fischer;
-  initialSeconds: number;
-  incrementSeconds: number;
-  maxSeconds: number;
-};
+import { FISCHER, type Fischer } from '$lib/clock-settings/clock-type';
+import { type FischerClockSettings } from '$lib/clock-settings/fischer-settings';
 
 export type FischerClock = Clock<FischerState>;
 

@@ -2,14 +2,8 @@ import { derived, writable } from 'svelte/store';
 import { createCountdown } from './countdown';
 import { createDefaultTicker } from './ticker';
 import type { Clock } from './clock';
-import { BYOYOMI, type Byoyomi } from './clock-type';
-
-export type ByoyomiClockSettings = {
-  type: Byoyomi;
-  mainTimeSeconds: number;
-  periods: number;
-  timePerPeriodSeconds: number;
-};
+import { BYOYOMI, type Byoyomi } from '$lib/clock-settings/clock-type';
+import { type ByoyomiClockSettings } from '$lib/clock-settings/byoyomi-settings';
 
 type Phase = 'main' | 'overtime';
 

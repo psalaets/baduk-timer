@@ -1,11 +1,11 @@
 import { writable, get, derived, type Readable, type Writable } from 'svelte/store';
-import { createByoyomi } from './byoyomi';
-import type { ClockSettings } from './clock-settings';
+import type { ClockSettings } from '$lib/clock-settings/clock-settings';
+import { BYOYOMI, CANADIAN, FISCHER } from '$lib/clock-settings/clock-type';
 import type { Color } from '$lib/color';
-import { createCanadian } from './canadian';
-import { createFischer } from './fischer';
-import type { ClockState } from './clock-state';
-import { BYOYOMI, CANADIAN, FISCHER } from './clock-type';
+import { createByoyomi } from '$lib/timing/byoyomi';
+import { createCanadian } from '$lib/timing/canadian';
+import { createFischer } from '$lib/timing/fischer';
+import type { ClockState } from '$lib/timing/clock-state';
 
 export type GameClock = ReturnType<typeof create>;
 

@@ -1,21 +1,28 @@
-import { BYOYOMI, CANADIAN, FISCHER, type ClockType } from '$lib/timing/clock-type';
+import {
+  loadSettings,
+  type CommonSettings,
+  parseType,
+  DEFAULT_TYPE
+} from '$lib/clock-settings/common-settings';
+import { BYOYOMI, CANADIAN, FISCHER, type ClockType } from '$lib/clock-settings/clock-type';
 import { first } from '$lib/util/first';
-import * as db from '$lib/util/localstorage';
+import { getter } from './get-form-value';
+import type { RawValues } from '$lib/util/raw-values';
 
-const DEFAULT_TIME_SYSTEM = BYOYOMI;
+export { typeOptions } from '$lib/clock-settings/common-settings';
 
-export const timeSystemOptions = [
-  { value: BYOYOMI, display: 'Byo-Yomi' },
-  { value: CANADIAN, display: 'Canadian' },
-  { value: FISCHER, display: 'Fischer' }
-];
+export function parse(formData: FormData): CommonSettings {
+  const get = getter(formData);
 
-export function saveSettings(settings: { timeSystem: ClockType }) {
-  db.set('newGame.common.timeSystem', settings.timeSystem);
+  return {
+    type: parseType(get('timeSystem'))
+  };
 }
 
-export function getInitialValues() {
+export function getInitialValues(): RawValues<CommonSettings> {
+  const loaded = loadSettings();
+
   return {
-    timeSystem: first(db.get('newGame.common.timeSystem', ''), DEFAULT_TIME_SYSTEM)
+    type: first(loaded.type, DEFAULT_TYPE)
   };
 }

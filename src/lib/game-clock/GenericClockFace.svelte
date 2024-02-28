@@ -5,8 +5,8 @@
   import CanadianClockFace from '$lib/game-clock/CanadianClockFace.svelte';
   import FischerClockFace from '$lib/game-clock/FischerClockFace.svelte';
   import type { ClockState } from '$lib/timing/clock-state';
-  import { BYOYOMI, CANADIAN, FISCHER } from '$lib/timing/clock-type';
-  import type { ClockSettings } from '$lib/timing/clock-settings';
+  import { BYOYOMI, CANADIAN, FISCHER } from '$lib/clock-settings/clock-type';
+  import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 
   export let state: ClockState;
   export let settings: ClockSettings;

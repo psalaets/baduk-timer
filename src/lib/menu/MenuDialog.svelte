@@ -1,6 +1,6 @@
 <script lang="ts">
   import Dialog from '$lib/Dialog.svelte';
-  import type { ClockSettings } from '$lib/timing/clock-settings';
+  import type { ClockSettings } from '$lib/clock-settings/clock-settings';
   import { shareableSettingsUrl } from '$lib/menu/share';
 
   export let paused = false;
