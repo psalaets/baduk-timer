@@ -25,8 +25,8 @@
   {/if}
 
   {#if $started && $paused}
-    <MenuDialog on:close={() => game.resume()} paused={$paused} />
+    <MenuDialog on:close={() => game.resume()} paused={$paused} settings={game.settings} />
   {:else if menuOpen}
-    <MenuDialog on:close={() => (menuOpen = false)} />
+    <MenuDialog on:close={() => (menuOpen = false)} settings={game.settings} />
   {/if}
 </GameClock>
