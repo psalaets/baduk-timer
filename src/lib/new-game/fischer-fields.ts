@@ -11,6 +11,8 @@ import {
 } from '$lib/clock-settings/fischer-settings';
 import { first } from '$lib/util/first';
 import { getter } from './get-form-value';
+import { fischerFromQueryParams } from '$lib/menu/share';
+import { currentUrl } from '$lib/util/url';
 
 export {
   initialTimeOptions,
@@ -36,15 +38,18 @@ export function parse(formData: FormData): FischerClockSettings {
 
 export function getInitialValues(): FischerClockSettings {
   const loaded = loadSettings();
+  const query = fischerFromQueryParams(currentUrl().searchParams);
 
   return {
     type: FISCHER,
     initialSeconds: parseInitialTimeSeconds(
-      first(loaded.initialSeconds, String(DEFAULT_INITIAL_TIME_SECONDS))
+      first(query.initialSeconds, loaded.initialSeconds, String(DEFAULT_INITIAL_TIME_SECONDS))
     ),
     incrementSeconds: parseIncrementSeconds(
-      first(loaded.incrementSeconds, String(DEFAULT_INCREMENT_SECONDS))
+      first(query.incrementSeconds, loaded.incrementSeconds, String(DEFAULT_INCREMENT_SECONDS))
     ),
-    maxSeconds: parseMaxSeconds(first(loaded.maxSeconds, String(DEFAULT_MAX_TIME_SECONDS)))
+    maxSeconds: parseMaxSeconds(
+      first(query.maxSeconds, loaded.maxSeconds, String(DEFAULT_MAX_TIME_SECONDS))
+    )
   };
 }
