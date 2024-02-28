@@ -8,7 +8,6 @@ export type Game = {
   clockState: Readable<GameClockState>;
   started: Readable<boolean>;
   paused: Readable<boolean>;
-  begin: () => void;
   pause: () => void;
   resume: () => void;
   stonePlayed: (by: Color) => void;
@@ -38,7 +37,6 @@ export function createGame(settings: ClockSettings): Game {
     clockState: clock,
     started: started,
     paused: paused,
-    begin,
     pause() {
       paused.set(true);
     },
