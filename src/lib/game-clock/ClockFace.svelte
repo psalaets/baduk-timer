@@ -1,6 +1,12 @@
+<script>
+  export let myTurn = false;
+</script>
+
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <div class="clock-face" on:click role="button" tabindex="0">
-  <slot />
+  <div class="inner {myTurn ? 'my-turn' : ''}">
+    <slot />
+  </div>
 </div>
 
 <style>
@@ -20,6 +26,19 @@
 
     background-color: var(--clock-bg-color);
     color: var(--clock-text-color);
-    border: 1px solid var(--clock-border-color);
+    border: 3px solid var(--clock-border-color);
+
+    border-radius: 1.4rem;
+  }
+
+  .inner {
+    padding: 1rem;
+
+    border: 3px solid var(--clock-bg-color);
+    border-radius: 0.8rem;
+  }
+
+  .inner.my-turn {
+    border: 3px solid var(--clock-border-color);
   }
 </style>

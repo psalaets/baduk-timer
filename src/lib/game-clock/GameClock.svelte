@@ -13,6 +13,7 @@
 <div class="game-clock">
   <GenericClockFace
     state={gameClock.black}
+    myTurn={gameClock.whoseTurn === 'black'}
     {settings}
     on:stone={() => dispatchStone('stone', 'black')}
   />
@@ -23,6 +24,7 @@
 
   <GenericClockFace
     state={gameClock.white}
+    myTurn={gameClock.whoseTurn === 'white'}
     {settings}
     on:stone={() => dispatchStone('stone', 'white')}
   />
