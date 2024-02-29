@@ -37,12 +37,9 @@ export function parse(formData: FormData): FischerClockSettings {
 }
 
 export function getInitialValues(): FischerClockSettings {
-  const loaded = loadSettings();
-  const query = fischerFromQueryParams(currentUrl().searchParams);
-
   const raw = firstFullyPopulated([
-    loadSettings(),
     fischerFromQueryParams(currentUrl().searchParams),
+    loadSettings(),
     {
       type: FISCHER,
       initialSeconds: String(DEFAULT_INITIAL_TIME_SECONDS),

@@ -30,8 +30,8 @@ export function parse(formData: FormData): CanadianClockSettings {
 
 export function getInitialValues(): CanadianClockSettings {
   const raw = firstFullyPopulated([
-    loadSettings(),
     canadianFromQueryParams(currentUrl().searchParams),
+    loadSettings(),
     {
       type: CANADIAN,
       mainTimeSeconds: String(DEFAULT_MAIN_TIME_SECONDS),
