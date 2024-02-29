@@ -3,7 +3,8 @@
   import PrimaryInfo from '$lib/game-clock/PrimaryInfo.svelte';
   import SecondaryInfo from '$lib/game-clock/SecondaryInfo.svelte';
   import Timeout from '$lib/game-clock/Timeout.svelte';
-  import type { FischerState, FischerClockSettings } from '$lib/timing/fischer';
+  import type { FischerState } from '$lib/timing/fischer';
+  import type { FischerClockSettings } from '$lib/clock-settings/fischer-settings';
 
   export let state: FischerState;
   export let settings: FischerClockSettings;

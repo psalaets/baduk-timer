@@ -1,7 +1,5 @@
-export function first(...values: Array<string>): string {
-  if (values.length === 0) {
-    throw new Error('Must have at least one value');
-  }
+import { type RawValues } from '$lib/util/raw-values';
 
-  return values.filter((v) => v)[0];
+export function firstFullyPopulated<T extends {}>(objs: Array<RawValues<T>>): RawValues<T> {
+  return objs.filter((obj) => Object.values(obj).every((value) => !!value))[0];
 }

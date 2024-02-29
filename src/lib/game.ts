@@ -1,6 +1,6 @@
 import { writable, get, type Readable } from 'svelte/store';
-import type { ClockSettings } from './timing/clock-settings';
-import { create as createClock, type GameClockState } from './timing/game-clock';
+import type { ClockSettings } from '$lib/clock-settings/clock-settings';
+import { create as createClock, type GameClockState } from '$lib/timing/game-clock';
 import type { Color } from '$lib/color';
 
 export type Game = {

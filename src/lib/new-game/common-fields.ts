@@ -5,9 +5,11 @@ import {
   DEFAULT_TYPE
 } from '$lib/clock-settings/common-settings';
 import { BYOYOMI, CANADIAN, FISCHER, type ClockType } from '$lib/clock-settings/clock-type';
-import { first } from '$lib/util/first';
+import { firstFullyPopulated } from '$lib/util/first';
 import { getter } from './get-form-value';
 import type { RawValues } from '$lib/util/raw-values';
+import { commonFromQueryParams } from '$lib/menu/share';
+import { currentUrl } from '$lib/util/url';
 
 export { typeOptions } from '$lib/clock-settings/common-settings';
 
@@ -19,10 +21,18 @@ export function parse(formData: FormData): CommonSettings {
   };
 }
 
+// TODO should initial values be a merge pipeline? or just use the first object that has all values?
+
 export function getInitialValues(): RawValues<CommonSettings> {
-  const loaded = loadSettings();
+  const raw = firstFullyPopulated([
+    commonFromQueryParams(currentUrl().searchParams),
+    loadSettings(),
+    {
+      type: DEFAULT_TYPE
+    }
+  ]);
 
   return {
-    type: first(loaded.type, DEFAULT_TYPE)
+    type: parseType(raw.type)
   };
 }

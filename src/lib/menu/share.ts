@@ -6,6 +6,7 @@ import { type FischerClockSettings } from '$lib/clock-settings/fischer-settings'
 import { BYOYOMI, CANADIAN, FISCHER } from '$lib/clock-settings/clock-type';
 import type { RawValues } from '$lib/util/raw-values';
 import { currentUrl } from '$lib/util/url';
+import type { CommonSettings } from '$lib/clock-settings/common-settings';
 
 export const shareableSettingsUrl = (settings: ClockSettings) => {
   const url = currentUrl();
@@ -64,6 +65,12 @@ function toQueryParams(settings: ClockSettings): URLSearchParams {
   }
 }
 
+export const commonFromQueryParams = (params: URLSearchParams): RawValues<CommonSettings> => {
+  return {
+    type: params.get('type') || ''
+  };
+};
+
 type Getter = (name: string) => string;
 
 /**
@@ -81,6 +88,9 @@ function fromQueryParams<T extends ClockSettings>(
 ) {
   return (params: URLSearchParams): RawValues<T> => {
     const get = (name: string) => params.get(name) || '';
+
+    console.log('custom is', readFromQueryParams(get));
+
     return get(queryParams.type) === expected ? readFromQueryParams(get) : empty;
   };
 }

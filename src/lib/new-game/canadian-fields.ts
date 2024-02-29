@@ -10,7 +10,7 @@ import {
 } from '$lib/clock-settings/canadian-settings';
 import { CANADIAN } from '$lib/clock-settings/clock-type';
 import { canadianFromQueryParams } from '$lib/menu/share';
-import { first } from '$lib/util/first';
+import { firstFullyPopulated } from '$lib/util/first';
 import { currentUrl } from '$lib/util/url';
 import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-fields';
 import { getter } from './get-form-value';
@@ -29,23 +29,21 @@ export function parse(formData: FormData): CanadianClockSettings {
 }
 
 export function getInitialValues(): CanadianClockSettings {
-  const loaded = loadSettings();
-  const query = canadianFromQueryParams(currentUrl().searchParams);
+  const raw = firstFullyPopulated([
+    loadSettings(),
+    canadianFromQueryParams(currentUrl().searchParams),
+    {
+      type: CANADIAN,
+      mainTimeSeconds: String(DEFAULT_MAIN_TIME_SECONDS),
+      timePerPeriodSeconds: String(DEFAULT_TIME_PER_PERIOD_SECONDS),
+      stonesPerPeriod: String(DEFAULT_STONES_PER_PERIOD)
+    }
+  ]);
 
   return {
     type: CANADIAN,
-    mainTimeSeconds: parseMainTimeSeconds(
-      first(query.mainTimeSeconds, loaded.mainTimeSeconds, String(DEFAULT_MAIN_TIME_SECONDS))
-    ),
-    timePerPeriodSeconds: parseTimePerPeriodSeconds(
-      first(
-        query.timePerPeriodSeconds,
-        loaded.timePerPeriodSeconds,
-        String(DEFAULT_TIME_PER_PERIOD_SECONDS)
-      )
-    ),
-    stonesPerPeriod: parseStonesPerPeriod(
-      first(query.stonesPerPeriod, loaded.stonesPerPeriod, String(DEFAULT_STONES_PER_PERIOD))
-    )
+    mainTimeSeconds: parseMainTimeSeconds(raw.mainTimeSeconds),
+    timePerPeriodSeconds: parseTimePerPeriodSeconds(raw.timePerPeriodSeconds),
+    stonesPerPeriod: parseStonesPerPeriod(raw.timePerPeriodSeconds)
   };
 }

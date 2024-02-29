@@ -4,7 +4,8 @@
   import SecondaryInfo from '$lib/game-clock/SecondaryInfo.svelte';
   import Timeout from '$lib/game-clock/Timeout.svelte';
   import { pluralize } from '$lib/util/pluralize';
-  import type { ByoyomiState, ByoyomiClockSettings } from '$lib/timing/byoyomi';
+  import type { ByoyomiState } from '$lib/timing/byoyomi';
+  import type { ByoyomiClockSettings } from '$lib/clock-settings/byoyomi-settings';
 
   export let state: ByoyomiState;
   export let settings: ByoyomiClockSettings;

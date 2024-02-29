@@ -1,6 +1,5 @@
 <script lang="ts">
   import { QRCodeSVG } from '@akamfoad/qrcode';
-  import { onMount } from 'svelte';
 
   export let data: string;
 

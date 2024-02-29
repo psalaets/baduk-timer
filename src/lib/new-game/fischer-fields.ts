@@ -9,7 +9,7 @@ import {
   parseInitialTimeSeconds,
   loadSettings
 } from '$lib/clock-settings/fischer-settings';
-import { first } from '$lib/util/first';
+import { firstFullyPopulated } from '$lib/util/first';
 import { getter } from './get-form-value';
 import { fischerFromQueryParams } from '$lib/menu/share';
 import { currentUrl } from '$lib/util/url';
@@ -40,16 +40,21 @@ export function getInitialValues(): FischerClockSettings {
   const loaded = loadSettings();
   const query = fischerFromQueryParams(currentUrl().searchParams);
 
+  const raw = firstFullyPopulated([
+    loadSettings(),
+    fischerFromQueryParams(currentUrl().searchParams),
+    {
+      type: FISCHER,
+      initialSeconds: String(DEFAULT_INITIAL_TIME_SECONDS),
+      incrementSeconds: String(DEFAULT_INCREMENT_SECONDS),
+      maxSeconds: String(DEFAULT_MAX_TIME_SECONDS)
+    }
+  ]);
+
   return {
     type: FISCHER,
-    initialSeconds: parseInitialTimeSeconds(
-      first(query.initialSeconds, loaded.initialSeconds, String(DEFAULT_INITIAL_TIME_SECONDS))
-    ),
-    incrementSeconds: parseIncrementSeconds(
-      first(query.incrementSeconds, loaded.incrementSeconds, String(DEFAULT_INCREMENT_SECONDS))
-    ),
-    maxSeconds: parseMaxSeconds(
-      first(query.maxSeconds, loaded.maxSeconds, String(DEFAULT_MAX_TIME_SECONDS))
-    )
+    initialSeconds: parseInitialTimeSeconds(raw.initialSeconds),
+    incrementSeconds: parseIncrementSeconds(raw.incrementSeconds),
+    maxSeconds: parseMaxSeconds(raw.maxSeconds)
   };
 }

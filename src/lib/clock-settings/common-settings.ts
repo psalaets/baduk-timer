@@ -1,5 +1,4 @@
 import { BYOYOMI, CANADIAN, FISCHER, type ClockType } from '$lib/clock-settings/clock-type';
-import { first } from '$lib/util/first';
 import * as db from '$lib/util/localstorage';
 import type { RawValues } from '$lib/util/raw-values';
 

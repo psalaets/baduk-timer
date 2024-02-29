@@ -2,7 +2,7 @@
   import { createEventDispatcher } from 'svelte';
   import GenericClockFace from '$lib/game-clock/GenericClockFace.svelte';
   import type { GameClockState } from '$lib/timing/game-clock';
-  import type { ClockSettings } from '$lib/timing/clock-settings';
+  import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 
   export let gameClock: GameClockState;
   export let settings: ClockSettings;
