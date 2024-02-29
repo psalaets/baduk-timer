@@ -21,34 +21,32 @@
     text-align: center;
     padding: 1rem;
 
-    --clock-bg-color: var(--clock-face-light);
-    --clock-text-color: var(--clock-face-dark);
-    --clock-border-color: var(--clock-face-dark);
-
-    background-color: var(--clock-bg-color);
-    color: var(--clock-text-color);
-    border: 3px solid var(--clock-border-color);
+    background-color: var(--clock-face-background-color);
+    color: var(--clock-face-foreground-color);
+    border: 3px solid var(--clock-face-foreground-color);
 
     border-radius: 1.4rem;
+  }
+
+  .timeout {
+    color: var(--color-danger);
+    border-color: var(--color-danger);
   }
 
   .inner {
     padding: 1rem;
 
-    border: 3px solid var(--clock-bg-color);
+    /** Hidden but still takes up space by default */
+    border: 3px solid var(--clock-face-background-color);
     border-radius: 0.8rem;
   }
 
   .inner.my-turn {
-    border: 3px solid var(--clock-border-color);
-  }
-
-  .timeout {
-    color: red;
-    border-color: red;
+    /** No longer hidden */
+    border-color: var(--clock-face-foreground-color);
   }
 
   .inner.timeout {
-    border-color: red;
+    border-color: var(--color-danger);
   }
 </style>
