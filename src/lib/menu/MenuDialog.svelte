@@ -1,5 +1,6 @@
 <script lang="ts">
   import Dialog from '$lib/Dialog.svelte';
+  import QrCode from '$lib/menu/QrCode.svelte';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
   import { shareableSettingsUrl } from '$lib/menu/share';
 
@@ -30,6 +31,7 @@
         </div>
         {#if shareOpen}
           <button on:click={() => copyUrl()}>Copy Settings URL</button>
+          <QrCode data={shareableSettingsUrl(settings).toString()} />
         {/if}
       </li>
     </ul>
