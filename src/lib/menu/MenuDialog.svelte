@@ -9,10 +9,12 @@
   $: title = paused ? 'Paused' : 'Menu';
   $: closeButtonLabel = paused ? 'Resume' : 'Close';
 
-  const share = () => {
+  const copyUrl = () => {
     const url = shareableSettingsUrl(settings);
     navigator.clipboard.writeText(url.toString()).then(() => alert('URL copied!'));
   };
+
+  let shareOpen = false;
 </script>
 
 <Dialog on:close>
@@ -20,10 +22,15 @@
   <div slot="body">
     <ul>
       <li>
-        <a href="/new">new game</a>
+        <a href="/new">New Game</a>
       </li>
       <li>
-        <button on:click={() => share()}>Share settings</button>
+        <div>
+          <button on:click={() => (shareOpen = !shareOpen)}>Share Settings</button>
+        </div>
+        {#if shareOpen}
+          <button on:click={() => copyUrl()}>Copy Settings URL</button>
+        {/if}
       </li>
     </ul>
   </div>
