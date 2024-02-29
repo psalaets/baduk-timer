@@ -1,4 +1,4 @@
-import { writable, get, type Readable } from 'svelte/store';
+import { writable, derived, get, type Readable } from 'svelte/store';
 import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 import { create as createClock, type GameClockState } from '$lib/timing/game-clock';
 import type { Color } from '$lib/color';
@@ -8,6 +8,7 @@ export type Game = {
   clockState: Readable<GameClockState>;
   started: Readable<boolean>;
   paused: Readable<boolean>;
+  whoseTurn: Readable<Color>;
   pause: () => void;
   resume: () => void;
   stonePlayed: (by: Color) => void;
@@ -15,15 +16,18 @@ export type Game = {
 };
 
 export function createGame(settings: ClockSettings): Game {
+  const clock = createClock(settings);
   const started = writable(false);
   const paused = writable(true);
-  const clock = createClock(settings);
+  const blacksTurn = writable(true);
+  const whoseTurn = derived<typeof blacksTurn, Color>(blacksTurn, (b) => (b ? 'black' : 'white'));
 
   const unsubPaused = paused.subscribe((isPaused) => {
     if (isPaused) {
       clock.pause();
     } else {
-      clock.resume();
+      const who = get(whoseTurn);
+      clock.resume(who);
     }
   });
 
@@ -32,11 +36,19 @@ export function createGame(settings: ClockSettings): Game {
     paused.set(false);
   }
 
+  function stonePlayed(by: Color) {
+    clock.stonePlayed(by);
+
+    // Flip turn to other player
+    blacksTurn.set(by !== 'black');
+  }
+
   return {
     settings: settings,
     clockState: clock,
     started: started,
     paused: paused,
+    whoseTurn: whoseTurn,
     pause() {
       paused.set(true);
     },
@@ -46,21 +58,21 @@ export function createGame(settings: ClockSettings): Game {
     stonePlayed(by) {
       const isStarted = get(started);
       const isPaused = get(paused);
-
       const isFirstStone = isPaused && !isStarted;
-      const notPaused = !isPaused;
-      const expectedBy = get(clock).whoseTurn;
+
+      const expectedBy = get(whoseTurn);
+      const isRegularMove = by === expectedBy && !isPaused;
 
       if (isFirstStone) {
         // Anyone can play the first stone. It's decided by the players.
         // In even games it's black and in handicap games it's white.
-        clock.stonePlayed(by);
+        stonePlayed(by);
 
         // Start everything
         begin();
-      } else if (notPaused && by === expectedBy) {
+      } else if (isRegularMove) {
         // Otherwise, only allow the expected person to play a move when game is not paused
-        clock.stonePlayed(by);
+        stonePlayed(by);
       }
     },
     dispose() {

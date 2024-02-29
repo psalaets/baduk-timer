@@ -1,4 +1,4 @@
-import { writable, get, derived, type Readable, type Writable } from 'svelte/store';
+import { derived } from 'svelte/store';
 import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 import { BYOYOMI, CANADIAN, FISCHER } from '$lib/clock-settings/clock-type';
 import type { Color } from '$lib/color';
@@ -12,7 +12,6 @@ export type GameClock = ReturnType<typeof create>;
 export type GameClockState = {
   black: ClockState;
   white: ClockState;
-  whoseTurn: Color;
 };
 
 /**
@@ -21,32 +20,28 @@ export type GameClockState = {
 export function create(settings: ClockSettings) {
   const { black, white } = clocks(settings);
 
-  const blacksTurn = writable(true);
-  const whoseTurn = derived<typeof blacksTurn, Color>(blacksTurn, (b) => (b ? 'black' : 'white'));
-
   function pauseGame() {
     black.pause();
     white.pause();
   }
 
-  function resumeGame() {
-    if (get(blacksTurn)) {
+  function resumeGame(whoseTurn: Color) {
+    if (whoseTurn === 'black') {
       black.play();
     } else {
       white.play();
     }
   }
 
-  const data = derived([black, white, whoseTurn], ([b, w, who]) => {
+  const state = derived([black, white], ([b, w]) => {
     return {
       black: b,
-      white: w,
-      whoseTurn: who
+      white: w
     };
   });
 
   return {
-    subscribe: data.subscribe,
+    subscribe: state.subscribe,
     stonePlayed(by: Color) {
       if (by === 'black') {
         black.playedStone();
@@ -55,11 +50,9 @@ export function create(settings: ClockSettings) {
         white.playedStone();
         black.opponentPlayedStone();
       }
-
-      blacksTurn.set(by !== 'black');
     },
-    resume: () => resumeGame(),
-    pause: () => pauseGame()
+    resume: resumeGame,
+    pause: pauseGame
   };
 }
 

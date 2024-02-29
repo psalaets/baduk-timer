@@ -5,13 +5,14 @@
 
   export let game: Game;
 
-  const { started, paused, clockState } = game;
+  const { started, paused, clockState, whoseTurn } = game;
 
   let menuOpen = false;
 </script>
 
 <div>started: {$started}</div>
 <div>paused: {$paused}</div>
+<div>whoseTurn: {$whoseTurn}</div>
 
 <GameClock
   gameClock={$clockState}
