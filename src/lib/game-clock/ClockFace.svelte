@@ -1,10 +1,11 @@
-<script>
-  export let myTurn = false;
+<script lang="ts">
+  export let myTurn: boolean;
+  export let timeout: boolean;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<div class="clock-face" on:click role="button" tabindex="0">
-  <div class="inner {myTurn ? 'my-turn' : ''}">
+<div class="clock-face {timeout ? 'timeout' : ''}" on:click role="button" tabindex="0">
+  <div class="inner {myTurn ? 'my-turn' : ''} {timeout ? 'timeout' : ''}">
     <slot />
   </div>
 </div>
@@ -40,5 +41,14 @@
 
   .inner.my-turn {
     border: 3px solid var(--clock-border-color);
+  }
+
+  .timeout {
+    color: red;
+    border-color: red;
+  }
+
+  .inner.timeout {
+    border-color: red;
   }
 </style>

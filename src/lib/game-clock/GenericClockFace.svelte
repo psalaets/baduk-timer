@@ -18,7 +18,7 @@
   }
 </script>
 
-<ClockFace {myTurn} on:click={() => dispatchStone()}>
+<ClockFace {myTurn} timeout={state.timeout} on:click={() => dispatchStone()}>
   {#if state.type === BYOYOMI && settings.type === BYOYOMI}
     <ByoyomiClockFace {state} {settings} />
   {:else if state.type === CANADIAN && settings.type === CANADIAN}
