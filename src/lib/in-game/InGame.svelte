@@ -17,6 +17,7 @@
 <GameClock
   gameClock={$clockState}
   settings={game.settings}
+  whoseTurn={$started ? $whoseTurn : 'either'}
   on:stone={(event) => game.stonePlayed(event.detail)}
 >
   {#if $started}
