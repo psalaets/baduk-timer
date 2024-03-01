@@ -3,12 +3,26 @@ import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 import { create as createClock, type GameClockState } from '$lib/timing/game-clock';
 import type { Color } from '$lib/color';
 
+type GamePhase = 'pre' | 'peri' | 'post';
+
+export function isGameInProgess(phase: GamePhase) {
+  return phase === 'peri';
+}
+
+export function isGameover(phase: GamePhase) {
+  return phase === 'post';
+}
+
+export function isAwaitingFirstStone(phase: GamePhase) {
+  return phase === 'pre';
+}
+
 export type Game = {
   settings: ClockSettings;
   clockState: Readable<GameClockState>;
-  started: Readable<boolean>;
   paused: Readable<boolean>;
   whoseTurn: Readable<Color>;
+  phase: Readable<GamePhase>;
   pause: () => void;
   resume: () => void;
   stonePlayed: (by: Color) => void;
@@ -17,11 +31,11 @@ export type Game = {
 
 export function createGame(settings: ClockSettings): Game {
   const clock = createClock(settings);
-  const started = writable(false);
-  const paused = writable(true);
+
   const blacksTurn = writable(true);
   const whoseTurn = derived<typeof blacksTurn, Color>(blacksTurn, (b) => (b ? 'black' : 'white'));
 
+  const paused = writable(true);
   const unsubPaused = paused.subscribe((isPaused) => {
     if (isPaused) {
       clock.pause();
@@ -31,9 +45,24 @@ export function createGame(settings: ClockSettings): Game {
     }
   });
 
+  const phase = writable<GamePhase>('pre');
+  const unsubPhase = phase.subscribe((gamePhase) => {
+    if (gamePhase === 'peri') {
+      paused.set(false);
+    } else if (gamePhase === 'post') {
+      paused.set(true);
+    }
+  });
+
+  // Watch for end of game
+  const unsubClock = clock.subscribe((state) => {
+    if (state.black.timeout || state.white.timeout) {
+      phase.set('post');
+    }
+  });
+
   function begin() {
-    started.set(true);
-    paused.set(false);
+    phase.set('peri');
   }
 
   function stonePlayed(by: Color) {
@@ -46,9 +75,9 @@ export function createGame(settings: ClockSettings): Game {
   return {
     settings: settings,
     clockState: clock,
-    started: started,
     paused: paused,
     whoseTurn: whoseTurn,
+    phase: phase,
     pause() {
       paused.set(true);
     },
@@ -56,14 +85,18 @@ export function createGame(settings: ClockSettings): Game {
       paused.set(false);
     },
     stonePlayed(by) {
-      const isStarted = get(started);
       const isPaused = get(paused);
-      const isFirstStone = isPaused && !isStarted;
 
+      const currentPhase = get(phase);
       const expectedBy = get(whoseTurn);
-      const isRegularMove = by === expectedBy && !isPaused;
+      const isRegularMove = isGameInProgess(currentPhase) && !isPaused && by === expectedBy;
 
-      if (isFirstStone) {
+      // Can't play any more
+      if (isGameover(currentPhase)) {
+        return;
+      }
+
+      if (isAwaitingFirstStone(currentPhase)) {
         // Anyone can play the first stone. It's decided by the players.
         // In even games it's black and in handicap games it's white.
         stonePlayed(by);
@@ -77,6 +110,8 @@ export function createGame(settings: ClockSettings): Game {
     },
     dispose() {
       unsubPaused();
+      unsubPhase();
+      unsubClock();
     }
   };
 }
