@@ -3,6 +3,12 @@
   import QrCode from '$lib/menu/QrCode.svelte';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
   import { shareableSettingsUrl } from '$lib/menu/share';
+  import {
+    isFullscreen,
+    canFullscreen,
+    enterFullscreen,
+    exitFullscreen
+  } from '$lib/menu/fullscreen';
 
   export let paused = false;
   export let settings: ClockSettings;
@@ -13,6 +19,16 @@
   const copyUrl = () => {
     const url = shareableSettingsUrl(settings);
     navigator.clipboard.writeText(url.toString()).then(() => alert('URL copied!'));
+  };
+
+  const toggleFullscreen = () => {
+    if (canFullscreen()) {
+      if (isFullscreen()) {
+        exitFullscreen();
+      } else {
+        enterFullscreen();
+      }
+    }
   };
 
   let shareOpen = false;
@@ -33,6 +49,9 @@
           <button on:click={() => copyUrl()}>Copy Settings URL</button>
           <QrCode data={shareableSettingsUrl(settings).toString()} />
         {/if}
+      </li>
+      <li>
+        <button on:click={() => toggleFullscreen()}>Fullscreen</button>
       </li>
     </ul>
   </div>
