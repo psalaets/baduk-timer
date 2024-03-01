@@ -39,8 +39,6 @@ export function getInitialValues(): ByoyomiClockSettings {
     }
   ]);
 
-  console.log('raw', raw);
-
   return {
     type: BYOYOMI,
     mainTimeSeconds: parseMainTimeSeconds(raw.mainTimeSeconds),

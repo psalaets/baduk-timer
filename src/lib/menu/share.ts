@@ -88,9 +88,6 @@ function fromQueryParams<T extends ClockSettings>(
 ) {
   return (params: URLSearchParams): RawValues<T> => {
     const get = (name: string) => params.get(name) || '';
-
-    console.log('custom is', readFromQueryParams(get));
-
     return get(queryParams.type) === expected ? readFromQueryParams(get) : empty;
   };
 }
