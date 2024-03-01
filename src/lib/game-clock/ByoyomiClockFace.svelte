@@ -3,7 +3,6 @@
   import PrimaryInfo from '$lib/game-clock/PrimaryInfo.svelte';
   import SecondaryInfo from '$lib/game-clock/SecondaryInfo.svelte';
   import Timeout from '$lib/game-clock/Timeout.svelte';
-  import { pluralize } from '$lib/util/pluralize';
   import type { ByoyomiState } from '$lib/timing/byoyomi';
   import type { ByoyomiClockSettings } from '$lib/clock-settings/byoyomi-settings';
 
@@ -24,8 +23,17 @@
   </PrimaryInfo>
   <SecondaryInfo>
     <Timeout timeout={state.timeout}>
-      ({state.periodsRemaining}
-      {pluralize(state.periodsRemaining, 'period')})
+      {#if state.periodsRemaining === 1}
+        <span class="sudden-death">(SD)</span>
+      {:else}
+        ({state.periodsRemaining} periods)
+      {/if}
     </Timeout>
   </SecondaryInfo>
 {/if}
+
+<style>
+  .sudden-death {
+    color: var(--color-danger);
+  }
+</style>
