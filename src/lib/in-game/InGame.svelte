@@ -7,7 +7,7 @@
 
   const { paused, clockState, whoseTurn, phase } = game;
 
-  let gameInProgress = isGameInProgess($phase);
+  $: gameInProgress = isGameInProgess($phase);
   let menuOpen = false;
 </script>
 
