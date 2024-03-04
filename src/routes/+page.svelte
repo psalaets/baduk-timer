@@ -12,9 +12,6 @@
   }
 </script>
 
-<!-- TODO remove link -->
-<a href="/new">new game</a>
-
 {#if game}
   <InGame {game} />
 {/if}
