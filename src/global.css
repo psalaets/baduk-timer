@@ -13,9 +13,17 @@
   --color-black: #555555;
   --color-danger: #ff0000;
 
-  --clock-face-foreground-color: var(--color-black);
-  --clock-face-background-color: var(--color-white);
+  /* Default to dark theme because it puts a little less demand on battery */
+  --clock-face-foreground-color: var(--color-white);
+  --clock-face-background-color: var(--color-black);
   --clock-font-family: 'Courier New', Courier, monospace;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --clock-face-foreground-color: var(--color-black);
+    --clock-face-background-color: var(--color-white);
+  }
 }
 
 /* debug helper /
