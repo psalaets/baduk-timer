@@ -4,8 +4,8 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<div class="clock-face {timeout ? 'timeout' : ''}" on:click role="button" tabindex="0">
-  <div class="inner {myTurn ? 'my-turn' : ''} {timeout ? 'timeout' : ''}">
+<div class="clock-face" class:timeout on:click role="button" tabindex="0">
+  <div class="inner" class:my-turn={myTurn} class:timeout>
     <slot />
   </div>
 </div>
