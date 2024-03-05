@@ -8,7 +8,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* vars */
+  /********************
+   * Custom properties
+   ********************/
+
   --color-white: #f5f5f5;
   --color-black: #555555;
   --color-danger: #ff0000;

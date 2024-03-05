@@ -30,6 +30,6 @@
   {/if}
 
   <div class="buttons">
-    <button type="button" on:click|stopPropagation={() => dispatchStone()}>Played stone</button>
+    <button type="button" on:click|stopPropagation={() => dispatchStone()}>Stone Played</button>
   </div>
 </ClockFace>

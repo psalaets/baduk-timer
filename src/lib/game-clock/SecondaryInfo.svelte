@@ -5,6 +5,7 @@
 <style>
   .secondary-info {
     font-family: var(--clock-font-family);
-    font-size: 3rem;
+    /* This is sized based on parent font size so container units can control font size */
+    font-size: 3em;
   }
 </style>

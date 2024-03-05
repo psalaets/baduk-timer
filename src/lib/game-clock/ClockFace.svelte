@@ -12,20 +12,16 @@
 
 <style>
   .clock-face {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
+    /** Game clock is this element's flex container */
     flex: 1 1 100%;
 
-    text-align: center;
-    padding: 1rem;
+    padding: 1cqi;
 
     background-color: var(--clock-face-background-color);
     color: var(--clock-face-foreground-color);
     border: 3px solid var(--clock-face-foreground-color);
 
-    border-radius: 1.4rem;
+    border-radius: 1.4cqi;
   }
 
   .timeout {
@@ -33,12 +29,18 @@
     border-color: var(--color-danger);
   }
 
+  /** Extra container element used to acheive double border effect */
   .inner {
-    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1cqi;
+
+    padding: 1.4cqi;
 
     /** Hidden but still takes up space by default */
     border: 3px solid var(--clock-face-background-color);
-    border-radius: 0.8rem;
+    border-radius: 0.8cqi;
   }
 
   .inner.my-turn {
