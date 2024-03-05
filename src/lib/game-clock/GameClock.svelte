@@ -53,5 +53,6 @@
 
   .middle {
     display: flex;
+    align-items: center;
   }
 </style>
