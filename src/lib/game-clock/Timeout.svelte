@@ -1,5 +1,5 @@
 <script lang="ts">
-  // Renders timeout message if true, renders slot content otherwise
+  // Renders timeout message if true, otherwise renders slot content
   export let timeout: boolean;
 </script>
 
@@ -11,7 +11,6 @@
 
 <style>
   .timeout {
-    color: red;
     font-weight: bold;
   }
 </style>
