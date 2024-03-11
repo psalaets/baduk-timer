@@ -1,5 +1,4 @@
 import { getContext, setContext } from 'svelte';
-import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 import type { Game } from '$lib/game';
 
 export type GameContext = {

@@ -17,6 +17,10 @@ export function isAwaitingFirstStone(phase: GamePhase) {
   return phase === 'pre';
 }
 
+type SyncDisposer = () => void;
+type AsyncDisposer = () => Promise<void>;
+type Disposer = SyncDisposer | AsyncDisposer;
+
 export type Game = {
   settings: ClockSettings;
   clockState: Readable<GameClockState>;
@@ -26,15 +30,14 @@ export type Game = {
   pause: () => void;
   resume: () => void;
   stonePlayed: (by: Color) => void;
-  dispose: Disposer;
+  dispose: AsyncDisposer;
 };
 
 type GameData = Pick<Game, 'clockState' | 'paused' | 'whoseTurn' | 'phase'>;
-type Disposer = () => void;
 /** Function that receives game's stores and returns a dispose function */
-type Effect = (data: GameData) => Disposer;
+export type GameEffect = (data: GameData) => Disposer;
 
-export function createGame(settings: ClockSettings, effect?: Effect): Game {
+export function createGame(settings: ClockSettings, effect?: GameEffect): Game {
   const clock = createClock(settings);
 
   const blacksTurn = writable(true);
@@ -44,7 +47,15 @@ export function createGame(settings: ClockSettings, effect?: Effect): Game {
   const phase = writable<GamePhase>('pre');
 
   const disposers: Array<Disposer> = [];
-  const dispose = () => disposers.forEach((fn) => fn());
+  const dispose = async () => {
+    for (const disposer of disposers) {
+      try {
+        await disposer();
+      } catch (e) {
+        console.error('Unable to dispose game watcher', e);
+      }
+    }
+  };
 
   if (effect) {
     const disposeEffect = effect({
