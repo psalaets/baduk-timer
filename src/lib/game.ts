@@ -26,16 +26,37 @@ export type Game = {
   pause: () => void;
   resume: () => void;
   stonePlayed: (by: Color) => void;
-  dispose: () => void;
+  dispose: Disposer;
 };
 
-export function createGame(settings: ClockSettings): Game {
+type GameData = Pick<Game, 'clockState' | 'paused' | 'whoseTurn' | 'phase'>;
+type Disposer = () => void;
+/** Function that receives game's stores and returns a dispose function */
+type Effect = (data: GameData) => Disposer;
+
+export function createGame(settings: ClockSettings, effect?: Effect): Game {
   const clock = createClock(settings);
 
   const blacksTurn = writable(true);
   const whoseTurn = derived<typeof blacksTurn, Color>(blacksTurn, (b) => (b ? 'black' : 'white'));
 
   const paused = writable(true);
+  const phase = writable<GamePhase>('pre');
+
+  const disposers: Array<Disposer> = [];
+  const dispose = () => disposers.forEach((fn) => fn());
+
+  if (effect) {
+    const disposeEffect = effect({
+      clockState: clock,
+      paused,
+      whoseTurn,
+      phase
+    });
+    disposers.push(disposeEffect);
+  }
+
+  // start and stop clock based on pause/unpause
   const unsubPaused = paused.subscribe((isPaused) => {
     if (isPaused) {
       clock.pause();
@@ -44,8 +65,9 @@ export function createGame(settings: ClockSettings): Game {
       clock.resume(who);
     }
   });
+  disposers.push(unsubPaused);
 
-  const phase = writable<GamePhase>('pre');
+  // start and stop clock based on phase changes
   const unsubPhase = phase.subscribe((gamePhase) => {
     if (gamePhase === 'peri') {
       paused.set(false);
@@ -53,6 +75,7 @@ export function createGame(settings: ClockSettings): Game {
       paused.set(true);
     }
   });
+  disposers.push(unsubPhase);
 
   // Watch for end of game
   const unsubClock = clock.subscribe((state) => {
@@ -60,6 +83,7 @@ export function createGame(settings: ClockSettings): Game {
       phase.set('post');
     }
   });
+  disposers.push(unsubClock);
 
   function begin() {
     phase.set('peri');
@@ -108,10 +132,6 @@ export function createGame(settings: ClockSettings): Game {
         stonePlayed(by);
       }
     },
-    dispose() {
-      unsubPaused();
-      unsubPhase();
-      unsubClock();
-    }
+    dispose
   };
 }
