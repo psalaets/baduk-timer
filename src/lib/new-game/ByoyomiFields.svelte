@@ -31,5 +31,12 @@
 </Field>
 <Field>
   <label for="periods">Periods</label>
-  <input id="periods" name="periods" type="number" bind:value={periods} />
+  <input
+    id="periods"
+    name="periods"
+    type="number"
+    bind:value={periods}
+    autocomplete="off"
+    size="5"
+  />
 </Field>

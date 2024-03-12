@@ -27,5 +27,12 @@
 </Field>
 <Field>
   <label for="stones-per-period">Stones per period</label>
-  <input id="stones-per-period" name="stonesPerPeriod" type="number" bind:value={stonesPerPeriod} />
+  <input
+    id="stones-per-period"
+    name="stonesPerPeriod"
+    type="number"
+    bind:value={stonesPerPeriod}
+    autocomplete="off"
+    size="5"
+  />
 </Field>
