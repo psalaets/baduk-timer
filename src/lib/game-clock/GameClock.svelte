@@ -53,7 +53,7 @@
   @media (orientation: portrait) {
     .game-clock {
       flex-direction: column-reverse;
-      font-size: 2cqi;
+      font-size: 1.8cqi;
     }
   }
 
