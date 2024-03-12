@@ -15,44 +15,42 @@
   const dispatchStone = createEventDispatcher();
 </script>
 
-<div class="game-clock-container">
-  <div class="game-clock">
-    <GenericClockFace
-      state={gameClock.black}
-      myTurn={whoseTurn === 'black'}
-      {settings}
-      on:stone={() => dispatchStone('stone', 'black')}
-    />
+<div class="game-clock">
+  <GenericClockFace
+    state={gameClock.black}
+    myTurn={whoseTurn === 'black'}
+    {settings}
+    on:stone={() => dispatchStone('stone', 'black')}
+  />
 
-    <div class="middle">
-      <slot />
-    </div>
-
-    <GenericClockFace
-      state={gameClock.white}
-      myTurn={whoseTurn === 'white'}
-      {settings}
-      on:stone={() => dispatchStone('stone', 'white')}
-    />
+  <div class="middle">
+    <slot />
   </div>
+
+  <GenericClockFace
+    state={gameClock.white}
+    myTurn={whoseTurn === 'white'}
+    {settings}
+    on:stone={() => dispatchStone('stone', 'white')}
+  />
 </div>
 
 <style>
-  .game-clock-container {
+  .game-clock {
     container-name: game-clock;
     container-type: inline-size;
-  }
 
-  .game-clock {
     display: flex;
-    gap: 2cqi;
 
-    padding: 2cqi;
+    flex: 1 1 100%;
+    max-width: 100rem;
+
     font-size: 1cqi;
   }
 
   .middle {
     display: flex;
     align-items: center;
+    padding: 2cqi;
   }
 </style>

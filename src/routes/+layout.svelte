@@ -6,6 +6,4 @@
   setGameContext(initialGameContext);
 </script>
 
-<div>
-  <slot />
-</div>
+<slot />

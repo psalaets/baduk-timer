@@ -11,9 +11,9 @@
   let menuOpen = false;
 </script>
 
-<div>paused: {$paused}</div>
+<!-- <div>paused: {$paused}</div>
 <div>whoseTurn: {$whoseTurn}</div>
-<div>phase: {$phase}</div>
+<div>phase: {$phase}</div> -->
 
 <GameClock
   gameClock={$clockState}

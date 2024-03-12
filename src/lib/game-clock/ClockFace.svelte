@@ -13,13 +13,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1cqi;
+    justify-content: center;
+    gap: 2cqi;
 
     /** Game clock is this element's flex container */
     flex: 1 1 100%;
-
-    padding: 1.4cqi;
-    border-radius: 1.4cqi;
 
     background-color: var(--clock-face-background-color);
     color: var(--clock-face-foreground-color);
