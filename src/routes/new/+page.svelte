@@ -2,7 +2,7 @@
   import NewGameForm from '$lib/new-game/NewGameForm.svelte';
   import { getGameContext, overwriteGame } from '$lib/game-context';
   import { createGame } from '$lib/game';
-  import { controlWakeLock } from '$lib/game-effects';
+  import { controlWakeLock } from '$lib/game-effects/wake-lock';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
   import { goto } from '$app/navigation';
 
