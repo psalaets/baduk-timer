@@ -15,7 +15,13 @@
     <TimeLeft secondsRemaining={state.countdown} />
   </PrimaryInfo>
   <SecondaryInfo>
-    +<TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> ({settings.periods})
+    <Timeout timeout={state.timeout}>
+      {#if state.periodsRemaining === 0}
+        <span class="sudden-death">(SD)</span>
+      {:else}
+        +<TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> ({settings.periods})
+      {/if}
+    </Timeout>
   </SecondaryInfo>
 {:else}
   <PrimaryInfo>
