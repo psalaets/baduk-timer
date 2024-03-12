@@ -1,10 +1,19 @@
 <script lang="ts">
   export let myTurn: boolean;
   export let timeout: boolean;
+  export let invertsInPortrait: boolean;
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<div class="clock-face" class:my-turn={myTurn} class:timeout on:click role="button" tabindex="0">
+<div
+  class="clock-face"
+  class:my-turn={myTurn}
+  class:inverts-in-portrait={invertsInPortrait}
+  class:timeout
+  on:click
+  role="button"
+  tabindex="0"
+>
   <slot />
 </div>
 
@@ -29,5 +38,11 @@
 
   .timeout {
     background-color: var(--clock-face-timeout-color);
+  }
+
+  @media (orientation: portrait) {
+    .inverts-in-portrait {
+      transform: rotate(180deg);
+    }
   }
 </style>

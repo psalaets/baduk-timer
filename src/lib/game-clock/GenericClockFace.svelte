@@ -10,7 +10,8 @@
 
   export let state: ClockState;
   export let settings: ClockSettings;
-  export let myTurn = false;
+  export let myTurn: boolean;
+  export let invertsInPortrait: boolean;
 
   const dispatch = createEventDispatcher();
   function dispatchStone() {
@@ -18,7 +19,7 @@
   }
 </script>
 
-<ClockFace {myTurn} timeout={state.timeout} on:click={() => dispatchStone()}>
+<ClockFace {myTurn} {invertsInPortrait} timeout={state.timeout} on:click={() => dispatchStone()}>
   {#if state.type === BYOYOMI && settings.type === BYOYOMI}
     <ByoyomiClockFace {state} {settings} />
   {:else if state.type === CANADIAN && settings.type === CANADIAN}

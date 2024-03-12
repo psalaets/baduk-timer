@@ -19,6 +19,7 @@
   <GenericClockFace
     state={gameClock.black}
     myTurn={whoseTurn === 'black'}
+    invertsInPortrait={false}
     {settings}
     on:stone={() => dispatchStone('stone', 'black')}
   />
@@ -30,6 +31,7 @@
   <GenericClockFace
     state={gameClock.white}
     myTurn={whoseTurn === 'white'}
+    invertsInPortrait={true}
     {settings}
     on:stone={() => dispatchStone('stone', 'white')}
   />
@@ -46,6 +48,13 @@
     max-width: 100rem;
 
     font-size: 1cqi;
+  }
+
+  @media (orientation: portrait) {
+    .game-clock {
+      flex-direction: column-reverse;
+      font-size: 2cqi;
+    }
   }
 
   .middle {
