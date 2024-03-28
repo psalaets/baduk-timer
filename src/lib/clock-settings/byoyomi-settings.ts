@@ -63,7 +63,7 @@ export const mainTimeOptions = [
   { value: '10800', display: '3 hours' },
   { value: '12600', display: '3 hours 30 minutes' },
   { value: '14400', display: '4 hours' }
-] as const;
+];
 
 // ripped from OGS
 export const timePerPeriodOptions = [
@@ -106,7 +106,7 @@ export const timePerPeriodOptions = [
   { value: '3000', display: '50 minutes' },
   { value: '3300', display: '55 minutes' },
   { value: '3600', display: '1 hour' }
-] as const;
+];
 
 export function parsePeriods(rawValue: string): number {
   const isNumeric = rawValue.trim() !== '' && !isNaN(Number(rawValue));

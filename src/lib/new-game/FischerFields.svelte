@@ -6,6 +6,7 @@
     getInitialValues
   } from './fischer-fields';
   import Field from '$lib/new-game/Field.svelte';
+  import Select from '$lib/new-game/Select.svelte';
 
   const initialValues = getInitialValues();
 
@@ -16,27 +17,30 @@
 
 <Field>
   <label for="initial-time">Initial Time</label>
-  <select id="initial-time" name="initialTimeSeconds" bind:value={initialSeconds}>
-    {#each initialTimeOptions as opt (opt.value)}
-      <option value={opt.value}>{opt.display}</option>
-    {/each}
-  </select>
+  <Select
+    id="initial-time"
+    name="initialTimeSeconds"
+    bind:value={initialSeconds}
+    options={initialTimeOptions}
+  ></Select>
 </Field>
 
 <Field>
   <label for="increment">Increment</label>
-  <select id="increment" name="incrementSeconds" bind:value={incrementSeconds}>
-    {#each incrementOptions as opt (opt.value)}
-      <option value={opt.value}>{opt.display}</option>
-    {/each}
-  </select>
+  <Select
+    id="increment"
+    name="incrementSeconds"
+    bind:value={incrementSeconds}
+    options={incrementOptions}
+  ></Select>
 </Field>
 
 <Field>
   <label for="max-time">Maximum Time</label>
-  <select id="max-time" name="maxTimeSeconds" bind:value={maxSeconds}>
-    {#each maxTimeOptions as opt (opt.value)}
-      <option value={opt.value}>{opt.display}</option>
-    {/each}
-  </select>
+  <Select
+    id="max-time"
+    name="maxTimeSeconds"
+    bind:value={maxSeconds}
+    options={maxTimeOptions}
+  ></Select>
 </Field>

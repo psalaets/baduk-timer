@@ -5,6 +5,7 @@
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 
   import Field from '$lib/new-game/Field.svelte';
+  import Select from '$lib/new-game/Select.svelte';
   import { getter } from './get-form-value';
 
   import { typeOptions, getInitialValues } from '$lib/new-game/common-fields';
@@ -70,11 +71,7 @@
 <form aria-label="Time settings" method="POST" on:submit|preventDefault={onSubmit} novalidate>
   <Field>
     <label for="time-system">Time System</label>
-    <select id="time-system" name="timeSystem" bind:value={type}>
-      {#each typeOptions as opt (opt.value)}
-        <option value={opt.value}>{opt.display}</option>
-      {/each}
-    </select>
+    <Select id="time-system" name="timeSystem" bind:value={type} options={typeOptions}></Select>
   </Field>
 
   {#if type === BYOYOMI}

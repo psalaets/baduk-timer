@@ -1,7 +1,3 @@
-<script lang="ts">
-  let message: string;
-</script>
-
 <div class="field">
   <slot />
 </div>
@@ -9,6 +5,7 @@
 <style>
   .field {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    gap: 0.4rem;
   }
 </style>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { mainTimeOptions, timePerPeriodOptions, getInitialValues } from './canadian-fields';
   import Field from '$lib/new-game/Field.svelte';
+  import Select from '$lib/new-game/Select.svelte';
 
   const initialValues = getInitialValues();
 
@@ -11,19 +12,21 @@
 
 <Field>
   <label for="main-time">Main Time</label>
-  <select id="main-time" name="mainTimeSeconds" bind:value={mainTimeSeconds}>
-    {#each mainTimeOptions as opt (opt.value)}
-      <option value={opt.value}>{opt.display}</option>
-    {/each}
-  </select>
+  <Select
+    id="main-time"
+    name="mainTimeSeconds"
+    bind:value={mainTimeSeconds}
+    options={mainTimeOptions}
+  ></Select>
 </Field>
 <Field>
   <label for="time-per-period">Time per period</label>
-  <select id="time-per-period" name="timePerPeriodSeconds" bind:value={timePerPeriodSeconds}>
-    {#each timePerPeriodOptions as opt (opt.value)}
-      <option value={opt.value}>{opt.display}</option>
-    {/each}
-  </select>
+  <Select
+    id="time-per-period"
+    name="timePerPeriodSeconds"
+    bind:value={timePerPeriodSeconds}
+    options={timePerPeriodOptions}
+  ></Select>
 </Field>
 <Field>
   <label for="stones-per-period">Stones per period</label>
@@ -33,6 +36,5 @@
     type="number"
     bind:value={stonesPerPeriod}
     autocomplete="off"
-    size="5"
   />
 </Field>
