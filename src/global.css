@@ -19,6 +19,7 @@
   --color-grass: #359435;
 
   --color-danger: var(--color-blood);
+  --focused-input-outline-color: #0000ff;
 
   --clock-font-family: 'Courier New', Courier, monospace;
 

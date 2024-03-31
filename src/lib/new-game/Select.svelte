@@ -36,6 +36,6 @@
 
   select:focus-visible {
     outline-width: 0.0625rem;
-    outline-color: #0000ff;
+    outline-color: var(--focused-input-outline-color);
   }
 </style>
