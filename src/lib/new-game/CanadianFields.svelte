@@ -2,6 +2,7 @@
   import { mainTimeOptions, timePerPeriodOptions, getInitialValues } from './canadian-fields';
   import Field from '$lib/new-game/Field.svelte';
   import Select from '$lib/new-game/Select.svelte';
+  import Input from '$lib/new-game/Input.svelte';
 
   const initialValues = getInitialValues();
 
@@ -30,7 +31,7 @@
 </Field>
 <Field>
   <label for="stones-per-period">Stones per period</label>
-  <input
+  <Input
     id="stones-per-period"
     name="stonesPerPeriod"
     type="number"

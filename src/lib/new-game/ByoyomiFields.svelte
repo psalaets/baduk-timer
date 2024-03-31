@@ -6,6 +6,7 @@
   } from '$lib/new-game/byoyomi-fields';
   import Field from '$lib/new-game/Field.svelte';
   import Select from '$lib/new-game/Select.svelte';
+  import Input from '$lib/new-game/Input.svelte';
 
   const initialValues = getInitialValues();
 
@@ -34,5 +35,5 @@
 </Field>
 <Field>
   <label for="periods">Periods</label>
-  <input id="periods" name="periods" type="number" bind:value={periods} autocomplete="off" />
+  <Input id="periods" name="periods" type="number" bind:value={periods} autocomplete="off" />
 </Field>
