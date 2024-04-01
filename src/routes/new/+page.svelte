@@ -25,5 +25,16 @@
   }
 </script>
 
-<h1>New Game</h1>
-<NewGameForm canCancel={hasPreExistingGame} on:submit={onSubmit} on:cancel={onCancel} />
+<div class="new-game-page">
+  <h1>New Game</h1>
+  <NewGameForm canCancel={hasPreExistingGame} on:submit={onSubmit} on:cancel={onCancel} />
+</div>
+
+<style>
+  .new-game-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+</style>

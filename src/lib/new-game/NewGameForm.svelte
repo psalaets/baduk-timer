@@ -88,7 +88,7 @@
     {#if canCancel}
       <button type="button" on:click={onCancel}>Cancel</button>
     {/if}
-    <button type="submit">Apply</button>
+    <button type="submit">Use these settings</button>
   </div>
 </form>
 
