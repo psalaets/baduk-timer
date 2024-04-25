@@ -7,8 +7,8 @@ export const lowTimeSfx: GameEffect = function lowTimeSfx(gameData) {
 
   const disposers: Array<() => any> = [];
 
-  const isSuperUrgent = (secondsLeft: number) => secondsLeft <= 5;
-  const isUrgent = (secondsLeft: number) => secondsLeft <= 10;
+  const isSuperUrgent = (secondsLeft: number) => secondsLeft <= 5 && secondsLeft > 0;
+  const isUrgent = (secondsLeft: number) => secondsLeft <= 10 && secondsLeft > 5;
   const playLowTimeSound = (secondsLeft: number) => {
     if (isSuperUrgent(secondsLeft)) {
       howls.superUrgent.play();
