@@ -2,13 +2,15 @@
   import NewGameForm from '$lib/new-game/NewGameForm.svelte';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
   import { goto } from '$app/navigation';
-  import { clockSettingsStore } from '$lib/clock-settings-store';
   import { gameStore } from '$lib/game-store';
+  import { createGame } from '$lib/game';
 
   const hasPreExistingGame = !!$gameStore;
 
   function onSubmit(event: CustomEvent<ClockSettings>) {
-    clockSettingsStore.set(event.detail);
+    const game = createGame(event.detail);
+    gameStore.set(game);
+
     goto('/');
   }
 

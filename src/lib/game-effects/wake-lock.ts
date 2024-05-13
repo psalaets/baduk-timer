@@ -1,8 +1,7 @@
 import { derived } from 'svelte/store';
-import type { GameEffect } from '$lib/game';
 import { visibility } from '$lib/util/document-visibility';
 
-export const controlWakeLock: GameEffect = function controlWakeLock(gameData) {
+export const controlWakeLock = function controlWakeLock(gameData: any) {
   const supported = !!navigator.wakeLock;
   if (!supported) {
     console.warn('wakelock not supported in this browser');
