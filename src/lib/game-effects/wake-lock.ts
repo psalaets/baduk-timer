@@ -1,14 +1,15 @@
 import { derived } from 'svelte/store';
 import { visibility } from '$lib/util/document-visibility';
+import type { Game } from '$lib/game';
 
-export const controlWakeLock = function controlWakeLock(gameData: any) {
+export const controlWakeLock = function controlWakeLock(game: Game) {
   const supported = !!navigator.wakeLock;
   if (!supported) {
     console.warn('wakelock not supported in this browser');
     return () => {};
   }
 
-  const internalData = derived([visibility, gameData.phase], ([visible, phase]) => {
+  const internalData = derived([visibility, game.phase], ([visible, phase]) => {
     return {
       visible,
       phase
@@ -52,9 +53,8 @@ export const controlWakeLock = function controlWakeLock(gameData: any) {
     }
   });
 
-  return async () => {
+  return () => {
     unsubInternalData();
-
-    return release();
+    release();
   };
 };
