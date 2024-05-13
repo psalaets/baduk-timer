@@ -11,7 +11,8 @@
     "test": "vitest",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "build-sfx": "audiosprite --output static/sfx/sfx --export webm,mp3 --format howler2 --path /sfx src/sfx/urgent.wav src/sfx/super-urgent.wav src/sfx/timeout.wav"
+    "build-sfx": "audiosprite --output static/sfx/sfx --export webm,mp3 --format howler2 --path /sfx src/sfx/urgent.wav src/sfx/super-urgent.wav src/sfx/timeout.wav",
+    "postbuild-sfx": "mv static/sfx/sfx.json src/lib/game-effects/sound-sprite.json"
   },
   "devDependencies": {
     "@sveltejs/adapter-auto": "^3.0.0",
