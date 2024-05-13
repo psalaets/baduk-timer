@@ -17,8 +17,6 @@ export function isAwaitingFirstStone(phase: GamePhase) {
   return phase === 'pre';
 }
 
-type Disposer = () => void;
-
 export type Game = {
   settings: ClockSettings;
   clockState: Readable<GameClockState>;
@@ -28,7 +26,6 @@ export type Game = {
   pause: () => void;
   resume: () => void;
   stonePlayed: (by: Color) => void;
-  dispose: Disposer;
 };
 
 export function createGame(settings: ClockSettings): Game {
@@ -40,19 +37,8 @@ export function createGame(settings: ClockSettings): Game {
   const paused = writable(true);
   const phase = writable<GamePhase>('pre');
 
-  const disposers: Array<Disposer> = [];
-  const dispose = () => {
-    for (const disposer of disposers) {
-      try {
-        disposer();
-      } catch (e) {
-        console.error('Unable to dispose game watcher', e);
-      }
-    }
-  };
-
   // start and stop clock based on pause/unpause
-  const unsubPaused = paused.subscribe((isPaused) => {
+  paused.subscribe((isPaused) => {
     if (isPaused) {
       clock.pause();
     } else {
@@ -60,25 +46,22 @@ export function createGame(settings: ClockSettings): Game {
       clock.resume(who);
     }
   });
-  disposers.push(unsubPaused);
 
   // start and stop clock based on phase changes
-  const unsubPhase = phase.subscribe((gamePhase) => {
+  phase.subscribe((gamePhase) => {
     if (gamePhase === 'peri') {
       paused.set(false);
     } else if (gamePhase === 'post') {
       paused.set(true);
     }
   });
-  disposers.push(unsubPhase);
 
   // Watch for end of game
-  const unsubClock = clock.subscribe((state) => {
+  clock.subscribe((state) => {
     if (state.black.timeout || state.white.timeout) {
       phase.set('post');
     }
   });
-  disposers.push(unsubClock);
 
   function begin() {
     phase.set('peri');
@@ -126,7 +109,6 @@ export function createGame(settings: ClockSettings): Game {
         // Otherwise, only allow the expected person to play a move when game is not paused
         stonePlayed(by);
       }
-    },
-    dispose
+    }
   };
 }
