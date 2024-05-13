@@ -2,7 +2,7 @@ import { derived } from 'svelte/store';
 import { type Game } from '$lib/game';
 import { Howl } from 'howler';
 
-export const sfx = function sfx(game: Game) {
+export function urgentTimeSfx(game: Game) {
   const howls = createHowls();
 
   // These ranges seem a bit weird but they're needed to get 5 boops of each
@@ -30,7 +30,7 @@ export const sfx = function sfx(game: Game) {
   );
 
   whiteWholeSecondsLeft.subscribe(playLowTimeSound);
-};
+}
 
 function createHowls() {
   return {

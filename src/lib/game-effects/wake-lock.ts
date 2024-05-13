@@ -2,7 +2,7 @@ import { derived } from 'svelte/store';
 import { visibility } from '$lib/util/document-visibility';
 import type { Game } from '$lib/game';
 
-export const controlWakeLock = function controlWakeLock(game: Game) {
+export function controlWakeLock(game: Game) {
   const supported = !!navigator.wakeLock;
   if (!supported) {
     console.warn('wakelock not supported in this browser');
@@ -57,4 +57,4 @@ export const controlWakeLock = function controlWakeLock(game: Game) {
     unsubInternalData();
     release();
   };
-};
+}

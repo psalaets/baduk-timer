@@ -4,7 +4,8 @@
   import { gameStore } from '$lib/game-store';
   import InGame from '$lib/in-game/InGame.svelte';
   import WakeLock from '$lib/game-effects/WakeLock.svelte';
-  import Sfx from '$lib/game-effects/Sfx.svelte';
+  import UrgentTimeSfx from '$lib/game-effects/UrgentTimeSfx.svelte';
+  import TimeoutSfx from '$lib/game-effects/TimeoutSfx.svelte';
 
   if (browser && !$gameStore) {
     goto('/new');
@@ -14,7 +15,8 @@
 {#if $gameStore}
   <!-- Begin game effects -->
   <WakeLock game={$gameStore} />
-  <Sfx game={$gameStore} />
+  <UrgentTimeSfx game={$gameStore} />
+  <TimeoutSfx game={$gameStore} />
   <!-- End of game effects -->
 
   <InGame game={$gameStore} />
