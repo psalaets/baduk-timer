@@ -17,9 +17,7 @@ export function isAwaitingFirstStone(phase: GamePhase) {
   return phase === 'pre';
 }
 
-type SyncDisposer = () => void;
-type AsyncDisposer = () => Promise<void>;
-type Disposer = SyncDisposer | AsyncDisposer;
+type Disposer = () => void;
 
 export type Game = {
   settings: ClockSettings;
@@ -30,14 +28,10 @@ export type Game = {
   pause: () => void;
   resume: () => void;
   stonePlayed: (by: Color) => void;
-  dispose: AsyncDisposer;
+  dispose: Disposer;
 };
 
-type GameData = Pick<Game, 'clockState' | 'paused' | 'whoseTurn' | 'phase'>;
-/** Function that receives game's stores and returns a dispose function */
-export type GameEffect = (data: GameData) => Disposer;
-
-export function createGame(settings: ClockSettings, effect?: GameEffect): Game {
+export function createGame(settings: ClockSettings): Game {
   const clock = createClock(settings);
 
   const blacksTurn = writable(true);
@@ -47,25 +41,15 @@ export function createGame(settings: ClockSettings, effect?: GameEffect): Game {
   const phase = writable<GamePhase>('pre');
 
   const disposers: Array<Disposer> = [];
-  const dispose = async () => {
+  const dispose = () => {
     for (const disposer of disposers) {
       try {
-        await disposer();
+        disposer();
       } catch (e) {
         console.error('Unable to dispose game watcher', e);
       }
     }
   };
-
-  if (effect) {
-    const disposeEffect = effect({
-      clockState: clock,
-      paused,
-      whoseTurn,
-      phase
-    });
-    disposers.push(disposeEffect);
-  }
 
   // start and stop clock based on pause/unpause
   const unsubPaused = paused.subscribe((isPaused) => {
