@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import { gameStore } from '$lib/game-store';
@@ -10,6 +11,12 @@
   if (browser && !$gameStore) {
     goto('/new');
   }
+
+  // Make sure game is paused when leaving this view, e.g. back button
+  onDestroy(() => {
+    const game = $gameStore;
+    game && game.pause();
+  });
 </script>
 
 {#if $gameStore}
