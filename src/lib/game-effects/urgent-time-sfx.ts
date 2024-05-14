@@ -1,6 +1,6 @@
 import { derived } from 'svelte/store';
 import { type Game } from '$lib/game';
-import * as sfx from './sfx';
+import * as sfx from '$lib/game-effects/sfx';
 
 export function urgentTimeSfx(game: Game) {
   // These ranges seem a bit weird but they're needed to get 5 boops of each
