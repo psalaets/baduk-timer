@@ -16,7 +16,7 @@ export function superUrgent() {
 }
 
 function repeatedly(howl: Howl, soundName: string, totalPlays: number, gapMillis: number) {
-  const howlId = howl.play('timeout'); // (1)
+  const howlId = howl.play(soundName); // (1)
 
   // Plan for one less play because first play already happened at (1)
   const plannedPlays = totalPlays - 1;
