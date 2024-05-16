@@ -20,11 +20,9 @@
 </script>
 
 {#if $gameStore}
-  <!-- Begin game effects -->
-  <WakeLock game={$gameStore} />
-  <UrgentTimeSfx game={$gameStore} />
-  <TimeoutSfx game={$gameStore} />
-  <!-- End of game effects -->
-
-  <InGame game={$gameStore} />
+  <InGame game={$gameStore}>
+    <WakeLock game={$gameStore} />
+    <UrgentTimeSfx game={$gameStore} />
+    <TimeoutSfx game={$gameStore} />
+  </InGame>
 {/if}

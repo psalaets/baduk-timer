@@ -15,6 +15,9 @@
 <div>whoseTurn: {$whoseTurn}</div>
 <div>phase: {$phase}</div> -->
 
+<!-- Render game effects -->
+<slot />
+
 <GameClock
   gameClock={$clockState}
   settings={game.settings}
