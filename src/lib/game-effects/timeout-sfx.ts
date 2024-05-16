@@ -1,11 +1,20 @@
 import { derived } from 'svelte/store';
-import { type Game } from '$lib/game';
+import { type Game, type GamePhase, isGameover, isGameInProgess } from '$lib/game';
 import * as sfx from '$lib/game-effects/sfx';
 
 export function timeoutSfx(game: Game) {
+  let previousPhase: GamePhase | null = null;
+
   const timeoutStore = derived(
-    game.clockState,
-    (clockState) => clockState.black.timeout || clockState.white.timeout,
+    [game.clockState, game.phase],
+    ([clockState, currentPhase]) => {
+      const gameJustEnded =
+        previousPhase && isGameInProgess(previousPhase) && isGameover(currentPhase);
+      previousPhase = currentPhase;
+
+      const timeout = clockState.black.timeout || clockState.white.timeout;
+      return gameJustEnded && timeout;
+    },
     false
   );
 

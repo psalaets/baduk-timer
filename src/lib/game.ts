@@ -3,7 +3,7 @@ import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 import { create as createClock, type GameClockState } from '$lib/timing/game-clock';
 import type { Color } from '$lib/color';
 
-type GamePhase = 'pre' | 'peri' | 'post';
+export type GamePhase = 'pre' | 'peri' | 'post';
 
 export function isGameInProgess(phase: GamePhase) {
   return phase === 'peri';
