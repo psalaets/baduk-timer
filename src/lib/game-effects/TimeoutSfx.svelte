@@ -5,7 +5,5 @@
 
   export let game: Game;
 
-  onMount(() => {
-    return timeoutSfx(game);
-  });
+  onMount(() => timeoutSfx(game));
 </script>

@@ -5,7 +5,5 @@
 
   export let game: Game;
 
-  onMount(() => {
-    return urgentTimeSfx(game);
-  });
+  onMount(() => urgentTimeSfx(game));
 </script>

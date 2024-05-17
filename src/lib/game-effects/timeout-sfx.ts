@@ -18,9 +18,11 @@ export function timeoutSfx(game: Game) {
     false
   );
 
-  timeoutStore.subscribe((timeout) => {
+  const stopWatchingTimeout = timeoutStore.subscribe((timeout) => {
     if (timeout) {
       sfx.timeout();
     }
   });
+
+  return stopWatchingTimeout;
 }

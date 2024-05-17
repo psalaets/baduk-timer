@@ -23,7 +23,7 @@ export function urgentTimeSfx(game: Game) {
     }
   );
 
-  blackUrgentSecondsLeft.subscribe(playUrgencySound);
+  const unsubBlackUrgency = blackUrgentSecondsLeft.subscribe(playUrgencySound);
 
   const whiteUrgentSecondsLeft = derived<[typeof game.clockState, typeof game.paused], number>(
     [game.clockState, game.paused],
@@ -34,5 +34,10 @@ export function urgentTimeSfx(game: Game) {
     }
   );
 
-  whiteUrgentSecondsLeft.subscribe(playUrgencySound);
+  const unsubWhiteUrgency = whiteUrgentSecondsLeft.subscribe(playUrgencySound);
+
+  return () => {
+    unsubBlackUrgency();
+    unsubWhiteUrgency();
+  };
 }
