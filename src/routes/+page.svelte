@@ -7,6 +7,7 @@
   import WakeLock from '$lib/game-effects/WakeLock.svelte';
   import UrgentTimeSfx from '$lib/game-effects/UrgentTimeSfx.svelte';
   import TimeoutSfx from '$lib/game-effects/TimeoutSfx.svelte';
+  import { appSettingsStore } from '$lib/app-settings-store';
 
   if (browser && !$gameStore) {
     goto('/new');
@@ -22,7 +23,9 @@
 {#if $gameStore}
   <InGame game={$gameStore}>
     <WakeLock game={$gameStore} />
-    <UrgentTimeSfx game={$gameStore} />
-    <TimeoutSfx game={$gameStore} />
+    {#if $appSettingsStore.sound}
+      <UrgentTimeSfx game={$gameStore} />
+      <TimeoutSfx game={$gameStore} />
+    {/if}
   </InGame>
 {/if}
