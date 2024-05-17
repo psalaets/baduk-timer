@@ -9,23 +9,30 @@ export function urgentTimeSfx(game: Game) {
   const isSuperUrgent = (secondsLeft: number) => secondsLeft < 5 && secondsLeft >= 0;
   const isUrgent = (secondsLeft: number) => secondsLeft < 10 && secondsLeft >= 5;
 
-  const playLowTimeSound = (secondsLeft: number) => {
-    if (isSuperUrgent(secondsLeft)) {
-      sfx.superUrgent();
-    } else if (isUrgent(secondsLeft)) {
-      sfx.urgent();
-    }
+  const playUrgencySound = (secondsLeft: number) => {
+    if (isSuperUrgent(secondsLeft)) sfx.superUrgent();
+    if (isUrgent(secondsLeft)) sfx.urgent();
   };
 
-  const blackWholeSecondsLeft = derived([game.clockState], ([clockState]) =>
-    Math.trunc(clockState.black.countdown)
+  const blackUrgentSecondsLeft = derived<[typeof game.clockState, typeof game.paused], number>(
+    [game.clockState, game.paused],
+    ([clockState, paused], set) => {
+      if (!paused) {
+        set(Math.trunc(clockState.black.countdown));
+      }
+    }
   );
 
-  blackWholeSecondsLeft.subscribe(playLowTimeSound);
+  blackUrgentSecondsLeft.subscribe(playUrgencySound);
 
-  const whiteWholeSecondsLeft = derived([game.clockState], ([clockState]) =>
-    Math.trunc(clockState.white.countdown)
+  const whiteUrgentSecondsLeft = derived<[typeof game.clockState, typeof game.paused], number>(
+    [game.clockState, game.paused],
+    ([clockState, paused], set) => {
+      if (!paused) {
+        set(Math.trunc(clockState.white.countdown));
+      }
+    }
   );
 
-  whiteWholeSecondsLeft.subscribe(playLowTimeSound);
+  whiteUrgentSecondsLeft.subscribe(playUrgencySound);
 }
