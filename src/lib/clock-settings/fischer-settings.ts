@@ -1,6 +1,7 @@
 import * as db from '$lib/util/localstorage';
 import { FISCHER, type Fischer } from '$lib/clock-settings/clock-type';
 import type { RawValues } from '$lib/util/raw-values';
+import { clockSettingsKey } from '$lib/clock-settings/storage-key';
 
 export type FischerClockSettings = {
   type: Fischer;
@@ -201,16 +202,17 @@ function defaultMaxTimeOption() {
 }
 
 export function saveSettings(settings: FischerClockSettings) {
-  db.set('settings.fischer.initialTime', settings.initialSeconds);
-  db.set('settings.fischer.increment', settings.incrementSeconds);
-  db.set('settings.fischer.maxTime', settings.maxSeconds);
+  db.set(clockSettingsKey(['fischer', 'initialTime']), settings.initialSeconds);
+  db.set(clockSettingsKey(['fischer', 'increment']), settings.incrementSeconds);
+  db.set(clockSettingsKey(['fischer', 'maxTime']), settings.maxSeconds);
 }
 
+// prettier-ignore
 export function loadSettings(): RawValues<FischerClockSettings> {
   return {
     type: FISCHER,
-    initialSeconds: db.get('settings.fischer.initialTime', ''),
-    incrementSeconds: db.get('settings.fischer.increment', ''),
-    maxSeconds: db.get('settings.fischer.maxTime', '')
+    initialSeconds:   db.get(clockSettingsKey(['fischer', 'initialTime']), ''),
+    incrementSeconds: db.get(clockSettingsKey(['fischer', 'increment']), ''),
+    maxSeconds:       db.get(clockSettingsKey(['fischer', 'maxTime']), '')
   };
 }

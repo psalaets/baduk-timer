@@ -2,6 +2,7 @@ import { CANADIAN, type Canadian } from '$lib/clock-settings/clock-type';
 import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-settings';
 import * as db from '$lib/util/localstorage';
 import type { RawValues } from '$lib/util/raw-values';
+import { clockSettingsKey } from '$lib/clock-settings/storage-key';
 
 export type CanadianClockSettings = {
   type: Canadian;
@@ -101,16 +102,17 @@ export function parseStonesPerPeriod(rawValue: string): number {
 }
 
 export function saveSettings(settings: CanadianClockSettings) {
-  db.set('settings.canadian.mainTime', settings.mainTimeSeconds);
-  db.set('settings.canadian.timePerPeriod', settings.timePerPeriodSeconds);
-  db.set('settings.canadian.stonesPerPeriod', settings.stonesPerPeriod);
+  db.set(clockSettingsKey(['canadian', 'mainTime']), settings.mainTimeSeconds);
+  db.set(clockSettingsKey(['canadian', 'timePerPeriod']), settings.timePerPeriodSeconds);
+  db.set(clockSettingsKey(['canadian', 'stonesPerPeriod']), settings.stonesPerPeriod);
 }
 
+// prettier-ignore
 export function loadSettings(): RawValues<CanadianClockSettings> {
   return {
     type: CANADIAN,
-    mainTimeSeconds: db.get('settings.canadian.mainTime', ''),
-    timePerPeriodSeconds: db.get('settings.canadian.timePerPeriod', ''),
-    stonesPerPeriod: db.get('settings.canadian.stonesPerPeriod', '')
+    mainTimeSeconds:      db.get(clockSettingsKey(['canadian', 'mainTime']), ''),
+    timePerPeriodSeconds: db.get(clockSettingsKey(['canadian', 'timePerPeriod']), ''),
+    stonesPerPeriod:      db.get(clockSettingsKey(['canadian', 'stonesPerPeriod']), '')
   };
 }

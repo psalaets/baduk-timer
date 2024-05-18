@@ -1,9 +1,15 @@
-const prefix = 'baduk-timer.';
+function key(keyParts: Array<string>): string {
+  if (keyParts.length < 1) {
+    throw new Error('Key must have at least 1 key part');
+  }
 
-export function get(key: string, defaultValue: string) {
-  return localStorage.getItem(prefix + key) ?? defaultValue;
+  return ['baduk-timer'].concat(keyParts).join('.');
 }
 
-export function set(key: string, value: string | number) {
-  localStorage.setItem(prefix + key, String(value));
+export function get(keyParts: Array<string>, defaultValue: string) {
+  return localStorage.getItem(key(keyParts)) ?? defaultValue;
+}
+
+export function set(keyParts: Array<string>, value: string | number) {
+  localStorage.setItem(key(keyParts), String(value));
 }

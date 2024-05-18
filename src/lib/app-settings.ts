@@ -9,11 +9,11 @@ export const defaultSettings: AppSettings = {
 };
 
 export function save(settings: AppSettings) {
-  db.set('app-settings.sound', String(settings.sound));
+  db.set(['app-settings', 'sound'], String(settings.sound));
 }
 
 export function load(): AppSettings {
   return {
-    sound: db.get('app-settings.sound', String(defaultSettings.sound)) === 'true'
+    sound: db.get(['app-settings', 'sound'], String(defaultSettings.sound)) === 'true'
   };
 }

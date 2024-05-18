@@ -1,6 +1,7 @@
 import { BYOYOMI, type Byoyomi } from '$lib/clock-settings/clock-type';
 import type { RawValues } from '$lib/util/raw-values';
 import * as db from '$lib/util/localstorage';
+import { clockSettingsKey } from '$lib/clock-settings/storage-key';
 
 export type ByoyomiClockSettings = {
   type: Byoyomi;
@@ -152,16 +153,17 @@ export function defaultTimePerPeriodOption() {
 }
 
 export function saveSettings(settings: ByoyomiClockSettings) {
-  db.set('settings.byoyomi.mainTime', settings.mainTimeSeconds);
-  db.set('settings.byoyomi.timePerPeriod', settings.timePerPeriodSeconds);
-  db.set('settings.byoyomi.periods', settings.periods);
+  db.set(clockSettingsKey(['byoyomi', 'mainTime']), settings.mainTimeSeconds);
+  db.set(clockSettingsKey(['byoyomi', 'timePerPeriod']), settings.timePerPeriodSeconds);
+  db.set(clockSettingsKey(['byoyomi', 'periods']), settings.periods);
 }
 
+// prettier-ignore
 export function loadSettings(): RawValues<ByoyomiClockSettings> {
   return {
     type: BYOYOMI,
-    mainTimeSeconds: db.get('settings.byoyomi.mainTime', ''),
-    timePerPeriodSeconds: db.get('settings.byoyomi.timePerPeriod', ''),
-    periods: db.get('settings.byoyomi.periods', '')
+    mainTimeSeconds:      db.get(clockSettingsKey(['byoyomi', 'mainTime']), ''),
+    timePerPeriodSeconds: db.get(clockSettingsKey(['byoyomi', 'timePerPeriod']), ''),
+    periods:              db.get(clockSettingsKey(['byoyomi', 'periods']), '')
   };
 }

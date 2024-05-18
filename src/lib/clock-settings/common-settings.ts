@@ -1,6 +1,7 @@
 import { BYOYOMI, CANADIAN, FISCHER, type ClockType } from '$lib/clock-settings/clock-type';
 import * as db from '$lib/util/localstorage';
 import type { RawValues } from '$lib/util/raw-values';
+import { clockSettingsKey } from '$lib/clock-settings/storage-key';
 
 export type CommonSettings = {
   type: ClockType;
@@ -23,11 +24,11 @@ export function parseType(raw: string): ClockType {
 }
 
 export function saveSettings(settings: CommonSettings) {
-  db.set('settings.common.type', settings.type);
+  db.set(clockSettingsKey(['common', 'type']), settings.type);
 }
 
 export function loadSettings(): RawValues<CommonSettings> {
   return {
-    type: db.get('settings.common.type', '')
+    type: db.get(clockSettingsKey(['common', 'type']), '')
   };
 }
