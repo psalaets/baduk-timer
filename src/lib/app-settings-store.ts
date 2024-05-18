@@ -1,11 +1,11 @@
 import { writable } from 'svelte/store';
+import { load, save } from './app-settings';
 
-export type AppSettings = {
-  sound: boolean;
-};
+export const appSettingsStore = writable(load(), (set) => {
+  set(load());
+});
 
-const defaultSettings: AppSettings = {
-  sound: true
-};
-
-export const appSettingsStore = writable(defaultSettings);
+// sync settings to localstorage
+appSettingsStore.subscribe((settings) => {
+  save(settings);
+});
