@@ -25,9 +25,11 @@
   on:stone={(event) => game.stonePlayed(event.detail)}
 >
   {#if gameInProgress}
-    <button on:click={() => game.pause()}>Pause</button>
+    <button class="pause" on:click={() => game.pause()}>Pause</button>
+    <button class="pause pause--icon" on:click={() => game.pause()}>⏸</button>
+    <button class="pause pause--flip" on:click={() => game.pause()}>Pause</button>
   {:else}
-    <button on:click={() => (menuOpen = true)}>Menu</button>
+    <button class="pause pause--icon" on:click={() => (menuOpen = true)}>Menu</button>
   {/if}
 
   {#if gameInProgress && $paused}
@@ -36,3 +38,30 @@
     <MenuDialog on:close={() => (menuOpen = false)} settings={game.settings} />
   {/if}
 </GameClock>
+
+<style>
+  .pause {
+    background-color: transparent;
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--clock-face-foreground-color);
+    flex: 1 1 0%;
+    border: none;
+    font-size: calc(100vw / 20);
+    padding: .5em;
+    height: 3em;
+    background-color: rgb(24, 24, 24);
+  }
+  .pause:nth-of-type(1),
+  .pause:nth-of-type(3) {
+    border-top-left-radius: 1000px;
+    border-bottom-left-radius: 1000px;
+  }
+  .pause:hover,
+  .pause:active {
+    background-color: black;
+  }
+  .pause--flip {
+    transform: rotate(180deg);
+  }
+</style>

@@ -4,6 +4,8 @@
   export let secondsRemaining = 0;
 </script>
 
-<span>
-  {timeRemaining(secondsRemaining)}
-</span>
+<div>{timeRemaining(secondsRemaining)}</div>
+
+<style>
+
+</style>

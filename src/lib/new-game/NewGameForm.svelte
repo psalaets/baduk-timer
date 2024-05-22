@@ -96,10 +96,11 @@
   form {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 1em;
 
     margin-inline: auto;
-    width: 400px;
+    width: 100%;
+    padding: 1em;
   }
 
   .buttons {
