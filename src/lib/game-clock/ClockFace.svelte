@@ -7,7 +7,7 @@
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <div
-  use:fit={{min_size: 12, max_size:140 }}
+  use:fit={{min_size: 12, max_size:90 }}
   class="clock-face"
   class:my-turn={myTurn}
   class:inverts-in-portrait={invertsInPortrait}
@@ -22,6 +22,7 @@
 <style>
   .clock-face {
     height: 100%;
+    padding: 10px;
     border-radius: 20px;
     display: flex;
     flex-direction: column;
