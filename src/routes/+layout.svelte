@@ -5,7 +5,7 @@
 
 <svelte:head>
   <title>BadukTimer</title>
-  <meta name="description" content="Game clock for Go / Baduk / Weiqi / Igo" />
+  <meta name="descriptions" content="Game clock for Go / Baduk / Weiqi / Igo" />
 </svelte:head>
 
 <slot />

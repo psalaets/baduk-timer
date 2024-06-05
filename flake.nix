@@ -31,7 +31,6 @@
           # JS
           eslint.enable = true;
           prettier.enable = true;
-          prettier.settings.configPath = ".prettierrc";
           # JSON
           check-json.enable = true;
           # Markdown
