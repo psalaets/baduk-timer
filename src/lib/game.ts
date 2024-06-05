@@ -1,11 +1,11 @@
-import { writable, derived, get, type Readable } from 'svelte/store';
+import { derived, get, type Readable, writable } from 'svelte/store';
 import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 import { create as createClock, type GameClockState } from '$lib/timing/game-clock';
 import type { Color } from '$lib/color';
 
 export type GamePhase = 'pre' | 'peri' | 'post';
 
-export function isGameInProgess(phase: GamePhase) {
+export function isGameInProgress(phase: GamePhase) {
   return phase === 'peri';
 }
 
@@ -91,7 +91,7 @@ export function createGame(settings: ClockSettings): Game {
 
       const currentPhase = get(phase);
       const expectedBy = get(whoseTurn);
-      const isRegularMove = isGameInProgess(currentPhase) && !isPaused && by === expectedBy;
+      const isRegularMove = isGameInProgress(currentPhase) && !isPaused && by === expectedBy;
 
       // Can't play any more
       if (isGameover(currentPhase)) {

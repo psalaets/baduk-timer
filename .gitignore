@@ -11,3 +11,4 @@ vite.config.ts.timestamp-*
 
 # nix related
 .direnv
+.pre-commit-config.yaml

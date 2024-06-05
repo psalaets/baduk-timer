@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { type Game, isGameInProgess } from '$lib/game';
+  import { type Game, isGameInProgress } from '$lib/game';
   import GameClock from '$lib/game-clock/GameClock.svelte';
   import MenuDialog from '$lib/menu/MenuDialog.svelte';
 
@@ -7,7 +7,7 @@
 
   const { paused, clockState, whoseTurn, phase } = game;
 
-  $: gameInProgress = isGameInProgess($phase);
+  $: gameInProgress = isGameInProgress($phase);
   let menuOpen = false;
 </script>
 
