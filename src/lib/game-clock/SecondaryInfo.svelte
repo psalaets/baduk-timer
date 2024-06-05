@@ -5,8 +5,7 @@
 <style>
   .secondary-info {
     font-family: var(--clock-font-family);
-    font-size: 70%;
-    line-height: 70%;
+    font-size: 50%;
     /* This is sized based on parent font size so container units can control font size */
   }
 </style>

@@ -4,7 +4,7 @@
   export let secondsRemaining = 0;
 </script>
 
-<div>{timeRemaining(secondsRemaining)}</div>
+<span>{timeRemaining(secondsRemaining)}</span>
 
 <style>
 

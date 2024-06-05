@@ -25,11 +25,15 @@
   on:stone={(event) => game.stonePlayed(event.detail)}
 >
   {#if gameInProgress}
-    <button class="pause" on:click={() => game.pause()}>Pause</button>
-    <button class="pause pause--icon" on:click={() => game.pause()}>⏸</button>
-    <button class="pause pause--flip" on:click={() => game.pause()}>Pause</button>
+    <div class="c-menu-bar">
+      <button class="c-menu-bar__button" on:click={() => game.pause()}>Pause</button>
+      <button class="c-menu-bar__button c-menu-bar__button--icon c-menu-bar__button--hides-in-landscape" on:click={() => game.pause()}>⏸</button>
+      <button class="c-menu-bar__button c-menu-bar__button--hides-in-landscape c-menu-bar__button--flip" on:click={() => game.pause()}>Pause</button>
+    </div>
   {:else}
-    <button class="pause pause--icon" on:click={() => (menuOpen = true)}>Menu</button>
+    <div class="c-menu-bar">
+      <button class="c-menu-bar__button" on:click={() => (menuOpen = true)}>Menu</button>
+    </div>
   {/if}
 
   {#if gameInProgress && $paused}
@@ -40,28 +44,31 @@
 </GameClock>
 
 <style>
-  .pause {
-    background-color: transparent;
+  .c-menu-bar {
+    display: flex;
+    height: 100%;
+    background-color: rgb(24, 24, 24);
+    border-radius: 20px;
+  }
+  .c-menu-bar:hover,
+  .c-menu-bar:active {
+    background-color: black;
+  }
+  .c-menu-bar__button {
     font-weight: bold;
     text-transform: uppercase;
     color: var(--clock-face-foreground-color);
     flex: 1 1 0%;
     border: none;
-    font-size: calc(100vw / 20);
-    padding: .5em;
-    height: 3em;
-    background-color: rgb(24, 24, 24);
+    background-color: transparent;
   }
-  .pause:nth-of-type(1),
-  .pause:nth-of-type(3) {
-    border-top-left-radius: 1000px;
-    border-bottom-left-radius: 1000px;
-  }
-  .pause:hover,
-  .pause:active {
-    background-color: black;
-  }
-  .pause--flip {
+
+  .c-menu-bar__button--flip {
     transform: rotate(180deg);
+  }
+  @media (orientation: landscape) {
+    .c-menu-bar__button--hides-in-landscape {
+      display: none;
+    }
   }
 </style>
