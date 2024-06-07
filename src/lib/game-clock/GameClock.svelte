@@ -48,6 +48,7 @@
   }
   @media (orientation: landscape) {
     .c-clock-layout {
+      /* See also the values in  ClockFace.svelte .clock-face; font-size values */
       grid-template-columns: [clock-alpha] 42.5% [menu] 15% [clock-omega] 42.5%;
     }
     .c-clock-layout__menu {
@@ -57,6 +58,7 @@
   }
   @media (orientation: portrait) {
     .c-clock-layout {
+      /* See also the values in  ClockFace.svelte .clock-face; font-size values */
       grid-template-rows: [clock-alpha] 45% [menu] 10% [clock-omega] 45%;
     }
   }

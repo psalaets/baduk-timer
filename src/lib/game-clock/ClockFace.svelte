@@ -43,12 +43,14 @@
 
   @media (orientation: landscape) {
     .clock-face {
-      font-size: calc((45vw - 2em) / 6);
+      /* See also the values in  GameClock.svelte .c-clock-layout; grid-template values */
+      font-size: calc((42vw - 2em) / 6);
     }
   }
 
   @media (orientation: portrait) {
     .clock-face {
+      /* See also the values in  GameClock.svelte .c-clock-layout; grid-template values */
       font-size: calc((100vw - 2em) / 6);
     }
   }
