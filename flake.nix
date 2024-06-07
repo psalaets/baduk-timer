@@ -35,6 +35,8 @@
           check-json.enable = true;
           # Markdown
           typos.enable = true;
+          # Generic
+          editorconfig-checker.enable = true;
         };
       };
     });
