@@ -37,6 +37,14 @@
           typos.enable = true;
           # Generic
           editorconfig-checker.enable = true;
+          # Tests
+          # https://github.com/cachix/git-hooks.nix?tab=readme-ov-file#custom-hooks
+          unittests = {
+            enable = true;
+            name = "Unit Tests";
+            entry = "npm run test-check";
+            pass_filenames = false;
+          };
         };
       };
     });
