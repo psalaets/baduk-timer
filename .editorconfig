@@ -7,8 +7,8 @@ end_of_line = lf
 insert_final_newline = true
 charset = utf-8
 
-# 4 space indentation
-[*.{js,jsx,ts,tsx,json,html,css,scss}]
+# 2 space indentation
+[*.{js,jsx,ts,tsx,json,html,css,scss,svelte}]
 indent_style = space
 indent_size = 2
 

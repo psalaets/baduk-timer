@@ -27,8 +27,14 @@
   {#if gameInProgress}
     <div class="c-menu-bar">
       <button class="c-menu-bar__button" on:click={() => game.pause()}>Pause</button>
-      <button class="c-menu-bar__button c-menu-bar__button--icon c-menu-bar__button--hides-in-landscape" on:click={() => game.pause()}>⏸</button>
-      <button class="c-menu-bar__button c-menu-bar__button--hides-in-landscape c-menu-bar__button--flip" on:click={() => game.pause()}>Pause</button>
+      <button
+        class="c-menu-bar__button c-menu-bar__button--icon c-menu-bar__button--hides-in-landscape"
+        on:click={() => game.pause()}>⏸</button
+      >
+      <button
+        class="c-menu-bar__button c-menu-bar__button--hides-in-landscape c-menu-bar__button--flip"
+        on:click={() => game.pause()}>Pause</button
+      >
     </div>
   {:else}
     <div class="c-menu-bar">

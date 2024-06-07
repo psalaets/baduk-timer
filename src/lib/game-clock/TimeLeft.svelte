@@ -7,5 +7,4 @@
 <span>{timeRemaining(secondsRemaining)}</span>
 
 <style>
-
 </style>
