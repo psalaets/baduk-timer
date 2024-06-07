@@ -68,7 +68,17 @@ export const createByoyomi = (
       if (periodsLeft === 0) {
         timeout.set(true);
       } else {
-        countdown.set(timePerPeriodSeconds);
+        /**
+         * Sort of a hack:
+         *
+         * After using a period, player gets nearly `<period time> + 1` seconds
+         * so the clock shows `<period time>` for a bit.
+         *
+         * Without this the clock will show `<period time>` then instantly
+         * switches to `<period time> - 1`.
+         */
+        const periodBurnedBonusSeconds = 0.99;
+        countdown.set(timePerPeriodSeconds + periodBurnedBonusSeconds);
       }
     }
   };
