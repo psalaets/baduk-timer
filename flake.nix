@@ -39,7 +39,7 @@
           editorconfig-checker.enable = true;
           # Tests
           # https://github.com/cachix/git-hooks.nix?tab=readme-ov-file#custom-hooks
-          unittests = {
+          unit-tests = {
             enable = true;
             name = "Unit Tests";
             entry = "npm run test-check";
