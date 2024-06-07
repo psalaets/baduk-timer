@@ -1,6 +1,5 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
-  import { parent_style } from '@leveluptuts/svelte-fit'
   import GenericClockFace from '$lib/game-clock/GenericClockFace.svelte';
   import type { GameClockState } from '$lib/timing/game-clock';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
@@ -17,7 +16,7 @@
 </script>
 
 <div class="c-clock-layout">
-  <div class="c-clock-layout__timer" style={parent_style}>
+  <div class="c-clock-layout__timer">
     <GenericClockFace
       state={gameClock.black}
       myTurn={whoseTurn === 'black'}
@@ -30,7 +29,7 @@
   <div class="c-clock-layout__menu">
     <slot />
   </div>
-  <div class="c-clock-layout__timer" style={parent_style}>
+  <div class="c-clock-layout__timer">
     <GenericClockFace
       state={gameClock.white}
       myTurn={whoseTurn === 'white'}
@@ -49,7 +48,7 @@
   }
   @media (orientation: landscape) {
     .c-clock-layout {
-      grid-template-columns: [clock-alpha] 45% [menu] 10% [clock-omega] 45%;
+      grid-template-columns: [clock-alpha] 42.5% [menu] 15% [clock-omega] 42.5%;
     }
     .c-clock-layout__menu {
       padding-top: 1em;
@@ -58,7 +57,7 @@
   }
   @media (orientation: portrait) {
     .c-clock-layout {
-      grid-template-rows:[clock-alpha] 45% [menu] 10% [clock-omega] 45%;
+      grid-template-rows: [clock-alpha] 45% [menu] 10% [clock-omega] 45%;
     }
   }
   .c-clock-layout__timer {
