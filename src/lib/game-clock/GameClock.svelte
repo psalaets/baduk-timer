@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createEventDispatcher } from 'svelte';
+  import { parent_style } from '@leveluptuts/svelte-fit'
   import GenericClockFace from '$lib/game-clock/GenericClockFace.svelte';
   import type { GameClockState } from '$lib/timing/game-clock';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
@@ -15,51 +16,56 @@
   const dispatchStone = createEventDispatcher();
 </script>
 
-<div class="game-clock">
-  <GenericClockFace
-    state={gameClock.black}
-    myTurn={whoseTurn === 'black'}
-    invertsInPortrait={false}
-    {settings}
-    on:stone={() => dispatchStone('stone', 'black')}
-  />
-
-  <div class="middle">
-    <slot />
+<div class="c-clock-layout">
+  <div class="c-clock-layout__timer" style={parent_style}>
+    <GenericClockFace
+      state={gameClock.black}
+      myTurn={whoseTurn === 'black'}
+      invertsInPortrait={true}
+      {settings}
+      on:stone={() => dispatchStone('stone', 'black')}
+    />
   </div>
 
-  <GenericClockFace
-    state={gameClock.white}
-    myTurn={whoseTurn === 'white'}
-    invertsInPortrait={true}
-    {settings}
-    on:stone={() => dispatchStone('stone', 'white')}
-  />
+  <div class="c-clock-layout__menu">
+    <slot />
+  </div>
+  <div class="c-clock-layout__timer" style={parent_style}>
+    <GenericClockFace
+      state={gameClock.white}
+      myTurn={whoseTurn === 'white'}
+      invertsInPortrait={false}
+      {settings}
+      on:stone={() => dispatchStone('stone', 'white')}
+    />
+  </div>
 </div>
 
 <style>
-  .game-clock {
-    container-name: game-clock;
-    container-type: inline-size;
-
-    display: flex;
-
-    flex: 1 1 100%;
-    max-width: 100rem;
-
-    font-size: 1cqi;
+  .c-clock-layout {
+    width: 100vw;
+    height: 100vh;
+    display: grid;
   }
-
-  @media (orientation: portrait) {
-    .game-clock {
-      flex-direction: column-reverse;
-      font-size: 1.8cqi;
+  @media (orientation: landscape) {
+    .c-clock-layout {
+      grid-template-columns: [clock-alpha] 45% [menu] 10% [clock-omega] 45%;
+    }
+    .c-clock-layout__menu {
+      padding-top: 1em;
+      padding-bottom: 1em;
     }
   }
-
-  .middle {
-    display: flex;
-    align-items: center;
-    padding: 2cqi;
+  @media (orientation: portrait) {
+    .c-clock-layout {
+      grid-template-rows:[clock-alpha] 45% [menu] 10% [clock-omega] 45%;
+    }
+  }
+  .c-clock-layout__timer {
+    padding: 1em;
+  }
+  .c-clock-layout__menu {
+    padding-left: 1em;
+    padding-right: 1em;
   }
 </style>

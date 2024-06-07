@@ -29,8 +29,4 @@
   {:else}
     Unhandled clock type: {state.type}
   {/if}
-
-  <div class="buttons">
-    <button type="button" on:click|stopPropagation={() => dispatchStone()}>Stone Played</button>
-  </div>
 </ClockFace>

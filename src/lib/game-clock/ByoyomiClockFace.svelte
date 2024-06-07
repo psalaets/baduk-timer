@@ -19,7 +19,7 @@
       {#if state.periodsRemaining === 0}
         <span class="sudden-death">(SD)</span>
       {:else}
-        +<TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> ({settings.periods})
+        <TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> ({settings.periods})
       {/if}
     </Timeout>
   </SecondaryInfo>
