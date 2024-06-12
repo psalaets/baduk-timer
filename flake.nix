@@ -4,6 +4,9 @@
     systems.url = "github:nix-systems/default";
     pre-commit-hooks.url = "github:cachix/pre-commit-hooks.nix";
     nix-plop.url = "gitlab:cbleslie/nix-plop";
+    # Non-flake
+    editorconfig.url = "github:Ookiiboy/editor-config/";
+    editorconfig.flake = false;
   };
 
   outputs = {
@@ -12,11 +15,15 @@
     nixpkgs,
     pre-commit-hooks,
     nix-plop,
+    editorconfig,
     ...
   }: let
     forAllSystems = nixpkgs.lib.genAttrs (import systems);
   in {
-    formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.alejandra);
+    formatter = forAllSystems (system: let
+      pkgs = import nixpkgs {inherit system;};
+    in
+      pkgs.alejandra);
     # https://github.com/cachix/git-hooks.nix?tab=readme-ov-file
     # https://devenv.sh/reference/options/?query=pre-commit.hooks
     checks = forAllSystems (system: {
@@ -48,10 +55,15 @@
         };
       };
     });
-    devShells = forAllSystems (system: {
-      default = nixpkgs.legacyPackages.${system}.mkShell {
-        shellHook = ''${self.checks.${system}.pre-commit-check.shellHook}'';
-        buildInputs = with nixpkgs.legacyPackages.${system};
+    devShells = forAllSystems (system: let
+      pkgs = import nixpkgs {inherit system;};
+    in {
+      default = pkgs.mkShell {
+        shellHook = ''
+          ln -sf ${editorconfig}/.editorconfig ./.editorconfig
+          ${self.checks.${system}.pre-commit-check.shellHook}
+        '';
+        buildInputs = with pkgs;
           [
             nix-plop.packages.${system}.default
             nodejs_20
