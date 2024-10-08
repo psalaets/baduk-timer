@@ -17,6 +17,8 @@ export type Countdown = Readable<number> & {
   play: () => void;
 };
 
+const toMillis = (seconds: number) => seconds * 1000;
+
 /**
  * Creates readable store for a quantity of time that ticks down to zero.
  *
@@ -26,7 +28,7 @@ export type Countdown = Readable<number> & {
 export const createCountdown = (initialSeconds: number, createTicker: CreateTicker): Countdown => {
   const ticker = createTicker(100, onTick);
 
-  const remainingMs = writable(initialSeconds * 1000, () => {
+  const remainingMs = writable(toMillis(initialSeconds), () => {
     return () => ticker.stop();
   });
 
@@ -38,8 +40,6 @@ export const createCountdown = (initialSeconds: number, createTicker: CreateTick
       return Math.max(0, ms - elapsedMs);
     });
   }
-
-  const toMillis = (seconds: number) => seconds * 1000;
 
   return {
     subscribe: remainingSeconds.subscribe,
