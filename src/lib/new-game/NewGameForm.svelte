@@ -98,14 +98,13 @@
     flex-direction: column;
     gap: 1em;
 
-    margin-inline: auto;
-    width: 100%;
-    padding: 1em;
+    width: 28rem;
+    max-width: calc(100% - 2rem);
   }
 
   .buttons {
     display: flex;
     justify-content: center;
-    gap: 1.2rem;
+    gap: 1rem;
   }
 </style>

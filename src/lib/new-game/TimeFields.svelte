@@ -17,7 +17,13 @@
     {#if hasHours}
       <div class="field">
         <label for={`${idPrefix}-hours`}>Hours</label>
-        <input id={`${idPrefix}-hours`} name={`${namePrefix}Hours`} type="tel" bind:value={hours} />
+        <input
+          id={`${idPrefix}-hours`}
+          name={`${namePrefix}Hours`}
+          type="tel"
+          size="6"
+          bind:value={hours}
+        />
       </div>
     {/if}
     <div class="field">
@@ -26,6 +32,7 @@
         id={`${idPrefix}-minutes`}
         name={`${namePrefix}Minutes`}
         type="tel"
+        size="6"
         bind:value={minutes}
       />
     </div>
@@ -35,6 +42,7 @@
         id={`${idPrefix}-seconds`}
         name={`${namePrefix}Seconds`}
         type="tel"
+        size="6"
         bind:value={seconds}
       />
     </div>
