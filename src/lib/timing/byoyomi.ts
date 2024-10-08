@@ -4,6 +4,7 @@ import { createDefaultTicker } from './ticker';
 import type { Clock } from './clock';
 import { BYOYOMI, type Byoyomi } from '$lib/clock-settings/clock-type';
 import { type ByoyomiClockSettings } from '$lib/clock-settings/byoyomi-settings';
+import { toSeconds } from '$lib/clock-settings/duration';
 
 type Phase = 'main' | 'overtime';
 
@@ -27,10 +28,9 @@ export const createByoyomi = (
   settings: ByoyomiClockSettings,
   createTicker = createDefaultTicker
 ): Clock<ByoyomiState> => {
-  const { mainTimeSeconds, periods: initialPeriods, timePerPeriodSeconds } = settings;
-
-  const countdown = createCountdown(mainTimeSeconds, createTicker);
-  const phase = writable<Phase>(mainTimeSeconds > 0 ? 'main' : 'overtime');
+  const { mainTime, periods: initialPeriods, timePerPeriod } = settings;
+  const countdown = createCountdown(toSeconds(mainTime), createTicker);
+  const phase = writable<Phase>(toSeconds(mainTime) > 0 ? 'main' : 'overtime');
   const periodsRemaining = writable(initialPeriods);
   const timeout = writable(false);
 
@@ -58,7 +58,7 @@ export const createByoyomi = (
 
   const overtimeLogic: PhaseLogic = {
     onTurnPlayed() {
-      countdown.set(timePerPeriodSeconds);
+      countdown.set(toSeconds(timePerPeriod));
     },
     onCountdownExhausted() {
       // burn a period
@@ -78,7 +78,7 @@ export const createByoyomi = (
          * switches to `<period time> - 1`.
          */
         const periodBurnedBonusSeconds = 0.99;
-        countdown.set(timePerPeriodSeconds + periodBurnedBonusSeconds);
+        countdown.set(toSeconds(timePerPeriod) + periodBurnedBonusSeconds);
       }
     }
   };
@@ -91,7 +91,7 @@ export const createByoyomi = (
       logic = mainTimeLogic;
     } else if (timerPhase === 'overtime') {
       logic = overtimeLogic;
-      countdown.set(timePerPeriodSeconds);
+      countdown.set(toSeconds(timePerPeriod));
     }
   });
 

@@ -12,10 +12,11 @@ import { CANADIAN } from '$lib/clock-settings/clock-type';
 import { canadianFromQueryParams } from '$lib/menu/share';
 import { firstFullyPopulated } from '$lib/util/first';
 import { currentUrl } from '$lib/util/url';
-import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-fields';
 import { getter } from './get-form-value';
 
 export { mainTimeOptions, timePerPeriodOptions } from '$lib/clock-settings/canadian-settings';
+
+const byoyomiMainTimeOptions = [] as Array<{ value: string; display: string }>;
 
 export function parse(formData: FormData): CanadianClockSettings {
   const get = getter(formData);

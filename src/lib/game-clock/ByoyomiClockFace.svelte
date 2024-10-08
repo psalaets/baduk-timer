@@ -5,9 +5,12 @@
   import Timeout from '$lib/game-clock/Timeout.svelte';
   import type { ByoyomiState } from '$lib/timing/byoyomi';
   import type { ByoyomiClockSettings } from '$lib/clock-settings/byoyomi-settings';
+  import { toSeconds } from '$lib/clock-settings/duration';
 
   export let state: ByoyomiState;
   export let settings: ByoyomiClockSettings;
+
+  const secondsPerPeriod = toSeconds(settings.timePerPeriod);
 </script>
 
 {#if state.phase === 'main'}
@@ -19,7 +22,7 @@
       {#if state.periodsRemaining === 0}
         <span class="sudden-death">(SD)</span>
       {:else}
-        <TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> ({settings.periods})
+        <TimeLeft secondsRemaining={secondsPerPeriod} /> ({settings.periods})
       {/if}
     </Timeout>
   </SecondaryInfo>

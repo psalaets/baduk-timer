@@ -1,38 +1,34 @@
 <script lang="ts">
-  import {
-    mainTimeOptions,
-    timePerPeriodOptions,
-    getInitialValues
-  } from '$lib/new-game/byoyomi-fields';
+  import { getInitialValues } from '$lib/new-game/byoyomi-fields';
   import Field from '$lib/new-game/Field.svelte';
-  import Select from '$lib/new-game/Select.svelte';
+  import TimeFields from '$lib/new-game/TimeFields.svelte';
   import Input from '$lib/new-game/Input.svelte';
 
   const initialValues = getInitialValues();
 
-  let mainTimeSeconds = String(initialValues.mainTimeSeconds);
-  let timePerPeriodSeconds = String(initialValues.timePerPeriodSeconds);
+  let mainTime = initialValues.mainTime;
+  let timePerPeriod = initialValues.timePerPeriod;
   let periods = String(initialValues.periods);
 </script>
 
-<Field>
-  <label for="main-time">Main Time</label>
-  <Select
-    id="main-time"
-    name="mainTimeSeconds"
-    bind:value={mainTimeSeconds}
-    options={mainTimeOptions}
-  ></Select>
-</Field>
-<Field>
-  <label for="time-per-period">Time per period</label>
-  <Select
-    id="time-per-period"
-    name="timePerPeriodSeconds"
-    bind:value={timePerPeriodSeconds}
-    options={timePerPeriodOptions}
-  ></Select>
-</Field>
+<TimeFields
+  idPrefix="main-time"
+  namePrefix="mainTime"
+  hasHours
+  hours={mainTime.hours}
+  minutes={mainTime.minutes}
+  seconds={mainTime.seconds}
+  legend="Main Time"
+/>
+
+<TimeFields
+  idPrefix="time-per-period"
+  namePrefix="timePerPeriod"
+  minutes={timePerPeriod.minutes}
+  seconds={timePerPeriod.seconds}
+  legend="Time per period"
+/>
+
 <Field>
   <label for="periods">Periods</label>
   <Input id="periods" name="periods" type="number" bind:value={periods} autocomplete="off" />

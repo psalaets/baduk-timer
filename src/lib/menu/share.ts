@@ -21,9 +21,11 @@ export const shareableSettingsUrl = (settings: ClockSettings) => {
  * Cool urls don't change so these names used for query params should not be
  * changed without a *really* good reason.
  **/
-const queryParams = {
+const queryParamNames = {
   type: 'type',
   mainTimeSeconds: 'mainTimeSeconds',
+  mainTime: 'mainTime',
+  timePerPeriod: 'timePerPeriod',
   timePerPeriodSeconds: 'timePerPeriodSeconds',
   periods: 'periods',
   stonesPerPeriod: 'stonesPerPeriod',
@@ -38,26 +40,26 @@ function toQueryParams(settings: ClockSettings): URLSearchParams {
   switch (type) {
     case BYOYOMI:
       return new URLSearchParams({
-        [queryParams.type]: type,
-        [queryParams.mainTimeSeconds]: String(settings.mainTimeSeconds),
-        [queryParams.timePerPeriodSeconds]: String(settings.timePerPeriodSeconds),
-        [queryParams.periods]: String(settings.periods)
+        [queryParamNames.type]: type,
+        [queryParamNames.mainTime]: String(settings.mainTime),
+        [queryParamNames.timePerPeriod]: String(settings.timePerPeriod),
+        [queryParamNames.periods]: String(settings.periods)
       });
 
     case CANADIAN:
       return new URLSearchParams({
-        [queryParams.type]: type,
-        [queryParams.mainTimeSeconds]: String(settings.mainTimeSeconds),
-        [queryParams.timePerPeriodSeconds]: String(settings.timePerPeriodSeconds),
-        [queryParams.stonesPerPeriod]: String(settings.stonesPerPeriod)
+        [queryParamNames.type]: type,
+        [queryParamNames.mainTimeSeconds]: String(settings.mainTimeSeconds),
+        [queryParamNames.timePerPeriodSeconds]: String(settings.timePerPeriodSeconds),
+        [queryParamNames.stonesPerPeriod]: String(settings.stonesPerPeriod)
       });
 
     case FISCHER:
       return new URLSearchParams({
-        [queryParams.type]: type,
-        [queryParams.initialSeconds]: String(settings.initialSeconds),
-        [queryParams.incrementSeconds]: String(settings.incrementSeconds),
-        [queryParams.maxSeconds]: String(settings.maxSeconds)
+        [queryParamNames.type]: type,
+        [queryParamNames.initialSeconds]: String(settings.initialSeconds),
+        [queryParamNames.incrementSeconds]: String(settings.incrementSeconds),
+        [queryParamNames.maxSeconds]: String(settings.maxSeconds)
       });
     default:
       const exhaustiveCheck: never = type;
@@ -76,19 +78,19 @@ type Getter = (name: string) => string;
 /**
  * Create a function that reads raw settings values from the query string.
  *
- * @param expected Clock type for which to look for settings in query params
+ * @param expectedType Clock type for which to look for settings in query params
  * @param readFromQueryParams Receives a query param value getter function and returns raw settings.
- * @param empty Empty settings object to return if settings of expected clock type
+ * @param fallback Settings object to return if settings of expected clock type
  * not found in query params.
  */
 function fromQueryParams<T extends ClockSettings>(
-  expected: ClockType,
+  expectedType: ClockType,
   readFromQueryParams: (get: Getter) => RawValues<T>,
-  empty: RawValues<T>
+  fallback: RawValues<T>
 ) {
   return (params: URLSearchParams): RawValues<T> => {
     const get = (name: string) => params.get(name) || '';
-    return get(queryParams.type) === expected ? readFromQueryParams(get) : empty;
+    return get(queryParamNames.type) === expectedType ? readFromQueryParams(get) : fallback;
   };
 }
 
@@ -96,14 +98,14 @@ export const byoyomiFromQueryParams = fromQueryParams<ByoyomiClockSettings>(
   BYOYOMI,
   (get) => ({
     type: BYOYOMI,
-    mainTimeSeconds: get(queryParams.mainTimeSeconds),
-    timePerPeriodSeconds: get(queryParams.timePerPeriodSeconds),
-    periods: get(queryParams.periods)
+    mainTime: get(queryParamNames.mainTime),
+    timePerPeriod: get(queryParamNames.timePerPeriod),
+    periods: get(queryParamNames.periods)
   }),
   {
     type: BYOYOMI,
-    mainTimeSeconds: '',
-    timePerPeriodSeconds: '',
+    mainTime: '',
+    timePerPeriod: '',
     periods: ''
   }
 );
@@ -112,9 +114,9 @@ export const canadianFromQueryParams = fromQueryParams<CanadianClockSettings>(
   CANADIAN,
   (get) => ({
     type: CANADIAN,
-    mainTimeSeconds: get(queryParams.mainTimeSeconds),
-    timePerPeriodSeconds: get(queryParams.timePerPeriodSeconds),
-    stonesPerPeriod: get(queryParams.stonesPerPeriod)
+    mainTimeSeconds: get(queryParamNames.mainTimeSeconds),
+    timePerPeriodSeconds: get(queryParamNames.timePerPeriodSeconds),
+    stonesPerPeriod: get(queryParamNames.stonesPerPeriod)
   }),
   {
     type: CANADIAN,
@@ -128,9 +130,9 @@ export const fischerFromQueryParams = fromQueryParams<FischerClockSettings>(
   FISCHER,
   (get) => ({
     type: FISCHER,
-    initialSeconds: get(queryParams.initialSeconds),
-    incrementSeconds: get(queryParams.incrementSeconds),
-    maxSeconds: get(queryParams.maxSeconds)
+    initialSeconds: get(queryParamNames.initialSeconds),
+    incrementSeconds: get(queryParamNames.incrementSeconds),
+    maxSeconds: get(queryParamNames.maxSeconds)
   }),
   {
     type: FISCHER,

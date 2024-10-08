@@ -1,8 +1,9 @@
 import { CANADIAN, type Canadian } from '$lib/clock-settings/clock-type';
-import { mainTimeOptions as byoyomiMainTimeOptions } from './byoyomi-settings';
 import * as db from '$lib/util/localstorage';
 import type { RawValues } from '$lib/util/raw-values';
 import { clockSettingsKey } from '$lib/clock-settings/storage-key';
+
+const byoyomiMainTimeOptions = [] as Array<{ value: string; display: string }>;
 
 export type CanadianClockSettings = {
   type: Canadian;
