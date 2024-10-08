@@ -7,6 +7,7 @@ import { BYOYOMI, CANADIAN, FISCHER } from '$lib/clock-settings/clock-type';
 import type { RawValues } from '$lib/util/raw-values';
 import { currentUrl } from '$lib/util/url';
 import type { CommonSettings } from '$lib/clock-settings/common-settings';
+import { stringifyDuration } from '$lib/clock-settings/duration';
 
 export const shareableSettingsUrl = (settings: ClockSettings) => {
   const url = currentUrl();
@@ -23,15 +24,13 @@ export const shareableSettingsUrl = (settings: ClockSettings) => {
  **/
 const queryParamNames = {
   type: 'type',
-  mainTimeSeconds: 'mainTimeSeconds',
   mainTime: 'mainTime',
   timePerPeriod: 'timePerPeriod',
-  timePerPeriodSeconds: 'timePerPeriodSeconds',
   periods: 'periods',
   stonesPerPeriod: 'stonesPerPeriod',
-  initialSeconds: 'initialSeconds',
-  incrementSeconds: 'incrementSeconds',
-  maxSeconds: 'maxSeconds'
+  initialTime: 'initialTime',
+  increment: 'increment',
+  maxTime: 'maxTime'
 };
 
 function toQueryParams(settings: ClockSettings): URLSearchParams {
@@ -41,25 +40,25 @@ function toQueryParams(settings: ClockSettings): URLSearchParams {
     case BYOYOMI:
       return new URLSearchParams({
         [queryParamNames.type]: type,
-        [queryParamNames.mainTime]: String(settings.mainTime),
-        [queryParamNames.timePerPeriod]: String(settings.timePerPeriod),
+        [queryParamNames.mainTime]: stringifyDuration(settings.mainTime),
+        [queryParamNames.timePerPeriod]: stringifyDuration(settings.timePerPeriod),
         [queryParamNames.periods]: String(settings.periods)
       });
 
     case CANADIAN:
       return new URLSearchParams({
         [queryParamNames.type]: type,
-        [queryParamNames.mainTime]: String(settings.mainTime),
-        [queryParamNames.timePerPeriod]: String(settings.timePerPeriod),
+        [queryParamNames.mainTime]: stringifyDuration(settings.mainTime),
+        [queryParamNames.timePerPeriod]: stringifyDuration(settings.timePerPeriod),
         [queryParamNames.stonesPerPeriod]: String(settings.stonesPerPeriod)
       });
 
     case FISCHER:
       return new URLSearchParams({
         [queryParamNames.type]: type,
-        [queryParamNames.initialSeconds]: String(settings.initialSeconds),
-        [queryParamNames.incrementSeconds]: String(settings.incrementSeconds),
-        [queryParamNames.maxSeconds]: String(settings.maxSeconds)
+        [queryParamNames.initialTime]: stringifyDuration(settings.initialTime),
+        [queryParamNames.increment]: stringifyDuration(settings.increment),
+        [queryParamNames.maxTime]: stringifyDuration(settings.maxTime)
       });
     default:
       const exhaustiveCheck: never = type;
@@ -130,14 +129,14 @@ export const fischerFromQueryParams = fromQueryParams<FischerClockSettings>(
   FISCHER,
   (get) => ({
     type: FISCHER,
-    initialSeconds: get(queryParamNames.initialSeconds),
-    incrementSeconds: get(queryParamNames.incrementSeconds),
-    maxSeconds: get(queryParamNames.maxSeconds)
+    initialTime: get(queryParamNames.initialTime),
+    increment: get(queryParamNames.increment),
+    maxTime: get(queryParamNames.maxTime)
   }),
   {
     type: FISCHER,
-    initialSeconds: '',
-    incrementSeconds: '',
-    maxSeconds: ''
+    initialTime: '',
+    increment: '',
+    maxTime: ''
   }
 );

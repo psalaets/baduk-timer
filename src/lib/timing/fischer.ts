@@ -4,6 +4,7 @@ import { createCountdown } from './countdown';
 import type { Clock } from './clock';
 import { FISCHER, type Fischer } from '$lib/clock-settings/clock-type';
 import { type FischerClockSettings } from '$lib/clock-settings/fischer-settings';
+import { toSeconds } from '$lib/clock-settings/duration';
 
 export type FischerClock = Clock<FischerState>;
 
@@ -17,9 +18,9 @@ export const createFischer = (
   settings: FischerClockSettings,
   createTicker = createDefaultTicker
 ): Clock<FischerState> => {
-  const { initialSeconds, incrementSeconds, maxSeconds } = settings;
+  const { initialTime, increment, maxTime } = settings;
 
-  const countdown = createCountdown(initialSeconds, createTicker);
+  const countdown = createCountdown(toSeconds(initialTime), createTicker);
   const timeout = writable(false);
 
   const state = derived([countdown, timeout], ([c, t]) => {
@@ -42,7 +43,7 @@ export const createFischer = (
     pause: countdown.pause,
     playedStone() {
       countdown.pause();
-      countdown.add(incrementSeconds, maxSeconds);
+      countdown.add(toSeconds(increment), toSeconds(maxTime));
     },
     opponentPlayedStone() {
       countdown.play();

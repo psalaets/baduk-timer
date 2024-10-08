@@ -11,6 +11,7 @@ import {
   parseTimePerPeriod
 } from '$lib/clock-settings/canadian-settings';
 import { CANADIAN } from '$lib/clock-settings/clock-type';
+import { parseDurationPart } from '$lib/clock-settings/duration';
 import { canadianFromQueryParams } from '$lib/menu/share';
 import { firstFullyPopulated } from '$lib/util/first';
 import { currentUrl } from '$lib/util/url';
@@ -22,14 +23,20 @@ export function parse(formData: FormData): CanadianClockSettings {
   return {
     type: CANADIAN,
     mainTime: {
-      hours: Number(get('mainTimeHours')) ?? DEFAULT_MAIN_TIME_DURATION.hours,
-      minutes: Number(get('mainTimeMinutes')) ?? DEFAULT_MAIN_TIME_DURATION.minutes,
-      seconds: Number(get('mainTimeSeconds')) ?? DEFAULT_MAIN_TIME_DURATION.seconds
+      hours: parseDurationPart(get('mainTimeHours'), DEFAULT_MAIN_TIME_DURATION.hours),
+      minutes: parseDurationPart(get('mainTimeMinutes'), DEFAULT_MAIN_TIME_DURATION.minutes),
+      seconds: parseDurationPart(get('mainTimeSeconds'), DEFAULT_MAIN_TIME_DURATION.seconds)
     },
     timePerPeriod: {
-      hours: Number(get('timePerPeriodHours')) ?? DEFAULT_TIME_PER_PERIOD_DURATION.hours,
-      minutes: Number(get('timePerPeriodMinutes')) ?? DEFAULT_TIME_PER_PERIOD_DURATION.minutes,
-      seconds: Number(get('timePerPeriodSeconds')) ?? DEFAULT_TIME_PER_PERIOD_DURATION.seconds
+      hours: parseDurationPart(get('timePerPeriodHours'), DEFAULT_TIME_PER_PERIOD_DURATION.hours),
+      minutes: parseDurationPart(
+        get('timePerPeriodMinutes'),
+        DEFAULT_TIME_PER_PERIOD_DURATION.minutes
+      ),
+      seconds: parseDurationPart(
+        get('timePerPeriodSeconds'),
+        DEFAULT_TIME_PER_PERIOD_DURATION.seconds
+      )
     },
     stonesPerPeriod: parseStonesPerPeriod(get('stonesPerPeriod'))
   };

@@ -1,5 +1,3 @@
-import { DEFAULT_MAIN_TIME } from './byoyomi-settings';
-
 export type Duration = {
   hours: number;
   minutes: number;
@@ -36,4 +34,20 @@ export function stringifyDuration(duration: Duration) {
 
 export function toSeconds(duration: Duration): number {
   return duration.hours * 60 * 60 + duration.minutes * 60 + duration.seconds;
+}
+
+/**
+ * @returns Value that works with `Array.prototype.sort`
+ */
+export function compare(a: Duration, b: Duration): number {
+  return toSeconds(a) - toSeconds(b);
+}
+
+export function parseDurationPart(part: string, fallback: number): number {
+  const parsed = Number(part);
+
+  if (isNaN(parsed)) return fallback;
+  if (parsed < 0) return fallback;
+
+  return Math.floor(parsed);
 }

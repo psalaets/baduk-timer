@@ -1,46 +1,38 @@
 <script lang="ts">
-  import {
-    initialTimeOptions,
-    incrementOptions,
-    maxTimeOptions,
-    getInitialValues
-  } from './fischer-fields';
-  import Field from '$lib/new-game/Field.svelte';
-  import Select from '$lib/new-game/Select.svelte';
+  import { getInitialValues } from './fischer-fields';
+  import TimeFields from './TimeFields.svelte';
 
   const initialValues = getInitialValues();
 
-  let initialSeconds = String(initialValues.initialSeconds);
-  let incrementSeconds = String(initialValues.incrementSeconds);
-  let maxSeconds = String(initialValues.maxSeconds);
+  let initialTime = initialValues.initialTime;
+  let increment = initialValues.increment;
+  let maxTime = initialValues.maxTime;
 </script>
 
-<Field>
-  <label for="initial-time">Initial Time</label>
-  <Select
-    id="initial-time"
-    name="initialTimeSeconds"
-    bind:value={initialSeconds}
-    options={initialTimeOptions}
-  ></Select>
-</Field>
+<TimeFields
+  idPrefix="initial-time"
+  namePrefix="initialTime"
+  hasHours
+  hours={initialTime.hours}
+  minutes={initialTime.minutes}
+  seconds={initialTime.seconds}
+  legend="Initial Time"
+/>
 
-<Field>
-  <label for="increment">Increment</label>
-  <Select
-    id="increment"
-    name="incrementSeconds"
-    bind:value={incrementSeconds}
-    options={incrementOptions}
-  ></Select>
-</Field>
+<TimeFields
+  idPrefix="increment"
+  namePrefix="increment"
+  minutes={increment.minutes}
+  seconds={increment.seconds}
+  legend="Increment"
+/>
 
-<Field>
-  <label for="max-time">Maximum Time</label>
-  <Select
-    id="max-time"
-    name="maxTimeSeconds"
-    bind:value={maxSeconds}
-    options={maxTimeOptions}
-  ></Select>
-</Field>
+<TimeFields
+  idPrefix="max-time"
+  namePrefix="maxTime"
+  hasHours
+  hours={maxTime.hours}
+  minutes={maxTime.minutes}
+  seconds={maxTime.seconds}
+  legend="Maximum Time"
+/>

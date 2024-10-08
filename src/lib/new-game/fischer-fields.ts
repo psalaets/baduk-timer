@@ -1,37 +1,49 @@
 import { FISCHER } from '$lib/clock-settings/clock-type';
 import {
   type FischerClockSettings,
-  DEFAULT_INCREMENT_SECONDS,
-  DEFAULT_INITIAL_TIME_SECONDS,
-  DEFAULT_MAX_TIME_SECONDS,
-  parseIncrementSeconds,
-  parseMaxSeconds,
-  parseInitialTimeSeconds,
+  DEFAULT_INCREMENT,
+  DEFAULT_INCREMENT_DURATION,
+  DEFAULT_INITIAL_TIME,
+  DEFAULT_INITIAL_TIME_DURATION,
+  DEFAULT_MAX_TIME,
+  DEFAULT_MAX_TIME_DURATION,
+  parseIncrement,
+  parseMaxTime,
+  parseInitialTime,
   loadSettings
 } from '$lib/clock-settings/fischer-settings';
 import { firstFullyPopulated } from '$lib/util/first';
 import { getter } from './get-form-value';
 import { fischerFromQueryParams } from '$lib/menu/share';
 import { currentUrl } from '$lib/util/url';
-
-export {
-  initialTimeOptions,
-  incrementOptions,
-  maxTimeOptions
-} from '$lib/clock-settings/fischer-settings';
+import { compare as compareDurations, parseDurationPart } from '$lib/clock-settings/duration';
 
 export function parse(formData: FormData): FischerClockSettings {
   const get = getter(formData);
 
   const result: FischerClockSettings = {
     type: FISCHER,
-    initialSeconds: parseInitialTimeSeconds(get('initialTimeSeconds')),
-    incrementSeconds: parseIncrementSeconds(get('incrementSeconds')),
-    maxSeconds: parseMaxSeconds(get('maxTimeSeconds'))
+    initialTime: {
+      hours: parseDurationPart(get('initialTimeHours'), DEFAULT_INITIAL_TIME_DURATION.hours),
+      minutes: parseDurationPart(get('initialTimeMinutes'), DEFAULT_INITIAL_TIME_DURATION.minutes),
+      seconds: parseDurationPart(get('initialTimeSeconds'), DEFAULT_INITIAL_TIME_DURATION.seconds)
+    },
+    increment: {
+      hours: parseDurationPart(get('incrementHours'), DEFAULT_INCREMENT_DURATION.hours),
+      minutes: parseDurationPart(get('incrementMinutes'), DEFAULT_INCREMENT_DURATION.minutes),
+      seconds: parseDurationPart(get('incrementSeconds'), DEFAULT_INCREMENT_DURATION.seconds)
+    },
+    maxTime: {
+      hours: parseDurationPart(get('maxTimeHours'), DEFAULT_MAX_TIME_DURATION.hours),
+      minutes: parseDurationPart(get('maxTimeMinutes'), DEFAULT_MAX_TIME_DURATION.minutes),
+      seconds: parseDurationPart(get('maxTimeSeconds'), DEFAULT_MAX_TIME_DURATION.seconds)
+    }
   };
 
-  // Ensure max >= initial
-  result.maxSeconds = Math.max(result.maxSeconds, result.initialSeconds);
+  // Prevent max < initial
+  if (compareDurations(result.maxTime, result.initialTime) < 0) {
+    result.maxTime = result.initialTime;
+  }
 
   return result;
 }
@@ -42,16 +54,16 @@ export function getInitialValues(): FischerClockSettings {
     loadSettings(),
     {
       type: FISCHER,
-      initialSeconds: String(DEFAULT_INITIAL_TIME_SECONDS),
-      incrementSeconds: String(DEFAULT_INCREMENT_SECONDS),
-      maxSeconds: String(DEFAULT_MAX_TIME_SECONDS)
+      initialTime: String(DEFAULT_INITIAL_TIME),
+      increment: String(DEFAULT_INCREMENT),
+      maxTime: String(DEFAULT_MAX_TIME)
     }
   ]);
 
   return {
     type: FISCHER,
-    initialSeconds: parseInitialTimeSeconds(raw.initialSeconds),
-    incrementSeconds: parseIncrementSeconds(raw.incrementSeconds),
-    maxSeconds: parseMaxSeconds(raw.maxSeconds)
+    initialTime: parseInitialTime(raw.initialTime),
+    increment: parseIncrement(raw.increment),
+    maxTime: parseMaxTime(raw.maxTime)
   };
 }

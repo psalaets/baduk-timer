@@ -15,6 +15,7 @@ import { firstFullyPopulated } from '$lib/util/first';
 import { getter } from './get-form-value';
 import { byoyomiFromQueryParams } from '$lib/menu/share';
 import { currentUrl } from '$lib/util/url';
+import { parseDurationPart } from '$lib/clock-settings/duration';
 
 export function parse(formData: FormData): ByoyomiClockSettings {
   const get = getter(formData);
@@ -23,14 +24,20 @@ export function parse(formData: FormData): ByoyomiClockSettings {
     type: BYOYOMI,
     periods: parsePeriods(get('periods')),
     mainTime: {
-      hours: Number(get('mainTimeHours')) ?? DEFAULT_MAIN_TIME_DURATION.hours,
-      minutes: Number(get('mainTimeMinutes')) ?? DEFAULT_MAIN_TIME_DURATION.minutes,
-      seconds: Number(get('mainTimeSeconds')) ?? DEFAULT_MAIN_TIME_DURATION.seconds
+      hours: parseDurationPart(get('mainTimeHours'), DEFAULT_MAIN_TIME_DURATION.hours),
+      minutes: parseDurationPart(get('mainTimeMinutes'), DEFAULT_MAIN_TIME_DURATION.minutes),
+      seconds: parseDurationPart(get('mainTimeSeconds'), DEFAULT_MAIN_TIME_DURATION.seconds)
     },
     timePerPeriod: {
-      hours: Number(get('timePerPeriodHours')) ?? DEFAULT_TIME_PER_PERIOD_DURATION.hours,
-      minutes: Number(get('timePerPeriodMinutes')) ?? DEFAULT_TIME_PER_PERIOD_DURATION.minutes,
-      seconds: Number(get('timePerPeriodSeconds')) ?? DEFAULT_TIME_PER_PERIOD_DURATION.seconds
+      hours: parseDurationPart(get('timePerPeriodHours'), DEFAULT_TIME_PER_PERIOD_DURATION.hours),
+      minutes: parseDurationPart(
+        get('timePerPeriodMinutes'),
+        DEFAULT_TIME_PER_PERIOD_DURATION.minutes
+      ),
+      seconds: parseDurationPart(
+        get('timePerPeriodSeconds'),
+        DEFAULT_TIME_PER_PERIOD_DURATION.seconds
+      )
     }
   };
 }
