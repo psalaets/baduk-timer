@@ -6,9 +6,12 @@
   import { pluralize } from '$lib/util/pluralize';
   import type { CanadianState } from '$lib/timing/canadian';
   import type { CanadianClockSettings } from '$lib/clock-settings/canadian-settings';
+  import { toSeconds } from '$lib/clock-settings/duration';
 
   export let state: CanadianState;
   export let settings: CanadianClockSettings;
+
+  const timePerPeriodSeconds = toSeconds(settings.timePerPeriod);
 </script>
 
 {#if state.phase === 'main'}
@@ -16,7 +19,7 @@
     <TimeLeft secondsRemaining={state.countdown} />
   </PrimaryInfo>
   <SecondaryInfo>
-    +<TimeLeft secondsRemaining={settings.timePerPeriodSeconds} /> / {settings.stonesPerPeriod}
+    +<TimeLeft secondsRemaining={timePerPeriodSeconds} /> / {settings.stonesPerPeriod}
   </SecondaryInfo>
 {:else}
   <PrimaryInfo>

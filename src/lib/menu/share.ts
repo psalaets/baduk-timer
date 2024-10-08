@@ -49,8 +49,8 @@ function toQueryParams(settings: ClockSettings): URLSearchParams {
     case CANADIAN:
       return new URLSearchParams({
         [queryParamNames.type]: type,
-        [queryParamNames.mainTimeSeconds]: String(settings.mainTimeSeconds),
-        [queryParamNames.timePerPeriodSeconds]: String(settings.timePerPeriodSeconds),
+        [queryParamNames.mainTime]: String(settings.mainTime),
+        [queryParamNames.timePerPeriod]: String(settings.timePerPeriod),
         [queryParamNames.stonesPerPeriod]: String(settings.stonesPerPeriod)
       });
 
@@ -114,14 +114,14 @@ export const canadianFromQueryParams = fromQueryParams<CanadianClockSettings>(
   CANADIAN,
   (get) => ({
     type: CANADIAN,
-    mainTimeSeconds: get(queryParamNames.mainTimeSeconds),
-    timePerPeriodSeconds: get(queryParamNames.timePerPeriodSeconds),
+    mainTime: get(queryParamNames.mainTime),
+    timePerPeriod: get(queryParamNames.timePerPeriod),
     stonesPerPeriod: get(queryParamNames.stonesPerPeriod)
   }),
   {
     type: CANADIAN,
-    mainTimeSeconds: '',
-    timePerPeriodSeconds: '',
+    mainTime: '',
+    timePerPeriod: '',
     stonesPerPeriod: ''
   }
 );

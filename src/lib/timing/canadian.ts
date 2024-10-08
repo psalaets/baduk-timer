@@ -4,6 +4,7 @@ import { createCountdown } from './countdown';
 import type { Clock } from './clock';
 import { CANADIAN, type Canadian } from '$lib/clock-settings/clock-type';
 import { type CanadianClockSettings } from '$lib/clock-settings/canadian-settings';
+import { toSeconds } from '$lib/clock-settings/duration';
 
 type Phase = 'main' | 'overtime';
 
@@ -27,10 +28,10 @@ export const createCanadian = (
   settings: CanadianClockSettings,
   createTicker = createDefaultTicker
 ): Clock<CanadianState> => {
-  const { mainTimeSeconds, stonesPerPeriod, timePerPeriodSeconds } = settings;
+  const { mainTime, stonesPerPeriod, timePerPeriod } = settings;
 
-  const countdown = createCountdown(mainTimeSeconds, createTicker);
-  const phase = writable<Phase>(mainTimeSeconds > 0 ? 'main' : 'overtime');
+  const countdown = createCountdown(toSeconds(mainTime), createTicker);
+  const phase = writable<Phase>(toSeconds(mainTime) > 0 ? 'main' : 'overtime');
   const stonesRemaining = writable(stonesPerPeriod);
   const timeout = writable(false);
 
@@ -59,7 +60,7 @@ export const createCanadian = (
     },
     onStonePlayed(stonesLeft) {
       if (stonesLeft === 0) {
-        countdown.set(timePerPeriodSeconds);
+        countdown.set(toSeconds(timePerPeriod));
         stonesRemaining.set(stonesPerPeriod);
       }
     }
@@ -73,7 +74,7 @@ export const createCanadian = (
       logic = mainTimeLogic;
     } else if (timerPhase == 'overtime') {
       logic = overtimeLogic;
-      countdown.set(timePerPeriodSeconds);
+      countdown.set(toSeconds(timePerPeriod));
     }
   });
 
