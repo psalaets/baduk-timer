@@ -4,6 +4,7 @@
   import { BYOYOMI, CANADIAN, FISCHER } from '$lib/clock-settings/clock-type';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 
+  import Button from '$lib/components/Button.svelte';
   import Field from '$lib/new-game/Field.svelte';
   import Select from '$lib/new-game/Select.svelte';
   import { getter } from './get-form-value';
@@ -86,9 +87,9 @@
 
   <div class="buttons">
     {#if canCancel}
-      <button type="button" on:click={onCancel}>Cancel</button>
+      <Button type="button" on:click={onCancel}>Cancel</Button>
     {/if}
-    <button type="submit">Use these settings</button>
+    <Button type="submit">Use these settings</Button>
   </div>
 </form>
 

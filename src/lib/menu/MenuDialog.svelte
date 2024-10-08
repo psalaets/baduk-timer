@@ -1,4 +1,5 @@
 <script lang="ts">
+  import Button from '$lib/components/Button.svelte';
   import Dialog from '$lib/Dialog.svelte';
   import QrCode from '$lib/menu/QrCode.svelte';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
@@ -51,15 +52,15 @@
       </li>
       <li>
         <div>
-          <button on:click={() => (shareOpen = !shareOpen)}>Share Settings</button>
+          <Button on:click={() => (shareOpen = !shareOpen)}>Share Settings</Button>
         </div>
         {#if shareOpen}
-          <button on:click={() => copyUrl()}>Copy Settings URL</button>
+          <Button on:click={() => copyUrl()}>Copy Settings URL</Button>
           <QrCode data={shareableSettingsUrl(settings).toString()} />
         {/if}
       </li>
       <li>
-        <button on:click={() => toggleFullscreen()}>Fullscreen</button>
+        <Button on:click={() => toggleFullscreen()}>Fullscreen</Button>
       </li>
       <li>
         <label>
@@ -70,6 +71,6 @@
     </ul>
   </div>
   <div slot="footer" let:close>
-    <button on:click={close}>{closeButtonLabel}</button>
+    <Button on:click={close}>{closeButtonLabel}</Button>
   </div>
 </Dialog>
