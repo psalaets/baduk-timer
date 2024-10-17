@@ -4,6 +4,8 @@
   import type { MouseEventHandler } from 'svelte/elements';
   import { onMount } from 'svelte';
 
+  export let title: string;
+
   let dialog: HTMLDialogElement;
 
   onMount(() => {
@@ -24,11 +26,10 @@
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
 <dialog bind:this={dialog} on:close on:click={onClick}>
   <div class="inner">
-    <slot name="title" />
-    <hr />
-    <slot name="body" />
-    <hr />
-    <slot name="footer" {close} />
+    <div class="title">
+      {title}
+    </div>
+    <slot {close} />
   </div>
 </dialog>
 
@@ -46,7 +47,15 @@
   }
 
   .inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
     /* (3) padding for all content within the dialog */
     padding: 1rem;
+  }
+
+  .title {
+    text-align: center;
   }
 </style>

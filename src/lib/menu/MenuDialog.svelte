@@ -11,6 +11,8 @@
     exitFullscreen
   } from '$lib/menu/fullscreen';
   import { appSettingsStore } from '$lib/app-settings-store';
+  import { toLanguage } from '$lib/app-settings';
+  import LanguageSelect from '$lib/language-picker/LanguageSelect.svelte';
 
   export let paused = false;
   export let settings: ClockSettings;
@@ -40,12 +42,20 @@
     }));
   };
 
+  const handleChangeLanguage = (event: Event) => {
+    const rawLang = (event.target as HTMLSelectElement).value;
+
+    appSettingsStore.update((settings) => ({
+      ...settings,
+      language: toLanguage(rawLang)
+    }));
+  };
+
   let shareOpen = false;
 </script>
 
-<Dialog on:close>
-  <span slot="title">{title}</span>
-  <div slot="body">
+<Dialog on:close {title} let:close>
+  <div>
     <ul>
       <li>
         <a href="/new">New Game</a>
@@ -68,9 +78,19 @@
           <input type="checkbox" on:change={toggleSound} checked={$appSettingsStore.sound} />
         </label>
       </li>
+      <li>
+        <!-- svelte-ignore a11y-label-has-associated-control -->
+        <label>
+          Language
+          <LanguageSelect
+            id="language"
+            name="language"
+            value={$appSettingsStore.language}
+            on:change={handleChangeLanguage}
+          />
+        </label>
+      </li>
     </ul>
-  </div>
-  <div slot="footer" let:close>
     <Button on:click={close}>{closeButtonLabel}</Button>
   </div>
 </Dialog>
