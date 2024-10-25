@@ -3,6 +3,7 @@
   import Field from '$lib/new-game/Field.svelte';
   import TimeFields from '$lib/new-game/TimeFields.svelte';
   import Input from '$lib/new-game/Input.svelte';
+  import { i18nStore } from '$lib/i18n/i18n-store';
 
   const initialValues = getInitialValues();
 
@@ -18,7 +19,7 @@
   hours={mainTime.hours}
   minutes={mainTime.minutes}
   seconds={mainTime.seconds}
-  legend="Main Time"
+  legend={$i18nStore.mainTimeLabel}
 />
 
 <TimeFields
@@ -28,11 +29,11 @@
   hours={timePerPeriod.hours}
   minutes={timePerPeriod.minutes}
   seconds={timePerPeriod.seconds}
-  legend="Time per period"
+  legend={$i18nStore.timePerPeriodLabel}
 />
 
 <Field>
-  <label for="stones-per-period">Stones per period</label>
+  <label for="stones-per-period">{$i18nStore.stonesPerPeriodLabel}</label>
   <Input
     id="stones-per-period"
     name="stonesPerPeriod"

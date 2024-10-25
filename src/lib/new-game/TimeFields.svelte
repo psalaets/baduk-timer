@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { i18nStore } from '$lib/i18n/i18n-store';
+
   export let legend: string;
   /** Prefix for fields ids */
   export let idPrefix: string;
@@ -16,7 +18,7 @@
   <div class="fields">
     {#if hasHours}
       <div class="field">
-        <label for={`${idPrefix}-hours`}>Hours</label>
+        <label for={`${idPrefix}-hours`}>{$i18nStore.hoursLabel}</label>
         <input
           id={`${idPrefix}-hours`}
           name={`${namePrefix}Hours`}
@@ -27,7 +29,7 @@
       </div>
     {/if}
     <div class="field">
-      <label for={`${idPrefix}-minutes`}>Minutes</label>
+      <label for={`${idPrefix}-minutes`}>{$i18nStore.minutesLabel}</label>
       <input
         id={`${idPrefix}-minutes`}
         name={`${namePrefix}Minutes`}
@@ -37,7 +39,7 @@
       />
     </div>
     <div class="field">
-      <label for={`${idPrefix}-seconds`}>Seconds</label>
+      <label for={`${idPrefix}-seconds`}>{$i18nStore.secondsLabel}</label>
       <input
         id={`${idPrefix}-seconds`}
         name={`${namePrefix}Seconds`}

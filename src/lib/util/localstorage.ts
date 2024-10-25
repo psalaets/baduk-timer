@@ -6,7 +6,7 @@ function key(keyParts: Array<string>): string {
   return ['baduk-timer'].concat(keyParts).join('.');
 }
 
-export function get(keyParts: Array<string>, defaultValue: string) {
+export function get(keyParts: Array<string>, defaultValue: string): string {
   return localStorage.getItem(key(keyParts)) ?? defaultValue;
 }
 

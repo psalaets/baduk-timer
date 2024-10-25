@@ -8,6 +8,7 @@
   import UrgentTimeSfx from '$lib/game-effects/UrgentTimeSfx.svelte';
   import TimeoutSfx from '$lib/game-effects/TimeoutSfx.svelte';
   import { appSettingsStore } from '$lib/app-settings-store';
+  import { isLanguageSet } from '$lib/app-settings';
 
   if (browser && !$gameStore) {
     goto('/new');

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { i18nStore } from '$lib/i18n/i18n-store';
   import { getInitialValues } from './fischer-fields';
   import TimeFields from './TimeFields.svelte';
 
@@ -16,7 +17,7 @@
   hours={initialTime.hours}
   minutes={initialTime.minutes}
   seconds={initialTime.seconds}
-  legend="Initial Time"
+  legend={$i18nStore.initialTimeLabel}
 />
 
 <TimeFields
@@ -24,7 +25,7 @@
   namePrefix="increment"
   minutes={increment.minutes}
   seconds={increment.seconds}
-  legend="Increment"
+  legend={$i18nStore.incrementLabel}
 />
 
 <TimeFields
@@ -34,5 +35,5 @@
   hours={maxTime.hours}
   minutes={maxTime.minutes}
   seconds={maxTime.seconds}
-  legend="Maximum Time"
+  legend={$i18nStore.maximumTimeLabel}
 />

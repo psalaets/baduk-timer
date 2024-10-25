@@ -4,6 +4,7 @@
   import { goto } from '$app/navigation';
   import { gameStore } from '$lib/game-store';
   import { createGame } from '$lib/game';
+  import { i18nStore } from '$lib/i18n/i18n-store';
 
   const hasPreExistingGame = !!$gameStore;
 
@@ -20,7 +21,7 @@
 </script>
 
 <div class="new-game-page">
-  <h1>New Game</h1>
+  <h1>{$i18nStore.newGamePageHeading}</h1>
   <NewGameForm canCancel={hasPreExistingGame} on:submit={onSubmit} on:cancel={onCancel} />
 </div>
 
@@ -30,5 +31,9 @@
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+
+    margin-inline: auto;
+    width: 26rem;
+    max-width: calc(100% - 2rem);
   }
 </style>

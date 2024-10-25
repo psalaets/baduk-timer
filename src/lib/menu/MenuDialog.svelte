@@ -11,18 +11,20 @@
     exitFullscreen
   } from '$lib/menu/fullscreen';
   import { appSettingsStore } from '$lib/app-settings-store';
-  import { toLanguage } from '$lib/app-settings';
+  import { isSupportedLanguage, toLanguage } from '$lib/app-settings';
   import LanguageSelect from '$lib/language-picker/LanguageSelect.svelte';
+  import { i18nStore } from '$lib/i18n/i18n-store';
 
   export let paused = false;
   export let settings: ClockSettings;
 
-  $: title = paused ? 'Paused' : 'Menu';
-  $: closeButtonLabel = paused ? 'Resume' : 'Close';
-
-  const copyUrl = () => {
+  $: title = paused ? $i18nStore.pauseMenuTitle : $i18nStore.pregameMenuTitle;
+  $: closeButtonLabel = paused ? $i18nStore.resumeGameButton : $i18nStore.closeMenuButton;
+  $: copyUrl = () => {
     const url = shareableSettingsUrl(settings);
-    navigator.clipboard.writeText(url.toString()).then(() => alert('URL copied!'));
+    navigator.clipboard
+      .writeText(url.toString())
+      .then(() => alert($i18nStore.shareLinkCopiedFeedback));
   };
 
   const toggleFullscreen = () => {
@@ -43,12 +45,14 @@
   };
 
   const handleChangeLanguage = (event: Event) => {
-    const rawLang = (event.target as HTMLSelectElement).value;
+    const language = (event.target as HTMLSelectElement).value;
 
-    appSettingsStore.update((settings) => ({
-      ...settings,
-      language: toLanguage(rawLang)
-    }));
+    if (isSupportedLanguage(language)) {
+      appSettingsStore.update((settings) => ({
+        ...settings,
+        language
+      }));
+    }
   };
 
   let shareOpen = false;
@@ -58,30 +62,31 @@
   <div>
     <ul>
       <li>
-        <a href="/new">New Game</a>
+        <a href="/new">{$i18nStore.newGameLink}</a>
       </li>
       <li>
         <div>
-          <Button on:click={() => (shareOpen = !shareOpen)}>Share Settings</Button>
+          <Button on:click={() => (shareOpen = !shareOpen)}>{$i18nStore.shareSettingsButton}</Button
+          >
         </div>
         {#if shareOpen}
-          <Button on:click={() => copyUrl()}>Copy Settings URL</Button>
+          <Button on:click={() => copyUrl()}>{$i18nStore.copyShareLinkButton}</Button>
           <QrCode data={shareableSettingsUrl(settings).toString()} />
         {/if}
       </li>
       <li>
-        <Button on:click={() => toggleFullscreen()}>Fullscreen</Button>
+        <Button on:click={() => toggleFullscreen()}>{$i18nStore.fullscreenButton}</Button>
       </li>
       <li>
         <label>
-          Sound
+          {$i18nStore.toggleSoundLabel}
           <input type="checkbox" on:change={toggleSound} checked={$appSettingsStore.sound} />
         </label>
       </li>
       <li>
         <!-- svelte-ignore a11y-label-has-associated-control -->
         <label>
-          Language
+          {$i18nStore.languageLabel}
           <LanguageSelect
             id="language"
             name="language"

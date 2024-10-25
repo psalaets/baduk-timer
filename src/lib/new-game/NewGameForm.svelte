@@ -9,7 +9,7 @@
   import Select from '$lib/new-game/Select.svelte';
   import { getter } from './get-form-value';
 
-  import { typeOptions, getInitialValues } from '$lib/new-game/common-fields';
+  import { getInitialValues } from '$lib/new-game/common-fields';
   import { saveSettings as saveCommonSettings } from '$lib/clock-settings/common-settings';
 
   import { parse as parseByoyomi } from '$lib/new-game/byoyomi-fields';
@@ -23,6 +23,7 @@
   import { parse as parseFischer } from '$lib/new-game/fischer-fields';
   import { saveSettings as saveFischerSettings } from '$lib/clock-settings/fischer-settings';
   import FischerFields from '$lib/new-game/FischerFields.svelte';
+  import { i18nStore } from '$lib/i18n/i18n-store';
 
   export let canCancel = false;
 
@@ -67,11 +68,21 @@
   const onCancel = () => cancelDispatcher('cancel');
 
   let { type } = getInitialValues();
+  const typeOptions = [
+    { value: BYOYOMI, display: $i18nStore.byoyomi },
+    { value: CANADIAN, display: $i18nStore.canadian },
+    { value: FISCHER, display: $i18nStore.fischer }
+  ];
 </script>
 
-<form aria-label="Time settings" method="POST" on:submit|preventDefault={onSubmit} novalidate>
+<form
+  aria-label={$i18nStore.timeSettingsLabel}
+  method="POST"
+  on:submit|preventDefault={onSubmit}
+  novalidate
+>
   <Field>
-    <label for="time-system">Time System</label>
+    <label for="time-system">{$i18nStore.timeSystemLabel}</label>
     <Select id="time-system" name="timeSystem" bind:value={type} options={typeOptions}></Select>
   </Field>
 
@@ -87,9 +98,9 @@
 
   <div class="buttons">
     {#if canCancel}
-      <Button type="button" on:click={onCancel}>Cancel</Button>
+      <Button type="button" on:click={onCancel}>{$i18nStore.cancelNewGameButton}</Button>
     {/if}
-    <Button type="submit">Use these settings</Button>
+    <Button type="submit">{$i18nStore.applySettingsButton}</Button>
   </div>
 </form>
 
@@ -98,9 +109,7 @@
     display: flex;
     flex-direction: column;
     gap: 1em;
-
-    width: 28rem;
-    max-width: calc(100% - 2rem);
+    width: 100%;
   }
 
   .buttons {

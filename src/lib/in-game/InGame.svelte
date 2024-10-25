@@ -1,6 +1,7 @@
 <script lang="ts">
   import { type Game, isGameInProgress } from '$lib/game';
   import GameClock from '$lib/game-clock/GameClock.svelte';
+  import { i18nStore } from '$lib/i18n/i18n-store';
   import MenuDialog from '$lib/menu/MenuDialog.svelte';
 
   export let game: Game;
@@ -10,10 +11,6 @@
   $: gameInProgress = isGameInProgress($phase);
   let menuOpen = false;
 </script>
-
-<!-- <div>paused: {$paused}</div>
-<div>whoseTurn: {$whoseTurn}</div>
-<div>phase: {$phase}</div> -->
 
 <!-- Render game effects -->
 <slot />
@@ -26,19 +23,23 @@
 >
   {#if gameInProgress}
     <div class="c-menu-bar">
-      <button class="c-menu-bar__button" on:click={() => game.pause()}>Pause</button>
+      <button class="c-menu-bar__button" on:click={() => game.pause()}
+        >{$i18nStore.pauseButton}</button
+      >
       <button
         class="c-menu-bar__button c-menu-bar__button--icon c-menu-bar__button--hides-in-landscape"
         on:click={() => game.pause()}>⏸</button
       >
       <button
         class="c-menu-bar__button c-menu-bar__button--hides-in-landscape c-menu-bar__button--flip"
-        on:click={() => game.pause()}>Pause</button
+        on:click={() => game.pause()}>{$i18nStore.pauseButton}</button
       >
     </div>
   {:else}
     <div class="c-menu-bar">
-      <button class="c-menu-bar__button" on:click={() => (menuOpen = true)}>Menu</button>
+      <button class="c-menu-bar__button" on:click={() => (menuOpen = true)}
+        >{$i18nStore.menuButton}</button
+      >
     </div>
   {/if}
 

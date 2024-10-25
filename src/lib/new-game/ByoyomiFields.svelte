@@ -3,6 +3,8 @@
   import Field from '$lib/new-game/Field.svelte';
   import TimeFields from '$lib/new-game/TimeFields.svelte';
   import Input from '$lib/new-game/Input.svelte';
+  import { i18nStore } from '$lib/i18n/i18n-store';
+  import { capitalize } from '$lib/util/capitalize';
 
   const initialValues = getInitialValues();
 
@@ -18,7 +20,7 @@
   hours={mainTime.hours}
   minutes={mainTime.minutes}
   seconds={mainTime.seconds}
-  legend="Main Time"
+  legend={$i18nStore.mainTimeLabel}
 />
 
 <TimeFields
@@ -26,10 +28,10 @@
   namePrefix="timePerPeriod"
   minutes={timePerPeriod.minutes}
   seconds={timePerPeriod.seconds}
-  legend="Time per period"
+  legend={$i18nStore.timePerPeriodLabel}
 />
 
 <Field>
-  <label for="periods">Periods</label>
+  <label for="periods">{capitalize($i18nStore.periods)}</label>
   <Input id="periods" name="periods" type="number" bind:value={periods} autocomplete="off" />
 </Field>

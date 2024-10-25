@@ -1,13 +1,13 @@
 <script lang="ts">
   export let id: string;
   export let name: string;
-  export let options: Array<{ value: string; display: string }>;
+  export let options: Array<{ value: string; display: string; disabled?: boolean }>;
   export let value: string;
 </script>
 
 <select {id} {name} bind:value on:change>
   {#each options as opt (opt.value)}
-    <option value={opt.value}>{opt.display}</option>
+    <option disabled={opt.disabled} value={opt.value}>{opt.display}</option>
   {/each}
 </select>
 

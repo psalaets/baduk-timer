@@ -1,5 +1,6 @@
 import * as db from '$lib/util/localstorage';
 
+// Don't need translation lookups here because every language name should be in its own language
 export const supportedLanguages = [
   {
     name: 'English',
@@ -11,24 +12,27 @@ export const supportedLanguages = [
   } as const
 ] as const;
 
-type Language = (typeof supportedLanguages)[number]['id'];
-
-export function toLanguage(id: unknown): Language {
-  return isSupportedLanguage(id) ? id : defaultSettings.language;
-}
-
-function isSupportedLanguage(id: unknown): id is Language {
-  return supportedLanguages.some((lang) => lang.id === id);
-}
+export type Language = (typeof supportedLanguages)[number]['id'];
 
 export type AppSettings = {
   sound: boolean;
-  language: Language;
+  language: string;
 };
+
+export function isSupportedLanguage(id: unknown): id is Language {
+  return supportedLanguages.some((lang) => lang.id === id);
+}
+
+export function isLanguageSet() {
+  const language = db.get(['app-settings', 'language'], '');
+  return isSupportedLanguage(language);
+}
+
+export function toLanguage(val: unknown): Language {}
 
 export const defaultSettings = {
   sound: true,
-  language: 'en' as const
+  language: 'en' as Language
 } satisfies AppSettings;
 
 export function save(settings: AppSettings) {
@@ -37,11 +41,10 @@ export function save(settings: AppSettings) {
 }
 
 export function load(): AppSettings {
-  const rawLang = db.get(['app-settings', 'language'], defaultSettings.language);
-  const language = isSupportedLanguage(rawLang) ? rawLang : defaultSettings.language;
+  const language = db.get(['app-settings', 'language'], '');
 
   return {
     sound: db.get(['app-settings', 'sound'], String(defaultSettings.sound)) === 'true',
-    language
+    language: isSupportedLanguage(language) ? language : ''
   };
 }

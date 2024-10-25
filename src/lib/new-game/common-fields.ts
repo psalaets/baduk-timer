@@ -10,8 +10,6 @@ import type { RawValues } from '$lib/util/raw-values';
 import { commonFromQueryParams } from '$lib/menu/share';
 import { currentUrl } from '$lib/util/url';
 
-export { typeOptions } from '$lib/clock-settings/common-settings';
-
 export function parse(formData: FormData): CommonSettings {
   const get = getter(formData);
 

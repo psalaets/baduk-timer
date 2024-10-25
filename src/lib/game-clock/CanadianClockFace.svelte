@@ -7,6 +7,7 @@
   import type { CanadianState } from '$lib/timing/canadian';
   import type { CanadianClockSettings } from '$lib/clock-settings/canadian-settings';
   import { toSeconds } from '$lib/clock-settings/duration';
+  import { i18nStore } from '$lib/i18n/i18n-store';
 
   export let state: CanadianState;
   export let settings: CanadianClockSettings;
@@ -28,7 +29,7 @@
   <SecondaryInfo>
     <Timeout timeout={state.timeout}>
       ({state.stonesRemaining}
-      {pluralize(state.stonesRemaining, 'stone')})
+      {pluralize(state.stonesRemaining, $i18nStore.stoneOne, $i18nStore.stoneMany)})
     </Timeout>
   </SecondaryInfo>
 {/if}

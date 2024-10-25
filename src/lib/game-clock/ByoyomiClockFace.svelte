@@ -6,6 +6,7 @@
   import type { ByoyomiState } from '$lib/timing/byoyomi';
   import type { ByoyomiClockSettings } from '$lib/clock-settings/byoyomi-settings';
   import { toSeconds } from '$lib/clock-settings/duration';
+  import { i18nStore } from '$lib/i18n/i18n-store';
 
   export let state: ByoyomiState;
   export let settings: ByoyomiClockSettings;
@@ -20,7 +21,7 @@
   <SecondaryInfo>
     <Timeout timeout={state.timeout}>
       {#if state.periodsRemaining === 0}
-        <span class="sudden-death">(SD)</span>
+        <span class="sudden-death">({$i18nStore.suddenDeath})</span>
       {:else}
         <TimeLeft secondsRemaining={secondsPerPeriod} /> ({settings.periods})
       {/if}
@@ -33,9 +34,9 @@
   <SecondaryInfo>
     <Timeout timeout={state.timeout}>
       {#if state.periodsRemaining === 1}
-        <span class="sudden-death">(SD)</span>
+        <span class="sudden-death">({$i18nStore.suddenDeath})</span>
       {:else}
-        ({state.periodsRemaining} periods)
+        ({state.periodsRemaining} {$i18nStore.periods})
       {/if}
     </Timeout>
   </SecondaryInfo>

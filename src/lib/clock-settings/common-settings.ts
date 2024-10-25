@@ -9,12 +9,6 @@ export type CommonSettings = {
 
 export const DEFAULT_TYPE: ClockType = BYOYOMI;
 
-export const typeOptions = [
-  { value: BYOYOMI, display: 'Byo-Yomi' },
-  { value: CANADIAN, display: 'Canadian' },
-  { value: FISCHER, display: 'Fischer' }
-];
-
 export function parseType(raw: string): ClockType {
   if (raw === BYOYOMI || raw === CANADIAN || raw === FISCHER) {
     return raw;

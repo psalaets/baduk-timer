@@ -12,6 +12,15 @@
       display: lang.name
     };
   });
+
+  const options = [
+    {
+      value: '',
+      display: 'Select a language',
+      disabled: true
+    },
+    ...languageOptions
+  ];
 </script>
 
-<Select {id} {name} bind:value options={languageOptions} on:change />
+<Select {id} {name} bind:value {options} on:change />

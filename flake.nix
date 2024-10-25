@@ -41,7 +41,8 @@
           # JSON
           check-json.enable = true;
           # Markdown
-          typos.enable = true;
+          # typos plugin is flagging some i18n words
+          # typos.enable = true;
           # Generic
           editorconfig-checker.enable = true;
           # Tests
@@ -67,7 +68,7 @@
           [
             nix-plop.packages.${system}.default
             nodejs_20
-            ffmpeg_5
+            ffmpeg
           ]
           ++ self.checks.${system}.pre-commit-check.enabledPackages;
       };
