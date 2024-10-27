@@ -1,6 +1,5 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import { browser } from '$app/environment';
   import { goto } from '$app/navigation';
   import { gameStore } from '$lib/game-store';
   import InGame from '$lib/in-game/InGame.svelte';
@@ -10,7 +9,9 @@
   import { appSettingsStore } from '$lib/app-settings-store';
   import { isLanguageSet } from '$lib/app-settings';
 
-  if (browser && !$gameStore) {
+  if (!isLanguageSet()) {
+    goto('/setup');
+  } else if (!gameStore) {
     goto('/new');
   }
 
