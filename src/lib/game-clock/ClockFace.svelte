@@ -1,7 +1,25 @@
 <script lang="ts">
+  import { createEventDispatcher } from 'svelte';
+
   export let myTurn: boolean;
   export let timeout: boolean;
   export let invertsInPortrait: boolean;
+
+  const dispatch = createEventDispatcher();
+
+  let ignoreNextClick = false;
+  function handleClick() {
+    if (ignoreNextClick) {
+      ignoreNextClick = false;
+    } else {
+      dispatch('press');
+    }
+  }
+
+  function handleTouch() {
+    ignoreNextClick = true;
+    dispatch('press');
+  }
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
@@ -10,7 +28,8 @@
   class:my-turn={myTurn}
   class:inverts-in-portrait={invertsInPortrait}
   class:timeout
-  on:click
+  on:click={handleClick}
+  on:touchstart={handleTouch}
   role="button"
   tabindex="0"
 >
