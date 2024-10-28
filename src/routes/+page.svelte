@@ -11,7 +11,7 @@
 
   if (!isLanguageSet()) {
     goto('/setup');
-  } else if (!gameStore) {
+  } else if (!$gameStore) {
     goto('/new');
   }
 
