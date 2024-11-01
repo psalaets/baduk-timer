@@ -1,5 +1,5 @@
 <script lang="ts">
-  import Select from '$lib/new-game/Select.svelte';
+  import Select from '$lib/components/Select.svelte';
   import { supportedLanguages } from '$lib/app-settings';
 
   export let id: string;

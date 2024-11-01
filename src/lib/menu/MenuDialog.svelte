@@ -1,6 +1,6 @@
 <script lang="ts">
   import Button from '$lib/components/Button.svelte';
-  import Dialog from '$lib/Dialog.svelte';
+  import Dialog from '$lib/components/Dialog.svelte';
   import QrCode from '$lib/menu/QrCode.svelte';
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
   import { shareableSettingsUrl } from '$lib/menu/share';

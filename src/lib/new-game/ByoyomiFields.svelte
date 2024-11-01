@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { getInitialValues } from '$lib/new-game/byoyomi-fields';
-  import Field from '$lib/new-game/Field.svelte';
+  import Field from '$lib/components/Field.svelte';
+  import Input from '$lib/components/Input.svelte';
   import TimeFields from '$lib/new-game/TimeFields.svelte';
-  import Input from '$lib/new-game/Input.svelte';
+  import { getInitialValues } from '$lib/new-game/byoyomi-fields';
   import { i18nStore } from '$lib/i18n/i18n-store';
   import { capitalize } from '$lib/util/capitalize';
 

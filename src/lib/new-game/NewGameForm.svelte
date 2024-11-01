@@ -5,8 +5,8 @@
   import type { ClockSettings } from '$lib/clock-settings/clock-settings';
 
   import Button from '$lib/components/Button.svelte';
-  import Field from '$lib/new-game/Field.svelte';
-  import Select from '$lib/new-game/Select.svelte';
+  import Field from '$lib/components/Field.svelte';
+  import Select from '$lib/components/Select.svelte';
   import { getter } from './get-form-value';
 
   import { getInitialValues } from '$lib/new-game/common-fields';
