@@ -2,8 +2,9 @@
   import { goto } from '$app/navigation';
   import { i18nStore } from '$lib/i18n/i18n-store';
   import { appSettingsStore } from '$lib/app-settings-store';
-  import LanguageSelect from '$lib/language-picker/LanguageSelect.svelte';
   import { isSupportedLanguage } from '$lib/app-settings';
+  import LanguageSelect from '$lib/language-picker/LanguageSelect.svelte';
+  import Field from '$lib/components/Field.svelte';
 
   const onChange = (event: Event) => {
     const language = (event.target as HTMLSelectElement).value;
@@ -24,11 +25,10 @@
 <div class="setup-page">
   <h1>Setup</h1>
   <form>
-    <!-- svelte-ignore a11y-label-has-associated-control -->
-    <label>
-      {$i18nStore.languageLabel}
+    <Field>
+      <label for="language">{$i18nStore.languageLabel}</label>
       <LanguageSelect id="language" name="language" value="" on:change={onChange} />
-    </label>
+    </Field>
   </form>
 </div>
 

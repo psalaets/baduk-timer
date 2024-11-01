@@ -1,4 +1,6 @@
 <script lang="ts">
+  import Field from '$lib/components/Field.svelte';
+  import Input from '$lib/components/Input.svelte';
   import { i18nStore } from '$lib/i18n/i18n-store';
 
   export let legend: string;
@@ -17,37 +19,37 @@
   <legend>{legend}</legend>
   <div class="fields">
     {#if hasHours}
-      <div class="field">
+      <Field>
         <label for={`${idPrefix}-hours`}>{$i18nStore.hoursLabel}</label>
-        <input
+        <Input
           id={`${idPrefix}-hours`}
           name={`${namePrefix}Hours`}
           type="tel"
           size="6"
           bind:value={hours}
         />
-      </div>
+      </Field>
     {/if}
-    <div class="field">
+    <Field>
       <label for={`${idPrefix}-minutes`}>{$i18nStore.minutesLabel}</label>
-      <input
+      <Input
         id={`${idPrefix}-minutes`}
         name={`${namePrefix}Minutes`}
         type="tel"
         size="6"
         bind:value={minutes}
       />
-    </div>
-    <div class="field">
+    </Field>
+    <Field>
       <label for={`${idPrefix}-seconds`}>{$i18nStore.secondsLabel}</label>
-      <input
+      <Input
         id={`${idPrefix}-seconds`}
         name={`${namePrefix}Seconds`}
         type="tel"
         size="6"
         bind:value={seconds}
       />
-    </div>
+    </Field>
   </div>
 </fieldset>
 
@@ -56,9 +58,5 @@
     display: flex;
     gap: 1rem;
     justify-content: flex-end;
-  }
-
-  .field label {
-    display: block;
   }
 </style>
