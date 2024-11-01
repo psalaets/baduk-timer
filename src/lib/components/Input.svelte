@@ -1,7 +1,14 @@
 <script lang="ts">
+  import type { FocusEventHandler } from 'svelte/elements';
+
+  const selectValueOnFocus: FocusEventHandler<HTMLInputElement> = (event) => {
+    if (event.target instanceof HTMLInputElement) {
+      event.target.select();
+    }
+  };
 </script>
 
-<input {...$$restProps} on:change />
+<input {...$$restProps} on:change on:focus={selectValueOnFocus} />
 
 <style>
   input {
