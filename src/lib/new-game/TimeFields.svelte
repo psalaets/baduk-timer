@@ -24,7 +24,8 @@
         <Input
           id={`${idPrefix}-hours`}
           name={`${namePrefix}Hours`}
-          type="tel"
+          type="number"
+          autocomplete="off"
           size="6"
           bind:value={hours}
         />
@@ -35,7 +36,8 @@
       <Input
         id={`${idPrefix}-minutes`}
         name={`${namePrefix}Minutes`}
-        type="tel"
+        type="number"
+        autocomplete="off"
         size="6"
         bind:value={minutes}
       />
@@ -45,7 +47,8 @@
       <Input
         id={`${idPrefix}-seconds`}
         name={`${namePrefix}Seconds`}
-        type="tel"
+        type="number"
+        autocomplete="off"
         size="6"
         bind:value={seconds}
       />
