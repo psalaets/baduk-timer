@@ -14,6 +14,7 @@
   import { isSupportedLanguage, toLanguage } from '$lib/app-settings';
   import LanguageSelect from '$lib/language-picker/LanguageSelect.svelte';
   import { i18nStore } from '$lib/i18n/i18n-store';
+  import { goto } from '$app/navigation';
 
   export let paused = false;
   export let settings: ClockSettings;
@@ -58,20 +59,20 @@
   let shareOpen = false;
 </script>
 
-<Dialog on:close {title} let:close>
+<Dialog id="in-game-menu" on:close {title} let:close>
   <div>
     <ul class="settings-menu">
       <li>
-        <a href="/new">{$i18nStore.newGameLink}</a>
+        <Button on:click={() => goto('/new')}>{$i18nStore.newGameLink}</Button>
       </li>
       <li>
-        <div>
-          <Button on:click={() => (shareOpen = !shareOpen)}>{$i18nStore.shareSettingsButton}</Button
-          >
-        </div>
+        <Button on:click={() => (shareOpen = !shareOpen)}>{$i18nStore.shareSettingsButton}</Button>
+
         {#if shareOpen}
-          <Button on:click={() => copyUrl()}>{$i18nStore.copyShareLinkButton}</Button>
-          <QrCode data={shareableSettingsUrl(settings).toString()} />
+          <div>
+            <Button on:click={() => copyUrl()}>{$i18nStore.copyShareLinkButton}</Button>
+            <QrCode data={shareableSettingsUrl(settings).toString()} />
+          </div>
         {/if}
       </li>
       <li>

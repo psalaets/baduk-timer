@@ -4,7 +4,10 @@
   import type { MouseEventHandler } from 'svelte/elements';
   import { onMount } from 'svelte';
 
+  export let id: string;
   export let title: string;
+
+  const titleElementId = `${id}__title`;
 
   let dialog: HTMLDialogElement;
 
@@ -24,9 +27,9 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events a11y-no-noninteractive-element-interactions -->
-<dialog bind:this={dialog} on:close on:click={onClick}>
+<dialog {id} bind:this={dialog} on:close on:click={onClick} aria-labelledby={titleElementId}>
   <div class="inner">
-    <div class="title">
+    <div id={titleElementId} class="title">
       {title}
     </div>
     <slot {close} />
