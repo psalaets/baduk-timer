@@ -60,7 +60,7 @@
 
 <Dialog on:close {title} let:close>
   <div>
-    <ul>
+    <ul class="settings-menu">
       <li>
         <a href="/new">{$i18nStore.newGameLink}</a>
       </li>
@@ -96,6 +96,25 @@
         </label>
       </li>
     </ul>
-    <Button on:click={close}>{closeButtonLabel}</Button>
+    <div class="buttons">
+      <Button on:click={close}>{closeButtonLabel}</Button>
+    </div>
   </div>
 </Dialog>
+
+<style>
+  .settings-menu {
+    list-style-type: none;
+    margin: 0;
+    padding: 1rem;
+  }
+
+  .settings-menu > * + * {
+    margin-top: 0.8rem;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: center;
+  }
+</style>
