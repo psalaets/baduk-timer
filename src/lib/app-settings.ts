@@ -28,8 +28,6 @@ export function isLanguageSet() {
   return isSupportedLanguage(language);
 }
 
-export function toLanguage(val: unknown): Language {}
-
 export const defaultSettings = {
   sound: true,
   language: 'en' as Language
