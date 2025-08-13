@@ -55,7 +55,7 @@
     display: flex;
     height: 100%;
     background-color: rgb(24, 24, 24);
-    border-radius: 20px;
+    border-radius: var(--container-border-radius);
   }
   .c-menu-bar:hover,
   .c-menu-bar:active {

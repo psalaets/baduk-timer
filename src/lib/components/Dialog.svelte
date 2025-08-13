@@ -38,6 +38,8 @@
 
 <style>
   dialog {
+    border-radius: var(--container-border-radius);
+
     /* (1) Makes child fill 100% of dialog height */
     display: flex;
     /* (2) The dialog has no padding and its child completely fills the content

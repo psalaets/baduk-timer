@@ -23,6 +23,8 @@
   --focused-input-outline-color: #0000ff;
 
   --clock-font-family: 'Courier New', Courier, monospace;
+  /* Border radius for containers, as opposed to the smaller elements. */
+  --container-border-radius: 20px;
 
   /* Default to dark theme because it puts a little less demand on battery */
   --clock-face-foreground-color: var(--color-white);

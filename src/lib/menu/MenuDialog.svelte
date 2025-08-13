@@ -53,7 +53,7 @@
 </script>
 
 <Dialog id="in-game-menu" on:close {title} let:close>
-  <div>
+  <div class="in-game-menu__content-container">
     <ul class="settings-menu">
       <li>
         <Button on:click={() => goto('/new')}>{$i18nStore.newGameLink}</Button>
@@ -99,8 +99,19 @@
     padding: 1rem;
   }
 
+  .settings-menu > * {
+    display: flex;
+    justify-content: center;
+  }
+
   .settings-menu > * + * {
     margin-top: 0.8rem;
+  }
+
+  .in-game-menu__content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
 
   .buttons {
