@@ -58,12 +58,12 @@
       <li>
         <Button on:click={() => goto('/new')}>{$i18nStore.newGameLink}</Button>
       </li>
-      <li>
+      <!--       <li>
         <Button on:click={() => (shareOpen = !shareOpen)}>{$i18nStore.shareSettingsButton}</Button>
         {#if shareOpen}
           <ShareSettings {settings} />
         {/if}
-      </li>
+      </li> -->
       <li>
         <Button on:click={() => toggleFullscreen()}>{$i18nStore.fullscreenButton}</Button>
       </li>
